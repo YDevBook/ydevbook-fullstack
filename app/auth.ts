@@ -12,6 +12,6 @@ export const {
     })
   ],
   pages: {
-    signIn: '/sign-in'
+    signIn: '/login'
   }
 });
