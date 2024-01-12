@@ -1,8 +1,6 @@
 import './globals.css';
 
-import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
-import Toast from './toast';
 import { Suspense } from 'react';
 
 export const metadata = {
@@ -22,8 +20,6 @@ export default function RootLayout({
           <Nav />
         </Suspense>
         {children}
-        <Analytics />
-        <Toast />
       </body>
     </html>
   );
