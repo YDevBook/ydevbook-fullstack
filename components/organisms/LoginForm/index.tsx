@@ -6,9 +6,9 @@ import {
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { Button } from './button';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/app/lib/actions';
+import { authenticate } from '@/lib/actions';
+import { Button } from '@/components/atoms/Button';
 
 export default function LoginForm() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
@@ -70,13 +70,6 @@ export default function LoginForm() {
               <p className="text-sm text-red-500">{errorMessage}</p>
             </>
           )}
-        </div>
-        <div
-          className="flex h-8 items-end space-x-1 border border-gray-200 mt-4"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          GitHub 로 로그인 추가할 것
         </div>
       </div>
     </form>
