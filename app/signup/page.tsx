@@ -1,10 +1,12 @@
+import SignUpForm from '@/components/organisms/SignupForm';
 import { Title, Text } from '@tremor/react';
 
 export default function SignUpPage() {
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>SignUp</Title>
-      <Text>SignUp</Text>
+    <main className="flex items-center justify-center md:h-screen">
+      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 md:-mt-32 p-4">
+        <SignUpForm />
+      </div>
     </main>
   );
 }
