@@ -2,13 +2,7 @@ import { sql } from '@vercel/postgres';
 import { Card, Title, Text } from '@tremor/react';
 import Search from './search';
 import UsersTable from './table';
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+import { User } from '@/lib/definitions';
 
 export default async function IndexPage({
   searchParams
@@ -17,7 +11,7 @@ export default async function IndexPage({
 }) {
   const search = searchParams.q ?? '';
   const result = await sql`
-    SELECT id, name, username, email 
+    SELECT id, name, email 
     FROM users 
     WHERE name ILIKE ${'%' + search + '%'};
   `;
