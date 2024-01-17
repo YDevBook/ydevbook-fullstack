@@ -32,16 +32,19 @@ const ProfileForm = ({
   });
 
   const action: () => void = handleSubmit(async (data) => {
-    console.log(data);
     setLocalStorageValue(data);
     try {
       const result = await insertProfile(data);
+      if (result === 'Profile already exists') {
+        alert('프로필이 이미 존재합니다');
+        return;
+      }
       if (result === 'success') {
         alert('프로필 생성 성공');
-        router.replace('/my-profile');
-      } else {
-        alert('프로필 생성 실패');
+        return router.replace('/my-profile');
       }
+      alert('프로필 생성 실패');
+      return;
     } catch (error) {
       console.error(error);
     }

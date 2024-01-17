@@ -103,13 +103,29 @@ export async function insertProfile(data: ProfileFormData) {
       major || undefined
     }, ${graduateStatus || undefined}, ${githubLink || undefined})
   `;
-    const insertResult = await sql.query(query);
+    const insertResult = await sql`
+      INSERT INTO profiles (userId, email, phoneNumber, dateOfBirth, address, positions, skills, school, major, graduateStatus, githubLink)
+      VALUES (${userId}, ${email}, ${phoneNumber}, ${
+        dateOfBirth || undefined
+      }, ${
+        address || undefined
+      }, ${positionsInsertArray}, ${skillsInsertArray}, ${
+        school || undefined
+      }, ${major || undefined}, ${graduateStatus || undefined}, ${
+        githubLink || undefined
+      })
+    `;
     if (insertResult.rowCount === 0) {
       throw new Error('Something went wrong.');
     } else {
       return 'success';
     }
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('oneofeachuser')) {
+        return 'Profile already exists';
+      }
+    }
     throw error;
   }
 }
