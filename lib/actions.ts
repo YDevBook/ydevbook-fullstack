@@ -1,9 +1,10 @@
 'use server';
-import { signIn } from '@/auth';
+import { auth, signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
+import { ProfileFormData } from '@/lib/definitions';
 
 // ...
 
@@ -63,6 +64,52 @@ export async function signUp(
           return 'Something went wrong.';
       }
     }
+    throw error;
+  }
+}
+
+function reduceToArrayString(arr: string[]) {
+  if (arr.length === 0) return 'ARRAY []';
+  return `{${arr.reduce((acc, curr) => `${acc}'${curr}', `, '').slice(0, -2)}}`;
+}
+
+export async function insertProfile(data: ProfileFormData) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    console.log(session?.user.id);
+    const userId = session?.user.id;
+    const email = session?.user.email;
+    const {
+      phoneNumber,
+      dateOfBirth,
+      address,
+      positions,
+      skills,
+      school,
+      major,
+      graduateStatus,
+      githubLink
+    } = data;
+    const positionsInsertArray = reduceToArrayString(positions || []);
+    const skillsInsertArray = reduceToArrayString(skills || []);
+    const query = `
+    INSERT INTO profiles (userId, email, phoneNumber, dateOfBirth, address, positions, skills, school, major, graduateStatus, githubLink)
+    VALUES (${userId}, ${email}, ${phoneNumber}, ${dateOfBirth || undefined}, ${
+      address || undefined
+    }, ${positionsInsertArray}, ${skillsInsertArray}, ${school || undefined}, ${
+      major || undefined
+    }, ${graduateStatus || undefined}, ${githubLink || undefined})
+  `;
+    const insertResult = await sql.query(query);
+    if (insertResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
     throw error;
   }
 }

@@ -2,9 +2,10 @@
 
 import { Button } from '@/components/atoms/Button';
 import { ProfileFormData } from '@/lib/definitions';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import useLocalStorage from '@/lib/useLocalStorage';
-import { MultiSelect, MultiSelectItem } from '@tremor/react';
+import { insertProfile } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 const ProfileForm = ({
   positionSelectItems,
@@ -13,6 +14,7 @@ const ProfileForm = ({
   positionSelectItems: { name: string }[];
   skillsSelectItems: { name: string }[];
 }) => {
+  const router = useRouter();
   const [localStorageValue, setLocalStorageValue] =
     useLocalStorage<ProfileFormData>('profileForm', {
       phoneNumber: '',
@@ -25,14 +27,24 @@ const ProfileForm = ({
       githubLink: ''
     });
 
-  const { register, handleSubmit, control, setValue } =
-    useForm<ProfileFormData>({
-      defaultValues: localStorageValue
-    });
+  const { register, handleSubmit } = useForm<ProfileFormData>({
+    defaultValues: localStorageValue
+  });
 
   const action: () => void = handleSubmit(async (data) => {
     console.log(data);
     setLocalStorageValue(data);
+    try {
+      const result = await insertProfile(data);
+      if (result === 'success') {
+        alert('프로필 생성 성공');
+        router.replace('/my-profile');
+      } else {
+        alert('프로필 생성 실패');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   return (
