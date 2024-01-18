@@ -4,12 +4,17 @@ import { Profile } from '@/lib/definitions';
 import { Title, Text, Card, Badge } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function MyProfilePage() {
   const session = await auth();
   const { rows } = await sql<Profile>`
     SELECT * FROM profiles WHERE "userId" = ${session?.user.id};
   `;
+  if (rows.length === 0) {
+    redirect('/profile-form');
+  }
+
   const {
     name,
     phoneNumber,
