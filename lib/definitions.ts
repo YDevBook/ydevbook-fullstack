@@ -8,6 +8,7 @@ export interface User {
 export interface Profile {
   id: number;
   userId: string;
+  name: string;
   phoneNumber: string;
   email: string;
   dateOfBirth?: string;
