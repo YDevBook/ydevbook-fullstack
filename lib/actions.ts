@@ -69,8 +69,7 @@ export async function signUp(
 }
 
 function reduceToArrayString(arr: string[]) {
-  if (arr.length === 0) return '{}';
-  return `{${arr.reduce((acc, curr) => `${acc}'${curr}', `, '').slice(0, -2)}}`;
+  return `{${arr.join(',')}}`;
 }
 
 export async function insertProfile(data: ProfileFormData) {
@@ -79,7 +78,6 @@ export async function insertProfile(data: ProfileFormData) {
     if (!session?.user) {
       return 'User not logged In';
     }
-    console.log(session?.user.id);
     const userId = session?.user.id;
     const email = session?.user.email;
     const {
