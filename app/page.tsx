@@ -10,7 +10,7 @@ export default async function IndexPage({}: {}) {
   let hasProfile = false;
   if (isLoggedIn) {
     const result = await sql`
-      SELECT COUNT(*) FROM profiles WHERE userId = ${session.user.id};
+      SELECT COUNT(*) FROM profiles WHERE "userId" = ${session.user.id};
     `;
     hasProfile = result.rows[0].count !== '0';
   }

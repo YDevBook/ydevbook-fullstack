@@ -78,8 +78,7 @@ export async function insertProfile(data: ProfileFormData) {
     if (!session?.user) {
       return 'User not logged In';
     }
-    const userId = session?.user.id;
-    const email = session?.user.email;
+    const { id: userId, email, name } = session?.user;
     const {
       phoneNumber,
       dateOfBirth,
@@ -94,16 +93,18 @@ export async function insertProfile(data: ProfileFormData) {
     const positionsInsertArray = reduceToArrayString(positions || []);
     const skillsInsertArray = reduceToArrayString(skills || []);
     const query = `
-    INSERT INTO profiles (userId, email, phoneNumber, dateOfBirth, address, positions, skills, school, major, graduateStatus, githubLink)
-    VALUES (${userId}, ${email}, ${phoneNumber}, ${dateOfBirth || undefined}, ${
+    INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
+    VALUES (${userId}, ${name}, ${email}, ${phoneNumber}, ${
+      dateOfBirth || undefined
+    }, ${
       address || undefined
     }, ${positionsInsertArray}, ${skillsInsertArray}, ${school || undefined}, ${
       major || undefined
     }, ${graduateStatus || undefined}, ${githubLink || undefined})
   `;
     const insertResult = await sql`
-      INSERT INTO profiles (userId, email, phoneNumber, dateOfBirth, address, positions, skills, school, major, graduateStatus, githubLink)
-      VALUES (${userId}, ${email}, ${phoneNumber}, ${
+      INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
+      VALUES (${userId}, ${name}, ${email}, ${phoneNumber}, ${
         dateOfBirth || undefined
       }, ${
         address || undefined
