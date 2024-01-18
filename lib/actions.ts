@@ -69,7 +69,7 @@ export async function signUp(
 }
 
 function reduceToArrayString(arr: string[]) {
-  if (arr.length === 0) return 'ARRAY []';
+  if (arr.length === 0) return '{}';
   return `{${arr.reduce((acc, curr) => `${acc}'${curr}', `, '').slice(0, -2)}}`;
 }
 
