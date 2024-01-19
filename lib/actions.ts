@@ -128,3 +128,106 @@ export async function insertProfile(data: ProfileFormData) {
     throw error;
   }
 }
+
+export async function updateProfile(data: ProfileFormData) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId, email, name } = session?.user;
+    const {
+      phoneNumber,
+      dateOfBirth,
+      address,
+      positions,
+      skills,
+      school,
+      major,
+      graduateStatus,
+      githubLink
+    } = data;
+    const positionsInsertArray = reduceToArrayString(positions || []);
+    const skillsInsertArray = reduceToArrayString(skills || []);
+    const query = `
+    UPDATE profiles
+    SET "name" = ${name},
+    "email" = ${email},
+    "phoneNumber" = ${phoneNumber},
+    "dateOfBirth" = ${dateOfBirth},
+    "address" = ${address},
+    "positions" = ${positionsInsertArray},
+    "skills" = ${skillsInsertArray},
+    "school" = ${school},
+    "major" = ${major},
+    "graduateStatus" = ${graduateStatus},
+    "githubLink" = ${githubLink}
+    WHERE "userId" = ${userId}
+  `;
+    const updateResult = await sql`
+      UPDATE profiles
+      SET "name" = ${name},
+      "email" = ${email},
+      "phoneNumber" = ${phoneNumber},
+      "dateOfBirth" = ${dateOfBirth},
+      "address" = ${address},
+      "positions" = ${positionsInsertArray},
+      "skills" = ${skillsInsertArray},
+      "school" = ${school},
+      "major" = ${major},
+      "graduateStatus" = ${graduateStatus},
+      "githubLink" = ${githubLink}
+      WHERE "userId" = ${userId}
+    `;
+    if (updateResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}
+
+export async function updateProfileText(
+  formData: FormData,
+  columnName: string
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId } = session?.user;
+    const data = Object.fromEntries(formData);
+    const value = data[columnName];
+
+    if (typeof value !== 'string') {
+      throw new Error('Wrong Access');
+    }
+
+    const query = `
+    UPDATE profiles
+    SET "${columnName}" = $1
+    WHERE "userId" = $2
+  `;
+    const updateResult = await sql.query(query, [value, userId]);
+    if (updateResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}

@@ -5,8 +5,10 @@ import { Title, Text, Card, Badge } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function MyProfilePage() {
+  noStore();
   const session = await auth();
   const { rows } = await sql<Profile>`
     SELECT * FROM profiles WHERE "userId" = ${session?.user.id};
@@ -41,10 +43,13 @@ export default async function MyProfilePage() {
       <Title className="my-4">내 프로필</Title>
       <div>
         <Card
-          className="w-full mx-auto"
+          className="w-full mx-auto relative"
           decoration="top"
           decorationColor="indigo"
         >
+          <Link href="/my-profile/edit">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Text>이름</Text>
           <Title>{name}</Title>
           <Text>전화번호</Text>
@@ -64,6 +69,9 @@ export default async function MyProfilePage() {
           decoration="top"
           decorationColor="indigo"
         >
+          <Link href="/my-profile/edit">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Text>학력</Text>
           <Title>{school}</Title>
           <Text>전공</Text>
@@ -76,6 +84,9 @@ export default async function MyProfilePage() {
           decoration="top"
           decorationColor="indigo"
         >
+          <Link href="/my-profile/edit">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Text>구직중인 포지션</Text>
           <div className="my-2">
             {positions?.map((position) => (
@@ -94,20 +105,36 @@ export default async function MyProfilePage() {
           </div>
         </Card>
         <Card className="w-full mx-auto mt-4">
+          <Link href="/my-profile/edit-text?column=personalStatement">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Title>자기 소개</Title>
-          <Text>{personalStatement || '자기 소개 글을 등록해주세요.'}</Text>
+          <Text className="whitespace-pre-line">
+            {personalStatement || '자기 소개 글을 등록해주세요.'}
+          </Text>
         </Card>
         <Card className="w-full mx-auto mt-4">
+          <Link href="/my-profile/edit-text?column=mainStrength">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Title>주요 강점</Title>
-          <Text>{mainStrength || '주요 강점을 소개해주세요.'}</Text>
+          <Text className="whitespace-pre-line">
+            {mainStrength || '주요 강점을 소개해주세요.'}
+          </Text>
         </Card>
         <Card className="w-full mx-auto mt-4">
+          <Link href="/my-profile/edit-text?column=expectationText">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Title>스타트업에 기대하는 점</Title>
-          <Text>
+          <Text className="whitespace-pre-line">
             {expectationText || '스타트업에 기대하는 점을 알려주세요.'}
           </Text>
         </Card>
         <Card className="w-full mx-auto mt-4">
+          <Link href="/my-profile/edit">
+            <Button className="absolute right-0 top-0 m-4">수정하기</Button>
+          </Link>
           <Title>첨부 자료</Title>
           <Text>깃헙 아이콘 {githubLink || '깃헙 링크를 등록해주세요.'}</Text>
           <Text>웹 아이콘 {webLink || '웹 링크를 등록해주세요.'}</Text>
@@ -116,11 +143,6 @@ export default async function MyProfilePage() {
             {attachedFiles || '첨부 파일 다운로드 기능 추가 필요'}
           </Text>
         </Card>
-      </div>
-      <div className="my-8 w-full flex justify-center">
-        <Link href="/my-profile/edit">
-          <Button>수정하기</Button>
-        </Link>
       </div>
     </main>
   );
