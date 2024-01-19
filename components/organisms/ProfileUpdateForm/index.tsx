@@ -22,8 +22,10 @@ const ProfileUpdateForm = ({
   const router = useRouter();
 
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
-    defaultValues: profile
+    defaultValues: { ...profile, dateOfBirth: undefined }
   });
+
+  // console.log(profile.dateOfBirth?.toISOString().substring(0, 10));
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -64,7 +66,8 @@ const ProfileUpdateForm = ({
         <input
           className="border border-gray-300"
           type="date"
-          {...register('dateOfBirth', { valueAsDate: true })}
+          {...register('dateOfBirth', { valueAsDate: false })}
+          defaultValue={profile.dateOfBirth?.toISOString().substring(0, 10)}
         />
       </div>
       <div>
