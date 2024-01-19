@@ -1,10 +1,11 @@
-import { Button } from '@/components/atoms/Button';
+import { auth } from '@/auth';
 import ProfileTextUpdateForm from '@/components/organisms/ProfileTextUpdateForm';
-import { updateProfileText } from '@/lib/actions';
-import { Textarea, Title } from '@tremor/react';
+import { ProfileTextData } from '@/lib/definitions';
+import { Title } from '@tremor/react';
+import { sql } from '@vercel/postgres';
 import { notFound } from 'next/navigation';
 
-const MyProfileEditTextPage = ({
+const MyProfileEditTextPage = async ({
   searchParams
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -15,8 +16,12 @@ const MyProfileEditTextPage = ({
     )
   )
     return notFound();
-
+  const session = await auth();
   const columnName = searchParams.column as string;
+  const { rows } = await sql.query<ProfileTextData>(`
+  SELECT "${columnName}" FROM profiles WHERE "userId" = '${session?.user.id}';
+`);
+  const defaultValue = rows[0][columnName];
 
   const title = (() => {
     switch (searchParams.column) {
@@ -34,7 +39,10 @@ const MyProfileEditTextPage = ({
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Title>{title}</Title>
-      <ProfileTextUpdateForm columnName={columnName} />
+      <ProfileTextUpdateForm
+        columnName={columnName}
+        defaultValue={defaultValue}
+      />
     </main>
   );
 };

@@ -5,6 +5,12 @@ export interface User {
   name: string;
 }
 
+export interface ProfileTextData extends Record<string, string | undefined> {
+  personalStatement?: string;
+  mainStrength?: string;
+  expectationText?: string;
+}
+
 export interface Profile {
   id: number;
   userId: string;

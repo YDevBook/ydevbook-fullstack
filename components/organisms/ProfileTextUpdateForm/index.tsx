@@ -5,7 +5,13 @@ import { updateProfileText } from '@/lib/actions';
 import { Textarea } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 
-const ProfileTextUpdateForm = ({ columnName }: { columnName: string }) => {
+const ProfileTextUpdateForm = ({
+  columnName,
+  defaultValue
+}: {
+  columnName: string;
+  defaultValue?: string;
+}) => {
   const router = useRouter();
   const updateAction = async (formData: FormData) => {
     let result;
@@ -32,6 +38,7 @@ const ProfileTextUpdateForm = ({ columnName }: { columnName: string }) => {
           name={columnName}
           placeholder="Start typing here..."
           className="h-96"
+          defaultValue={defaultValue}
         />
       </div>
       <Button className="mt-4">저장하기</Button>
