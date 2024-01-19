@@ -4,7 +4,7 @@ import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
-import { ProfileFormData } from '@/lib/definitions';
+import { ProfileFormData, ProfileUpdateFormData } from '@/lib/definitions';
 
 // ...
 
@@ -129,62 +129,68 @@ export async function insertProfile(data: ProfileFormData) {
   }
 }
 
-export async function updateProfile(data: ProfileFormData) {
+export async function updateProfile(data: ProfileUpdateFormData) {
   try {
     const session = await auth();
     if (!session?.user) {
       return 'User not logged In';
     }
-    const { id: userId, email, name } = session?.user;
+    const { id: userId } = session?.user;
     const {
+      name,
+      email,
       phoneNumber,
       dateOfBirth,
+      sex,
       address,
       positions,
       skills,
       school,
       major,
       graduateStatus,
-      githubLink
+      githubLink,
+      webLink
     } = data;
-    const positionsInsertArray = reduceToArrayString(positions || []);
-    const skillsInsertArray = reduceToArrayString(skills || []);
     const query = `
     UPDATE profiles
-    SET "name" = ${name},
-    "email" = ${email},
-    "phoneNumber" = ${phoneNumber},
-    "dateOfBirth" = ${dateOfBirth},
-    "address" = ${address},
-    "positions" = ${positionsInsertArray},
-    "skills" = ${skillsInsertArray},
-    "school" = ${school},
-    "major" = ${major},
-    "graduateStatus" = ${graduateStatus},
-    "githubLink" = ${githubLink}
-    WHERE "userId" = ${userId}
+    SET "name" = $1,
+    "email" = $2,
+    "phoneNumber" = $3,
+    "dateOfBirth" = $4,
+    "sex" = $5,
+    "address" = $6,
+    "positions" = $7,
+    "skills" = $8,
+    "school" = $9,
+    "major" = $10,
+    "graduateStatus" = $11,
+    "githubLink" = $12,
+    "webLink" = $13
+    WHERE "userId" = $14
   `;
-    const updateResult = await sql`
-      UPDATE profiles
-      SET "name" = ${name},
-      "email" = ${email},
-      "phoneNumber" = ${phoneNumber},
-      "dateOfBirth" = ${dateOfBirth},
-      "address" = ${address},
-      "positions" = ${positionsInsertArray},
-      "skills" = ${skillsInsertArray},
-      "school" = ${school},
-      "major" = ${major},
-      "graduateStatus" = ${graduateStatus},
-      "githubLink" = ${githubLink}
-      WHERE "userId" = ${userId}
-    `;
+    const updateResult = await sql.query(query, [
+      name,
+      email,
+      phoneNumber,
+      dateOfBirth || undefined,
+      sex || undefined,
+      address || undefined,
+      positions || undefined,
+      skills || undefined,
+      school || undefined,
+      major || undefined,
+      graduateStatus || undefined,
+      githubLink || undefined,
+      webLink || undefined,
+      userId
+    ]);
     if (updateResult.rowCount === 0) {
       throw new Error('Something went wrong.');
     } else {
       return 'success';
     }
   } catch (error) {
+    console.log(error);
     if (error instanceof Error) {
       // if (error.message.includes('oneofeachuser')) {
       //   return 'Profile already exists';

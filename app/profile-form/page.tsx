@@ -1,19 +1,16 @@
 import ProfileForm from '@/components/organisms/ProfileForm';
+import { ArrayItemQueryRows } from '@/lib/definitions';
 import { Title, Text } from '@tremor/react';
-import { Query, sql } from '@vercel/postgres';
-
-interface QueryRows {
-  name: string;
-}
+import { sql } from '@vercel/postgres';
 
 export default async function ProfileFormPage() {
-  let positionSelectItems = [] as QueryRows[];
-  let skillsSelectItems = [] as QueryRows[];
+  let positionSelectItems = [] as ArrayItemQueryRows[];
+  let skillsSelectItems = [] as ArrayItemQueryRows[];
   try {
-    const positionsSelectItemsPromise = sql<QueryRows>`
+    const positionsSelectItemsPromise = sql<ArrayItemQueryRows>`
       SELECT * FROM positions;
     `;
-    const skillsSelectItemsPromise = sql<QueryRows>`
+    const skillsSelectItemsPromise = sql<ArrayItemQueryRows>`
       SELECT * FROM skills;
     `;
 
