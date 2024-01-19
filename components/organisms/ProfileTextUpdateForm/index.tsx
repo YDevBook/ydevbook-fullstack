@@ -3,7 +3,6 @@
 import { Button } from '@/components/atoms/Button';
 import { updateProfileText } from '@/lib/actions';
 import { Textarea } from '@tremor/react';
-import { useRouter } from 'next/navigation';
 
 const ProfileTextUpdateForm = ({
   columnName,
@@ -12,7 +11,6 @@ const ProfileTextUpdateForm = ({
   columnName: string;
   defaultValue?: string;
 }) => {
-  const router = useRouter();
   const updateAction = async (formData: FormData) => {
     let result;
     try {
@@ -25,7 +23,7 @@ const ProfileTextUpdateForm = ({
 
     if (result === 'success') {
       alert('프로필 업데이트 성공');
-      return router.push('/my-profile');
+      return window.location.replace('/my-profile');
     } else {
       alert('프로필 업데이트 실패');
     }

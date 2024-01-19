@@ -7,7 +7,6 @@ import {
   Profile,
   ProfileUpdateFormData
 } from '@/lib/definitions';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 const ProfileUpdateForm = ({
@@ -19,8 +18,6 @@ const ProfileUpdateForm = ({
   positionSelectItems: { name: string }[];
   skillsSelectItems: { name: string }[];
 }) => {
-  const router = useRouter();
-
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined }
   });
@@ -32,7 +29,7 @@ const ProfileUpdateForm = ({
       const result = await updateProfile(data);
       if (result === 'success') {
         alert('프로필 수정 성공');
-        return router.replace('/my-profile');
+        return window.location.replace('/my-profile');
       }
       alert('프로필 수정 실패');
       return;
