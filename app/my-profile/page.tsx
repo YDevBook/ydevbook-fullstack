@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { Button } from '@/components/atoms/Button';
-import { Profile } from '@/lib/definitions';
+import ExperiencesCard from '@/components/organisms/ExperiencesCard';
+import { Experience, Profile } from '@/lib/definitions';
 import { Badge, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -10,6 +11,29 @@ import { redirect } from 'next/navigation';
 export default async function MyProfilePage() {
   noStore();
   const session = await auth();
+  let profile = {} as Profile;
+  let experiences = [] as Experience[];
+
+  try {
+    const profilePromise = sql.query<Profile>(`
+      SELECT * FROM profiles WHERE "userId" = ${session?.user.id};`);
+    const experiencesPromise = sql.query(`
+      SELECT * FROM experiences WHERE "userId" = ${session?.user.id};
+    `);
+
+    const [profileQueryResults, experiencesQueryResults] = await Promise.all([
+      profilePromise,
+      experiencesPromise
+    ]);
+
+    if (profileQueryResults.rows.length === 0) {
+      redirect('/profile-form');
+    }
+    profile = profileQueryResults.rows[0];
+    experiences = experiencesQueryResults.rows;
+  } catch (error) {
+    console.log(error);
+  }
   const { rows } = await sql<Profile>`
     SELECT * FROM profiles WHERE "userId" = ${session?.user.id};
   `;
@@ -134,6 +158,7 @@ export default async function MyProfilePage() {
             {expectationText || '스타트업에 기대하는 점을 알려주세요.'}
           </Text>
         </Card>
+        <ExperiencesCard experiences={experiences} />
         <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>

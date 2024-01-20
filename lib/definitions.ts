@@ -72,3 +72,15 @@ export type ProfileUpdateFormData = Omit<
   Profile,
   'personalStatement' | 'mainStrength' | 'expectationText'
 >;
+
+export interface Experience {
+  id: number;
+  userId: string;
+  companyName: string;
+  position: string;
+  startDate: Date;
+  endDate: Date;
+  isWorkingNow: boolean;
+  skills?: string[];
+  description?: string;
+}
