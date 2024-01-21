@@ -15,11 +15,16 @@ export default async function MyProfilePage() {
   let experiences = [] as Experience[];
 
   try {
-    const profilePromise = sql.query<Profile>(`
-      SELECT * FROM profiles WHERE "userId" = ${session?.user.id};`);
-    const experiencesPromise = sql.query(`
-      SELECT * FROM experiences WHERE "userId" = ${session?.user.id};
-    `);
+    const profilePromise = sql.query<Profile>(
+      `
+      SELECT * FROM profiles WHERE "userId" = $1;`,
+      [session?.user.id]
+    );
+    const experiencesPromise = sql.query<Experience>(
+      `
+      SELECT * FROM experiences WHERE "userId" = $1;`,
+      [session?.user.id]
+    );
 
     const [profileQueryResults, experiencesQueryResults] = await Promise.all([
       profilePromise,
@@ -34,10 +39,8 @@ export default async function MyProfilePage() {
   } catch (error) {
     console.log(error);
   }
-  const { rows } = await sql<Profile>`
-    SELECT * FROM profiles WHERE "userId" = ${session?.user.id};
-  `;
-  if (rows.length === 0) {
+
+  if (!profile) {
     redirect('/profile-form');
   }
 
@@ -60,7 +63,7 @@ export default async function MyProfilePage() {
     githubLink,
     webLink,
     attachedFiles
-  } = rows[0];
+  } = profile;
 
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">

@@ -4,7 +4,12 @@ import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
-import { ProfileFormData, ProfileUpdateFormData } from '@/lib/definitions';
+import {
+  ExperienceFormData,
+  ExperienceUpdateFormData,
+  ProfileFormData,
+  ProfileUpdateFormData
+} from '@/lib/definitions';
 
 // ...
 
@@ -223,6 +228,101 @@ export async function updateProfileText(
     WHERE "userId" = $2
   `;
     const updateResult = await sql.query(query, [value, userId]);
+    if (updateResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}
+
+export async function insertExperience(data: ExperienceFormData) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId } = session?.user;
+    const {
+      companyName,
+      position,
+      startDate,
+      endDate,
+      isWorkingNow,
+      skills,
+      description
+    } = data;
+    const query = `INSERT INTO experiences ("userId", "companyName", "position", "startDate", "endDate", "isWorkingNow", "skills", "description")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+    const insertResult = await sql.query(query, [
+      userId,
+      companyName,
+      position,
+      startDate,
+      !isWorkingNow ? endDate || undefined : undefined,
+      isWorkingNow,
+      skills || undefined,
+      description || undefined
+    ]);
+    if (insertResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}
+
+export async function updateExperience(data: ExperienceUpdateFormData) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId } = session?.user;
+    const {
+      id,
+      companyName,
+      position,
+      startDate,
+      endDate,
+      isWorkingNow,
+      skills,
+      description
+    } = data;
+    const query = `UPDATE experiences
+    SET "companyName" = $1,
+    "position" = $2,
+    "startDate" = $3,
+    "endDate" = $4,
+    "isWorkingNow" = $5,
+    "skills" = $6,
+    "description" = $7
+    WHERE "userId" = $8 AND "id" = $9`;
+    const updateResult = await sql.query(query, [
+      companyName,
+      position,
+      startDate,
+      !isWorkingNow ? endDate || undefined : undefined,
+      isWorkingNow,
+      skills || undefined,
+      description || undefined,
+      userId,
+      id
+    ]);
     if (updateResult.rowCount === 0) {
       throw new Error('Something went wrong.');
     } else {

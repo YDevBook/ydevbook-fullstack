@@ -84,3 +84,7 @@ export interface Experience {
   skills?: string[];
   description?: string;
 }
+
+export type ExperienceFormData = Omit<Experience, 'id' | 'userId'>;
+
+export type ExperienceUpdateFormData = Omit<Experience, 'userId'>;

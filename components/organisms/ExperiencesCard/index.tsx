@@ -13,8 +13,7 @@ const ExperiencesCard = ({ experiences }: ExperiencesCardProps) => {
     <div>
       <Card className="w-full mx-auto mt-4">
         <Title>경력</Title>
-        {!experiences ||
-          (experiences.length === 0 && <Text>업무 경험을 추가해주세요.</Text>)}
+        {experiences.length === 0 && <Text>업무 경험을 추가해주세요.</Text>}
 
         <Link href="/my-profile/edit-experiences">
           <Button className="absolute top-0 right-0 m-4">수정하기</Button>

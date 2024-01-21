@@ -45,9 +45,17 @@ export default async function MyProfileEditExperiencesPage() {
       {!!experiences &&
         experiences.length > 0 &&
         experiences.map((experience) => (
-          <ExperienceUpdateCard experience={experience} key={experience.id} />
+          <ExperienceUpdateCard
+            experience={experience}
+            key={experience.id}
+            positionSelectItems={positionSelectItems}
+            skillsSelectItems={skillsSelectItems}
+          />
         ))}
-      <ExperienceInsertCard />
+      <ExperienceInsertCard
+        positionSelectItems={positionSelectItems}
+        skillsSelectItems={skillsSelectItems}
+      />
     </main>
   );
 }
