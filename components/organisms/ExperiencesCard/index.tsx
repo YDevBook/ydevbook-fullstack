@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/atoms/Button';
 import { Experience } from '@/lib/definitions';
-import { Card, Divider, Text, Title } from '@tremor/react';
+import { Badge, Card, Divider, Text, Title } from '@tremor/react';
 import Link from 'next/link';
 
 interface ExperiencesCardProps {
@@ -23,6 +23,13 @@ const ExperiencesCard = ({ experiences }: ExperiencesCardProps) => {
               {experience.startDate.toDateString()} ~{' '}
               {experience.endDate?.toDateString()}
             </Text>
+            <div className="my-1">
+              {experience.skills?.map((skill) => (
+                <Badge size="sm" color="slate" className="mx-1 " key={skill}>
+                  {skill}
+                </Badge>
+              ))}
+            </div>
             <Text className="text-xl">{experience.description}</Text>
           </div>
         ))}

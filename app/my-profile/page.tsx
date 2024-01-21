@@ -69,11 +69,7 @@ export default async function MyProfilePage() {
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
       <Title className="my-4">내 프로필</Title>
       <div>
-        <Card
-          className="relative w-full mx-auto"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="relative w-full mx-auto">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
@@ -94,11 +90,7 @@ export default async function MyProfilePage() {
           <Title>{address}</Title>
         </Card>
 
-        <Card
-          className="w-full mx-auto mt-4"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
@@ -109,11 +101,7 @@ export default async function MyProfilePage() {
           <Title>{graduateStatus}</Title>
         </Card>
 
-        <Card
-          className="w-full mx-auto mt-4"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
