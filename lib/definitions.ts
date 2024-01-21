@@ -79,7 +79,7 @@ export interface Experience {
   companyName: string;
   position: string;
   startDate: Date;
-  endDate: Date;
+  endDate?: Date;
   isWorkingNow: boolean;
   skills?: string[];
   description?: string;
