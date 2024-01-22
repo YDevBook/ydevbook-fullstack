@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { Button } from '@/components/atoms/Button';
-import { Profile } from '@/lib/definitions';
+import ExperiencesCard from '@/components/organisms/ExperiencesCard';
+import { Experience, Profile } from '@/lib/definitions';
 import { Badge, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -10,10 +11,36 @@ import { redirect } from 'next/navigation';
 export default async function MyProfilePage() {
   noStore();
   const session = await auth();
-  const { rows } = await sql<Profile>`
-    SELECT * FROM profiles WHERE "userId" = ${session?.user.id};
-  `;
-  if (rows.length === 0) {
+  let profile = {} as Profile;
+  let experiences = [] as Experience[];
+
+  try {
+    const profilePromise = sql.query<Profile>(
+      `
+      SELECT * FROM profiles WHERE "userId" = $1;`,
+      [session?.user.id]
+    );
+    const experiencesPromise = sql.query<Experience>(
+      `
+      SELECT * FROM experiences WHERE "userId" = $1;`,
+      [session?.user.id]
+    );
+
+    const [profileQueryResults, experiencesQueryResults] = await Promise.all([
+      profilePromise,
+      experiencesPromise
+    ]);
+
+    if (profileQueryResults.rows.length === 0) {
+      redirect('/profile-form');
+    }
+    profile = profileQueryResults.rows[0];
+    experiences = experiencesQueryResults.rows;
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!profile) {
     redirect('/profile-form');
   }
 
@@ -36,17 +63,13 @@ export default async function MyProfilePage() {
     githubLink,
     webLink,
     attachedFiles
-  } = rows[0];
+  } = profile;
 
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
       <Title className="my-4">내 프로필</Title>
       <div>
-        <Card
-          className="relative w-full mx-auto"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="relative w-full mx-auto">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
@@ -67,11 +90,7 @@ export default async function MyProfilePage() {
           <Title>{address}</Title>
         </Card>
 
-        <Card
-          className="w-full mx-auto mt-4"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
@@ -82,11 +101,7 @@ export default async function MyProfilePage() {
           <Title>{graduateStatus}</Title>
         </Card>
 
-        <Card
-          className="w-full mx-auto mt-4"
-          decoration="top"
-          decorationColor="indigo"
-        >
+        <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>
@@ -134,6 +149,7 @@ export default async function MyProfilePage() {
             {expectationText || '스타트업에 기대하는 점을 알려주세요.'}
           </Text>
         </Card>
+        <ExperiencesCard experiences={experiences} />
         <Card className="w-full mx-auto mt-4">
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
