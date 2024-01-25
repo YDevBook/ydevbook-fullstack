@@ -3,6 +3,7 @@ export interface User {
   email: string;
   password: string;
   name: string;
+  profileImageUrl?: string;
 }
 
 export interface ArrayItemQueryRows {

@@ -23,17 +23,23 @@ export const authConfig = {
         return true;
       }
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === 'update' && session.profileImageUrl) {
+        token.picture = session.profileImageUrl;
+        return token;
+      }
       if (user) {
         token.id = user.id;
+        token.picture = user.profileImageUrl;
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user = {
         id: token.id as string,
         name: token.name as string,
-        email: token.email as string
+        email: token.email as string,
+        profileImageUrl: (token.picture as string) || undefined
       };
       return session;
     }
