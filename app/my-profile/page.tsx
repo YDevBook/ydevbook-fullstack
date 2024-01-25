@@ -2,7 +2,6 @@ import { auth } from '@/auth';
 import { Button } from '@/components/atoms/Button';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
-import { deleteAttachmentFile } from '@/lib/actions';
 import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
 import { Badge, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
