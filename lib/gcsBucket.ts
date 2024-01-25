@@ -6,7 +6,7 @@ const credentials = {
   type: 'service_account',
   project_id: process.env.GCS_PROJECT_ID,
   private_key_id: process.env.GCS_PRIVATE_KEY_ID,
-  private_key: process.env.GCS_PRIVATE_KEY,
+  private_key: process.env.GCS_PRIVATE_KEY?.split('\\n').join('\n'),
   client_email: process.env.GCS_CLIENT_EMAIL,
   client_id: process.env.GCS_CLIENT_ID,
   auth_uri: 'https://accounts.google.com/o/oauth2/auth',
@@ -32,9 +32,9 @@ export const uploadFile = async (
       public: publicAccess
     };
     const response = await bucket.upload('./' + file.name, options);
-    console.log(response);
+    fs.unlinkSync('./' + file.name);
     return response;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };

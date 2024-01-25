@@ -88,3 +88,9 @@ export interface Experience {
 export type ExperienceFormData = Omit<Experience, 'id' | 'userId'>;
 
 export type ExperienceUpdateFormData = Omit<Experience, 'userId'>;
+
+export interface AttachmentFiles {
+  id: number;
+  fileName: string;
+  mediaLink: string;
+}

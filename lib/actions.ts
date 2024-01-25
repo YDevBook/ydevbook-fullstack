@@ -10,6 +10,8 @@ import {
   ProfileFormData,
   ProfileUpdateFormData
 } from '@/lib/definitions';
+import { uploadFile } from '@/lib/gcsBucket';
+import path from 'path';
 
 // ...
 
@@ -324,6 +326,30 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       id
     ]);
     if (updateResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}
+
+export async function deleteAttachmentFile(id: number) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId } = session?.user;
+    const query = `DELETE FROM files WHERE "userId" = $1 AND "id" = $2`;
+    const deleteResult = await sql.query(query, [userId, id]);
+    if (deleteResult.rowCount === 0) {
       throw new Error('Something went wrong.');
     } else {
       return 'success';

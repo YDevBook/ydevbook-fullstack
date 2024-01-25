@@ -1,7 +1,9 @@
 import { auth } from '@/auth';
 import { Button } from '@/components/atoms/Button';
+import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
-import { Experience, Profile } from '@/lib/definitions';
+import { deleteAttachmentFile } from '@/lib/actions';
+import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
 import { Badge, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -13,6 +15,7 @@ export default async function MyProfilePage() {
   const session = await auth();
   let profile = {} as Profile;
   let experiences = [] as Experience[];
+  let attachedFiles = [] as AttachmentFiles[];
 
   try {
     const profilePromise = sql.query<Profile>(
@@ -25,10 +28,21 @@ export default async function MyProfilePage() {
       SELECT * FROM experiences WHERE "userId" = $1;`,
       [session?.user.id]
     );
+    const attachedFilesPromise = sql.query<AttachmentFiles>(
+      `
+        SELECT id, "fileName", "mediaLink" FROM files WHERE "userId" = $1;
+      `,
+      [session?.user.id]
+    );
 
-    const [profileQueryResults, experiencesQueryResults] = await Promise.all([
+    const [
+      profileQueryResults,
+      experiencesQueryResults,
+      attachedFilesQueryResults
+    ] = await Promise.all([
       profilePromise,
-      experiencesPromise
+      experiencesPromise,
+      attachedFilesPromise
     ]);
 
     if (profileQueryResults.rows.length === 0) {
@@ -36,6 +50,7 @@ export default async function MyProfilePage() {
     }
     profile = profileQueryResults.rows[0];
     experiences = experiencesQueryResults.rows;
+    attachedFiles = attachedFilesQueryResults.rows;
   } catch (error) {
     console.log(error);
   }
@@ -61,8 +76,7 @@ export default async function MyProfilePage() {
     mainStrength,
     expectationText,
     githubLink,
-    webLink,
-    attachedFiles
+    webLink
   } = profile;
 
   return (
@@ -151,16 +165,19 @@ export default async function MyProfilePage() {
         </Card>
         <ExperiencesCard experiences={experiences} />
         <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
           <Title>첨부 자료</Title>
-          <Text>깃헙 아이콘 {githubLink || '깃헙 링크를 등록해주세요.'}</Text>
-          <Text>웹 아이콘 {webLink || '웹 링크를 등록해주세요.'}</Text>
           <Text>
-            기타 첨부자료:{' '}
-            {attachedFiles || '첨부 파일 다운로드 기능 추가 필요'}
+            첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
+            아래의 버튼을 눌러주세요.
           </Text>
+          {attachedFiles.map((file) => (
+            <div key={file.id}>
+              <a href={file.mediaLink} download={file.fileName}>
+                {file.fileName}
+              </a>
+            </div>
+          ))}
+          <FileAttachInput />
         </Card>
       </div>
     </main>
