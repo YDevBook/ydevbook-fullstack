@@ -73,8 +73,6 @@ export default async function MyProfilePage() {
     major,
     graduateStatus,
     personalStatement,
-    mainStrength,
-    expectationText,
     githubLink,
     webLink
   } = profile;
@@ -82,113 +80,96 @@ export default async function MyProfilePage() {
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
       <Title className="my-4">내 프로필</Title>
-      <div>
-        <Card className="relative w-full mx-auto">
-          <div className="relative">
-            <div className="relative inline-block">
-              <Image
-                src={session?.user.profileImageUrl || DefaultProfileImage}
-                alt="프로필 이미지"
-                width={100}
-                height={100}
-              />
+      <div className="flex">
+        <div className="basis-1/3">
+          <Card className="relative w-full mx-auto">
+            <div className="relative">
+              <div className="relative inline-block">
+                <Image
+                  src={session?.user.profileImageUrl || DefaultProfileImage}
+                  alt="프로필 이미지"
+                  width={100}
+                  height={100}
+                />
+              </div>
             </div>
-          </div>
-          <Link href="/my-profile/edit">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Text>이름</Text>
-          <Title>{name}</Title>
-          <Text>전화번호</Text>
-          <Title>{phoneNumber}</Title>
-          <Text>이메일</Text>
-          <Title>{email}</Title>
-          <Text>생년월일</Text>
-          <Title>
-            {dateOfBirth?.toDateString() ||
-              '생년월일 정보를 업데이트 해주세요.'}
-          </Title>
-          <Text>성별</Text>
-          <Title>{sex}</Title>
-          <Text>거주 지역</Text>
-          <Title>{address}</Title>
-        </Card>
-
-        <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Text>학력</Text>
-          <Title>{school}</Title>
-          <Text>전공</Text>
-          <Title>{major}</Title>
-          <Title>{graduateStatus}</Title>
-        </Card>
-
-        <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Text>구직중인 포지션</Text>
-          <div className="my-2">
-            {positions?.map((position) => (
-              <Badge size="xl" color="slate" className="mx-1 " key={position}>
-                {position}
-              </Badge>
-            ))}
-          </div>
-          <Text>보유 기술</Text>
-          <div className="my-2">
-            {skills?.map((skill) => (
-              <Badge size="xl" color="slate" className="mx-1 " key={skill}>
-                {skill}
-              </Badge>
-            ))}
-          </div>
-        </Card>
-        <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit-text?column=personalStatement">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Title>자기 소개</Title>
-          <Text className="whitespace-pre-line">
-            {personalStatement || '자기 소개 글을 등록해주세요.'}
-          </Text>
-        </Card>
-        <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit-text?column=mainStrength">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Title>주요 강점</Title>
-          <Text className="whitespace-pre-line">
-            {mainStrength || '주요 강점을 소개해주세요.'}
-          </Text>
-        </Card>
-        <Card className="w-full mx-auto mt-4">
-          <Link href="/my-profile/edit-text?column=expectationText">
-            <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-          </Link>
-          <Title>스타트업에 기대하는 점</Title>
-          <Text className="whitespace-pre-line">
-            {expectationText || '스타트업에 기대하는 점을 알려주세요.'}
-          </Text>
-        </Card>
-        <ExperiencesCard experiences={experiences} />
-        <Card className="w-full mx-auto mt-4">
-          <Title>첨부 자료</Title>
-          <Text>
-            첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
-            아래의 버튼을 눌러주세요.
-          </Text>
-          {attachedFiles.map((file) => (
-            <div key={file.id}>
-              <a href={file.mediaLink} download={file.fileName}>
-                {file.fileName}
-              </a>
+            <Link href="/my-profile/edit">
+              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
+            </Link>
+            <Text>이름</Text>
+            <Title>{name}</Title>
+            <Text>전화번호</Text>
+            <Title>{phoneNumber}</Title>
+            <Text>이메일</Text>
+            <Title>{email}</Title>
+            <Text>생년월일</Text>
+            <Title>
+              {dateOfBirth?.toDateString() ||
+                '생년월일 정보를 업데이트 해주세요.'}
+            </Title>
+            <Text>성별</Text>
+            <Title>{sex}</Title>
+            <Text>거주 지역</Text>
+            <Title>{address}</Title>
+            <Text>학력</Text>
+            <Title>{school}</Title>
+            <Text>전공</Text>
+            <Title>{major}</Title>
+            <Title>{graduateStatus}</Title>
+            <Text>깃헙 링크</Text>
+            <Title>{githubLink || '깃헙 페이지 링크를 등록해주세요.'}</Title>
+            <Text>웹 링크</Text>
+            <Title>{webLink || '웹 페이지 링크를 등록해주세요.'}</Title>
+          </Card>
+        </div>
+        <div className="basis-2/3 ml-4">
+          <Card className="w-full mx-auto">
+            <Link href="/my-profile/edit">
+              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
+            </Link>
+            <Title>구직중인 포지션</Title>
+            <div className="my-2">
+              {positions?.map((position) => (
+                <Badge size="xl" color="slate" className="mx-1 " key={position}>
+                  {position}
+                </Badge>
+              ))}
             </div>
-          ))}
-          <FileAttachInput />
-        </Card>
+            <Title>보유 기술</Title>
+            <div className="my-2">
+              {skills?.map((skill) => (
+                <Badge size="xl" color="slate" className="mx-1 " key={skill}>
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </Card>
+          <ExperiencesCard experiences={experiences} />
+          <Card className="w-full mx-auto mt-4">
+            <Link href="/my-profile/edit-text?column=personalStatement">
+              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
+            </Link>
+            <Title>자기 소개</Title>
+            <Text className="whitespace-pre-line">
+              {personalStatement || '자기 소개 글을 등록해주세요.'}
+            </Text>
+          </Card>
+          <Card className="w-full mx-auto mt-4">
+            <Title>첨부 자료</Title>
+            <Text>
+              첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
+              아래의 버튼을 눌러주세요.
+            </Text>
+            {attachedFiles.map((file) => (
+              <div key={file.id}>
+                <a href={file.mediaLink} download={file.fileName}>
+                  {file.fileName}
+                </a>
+              </div>
+            ))}
+            <FileAttachInput />
+          </Card>
+        </div>
       </div>
     </main>
   );
