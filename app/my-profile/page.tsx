@@ -8,6 +8,8 @@ import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import Image from 'next/image';
 
 export default async function MyProfilePage() {
   noStore();
@@ -65,7 +67,6 @@ export default async function MyProfilePage() {
     dateOfBirth,
     sex,
     address,
-    profileImage,
     positions,
     skills,
     school,
@@ -83,6 +84,16 @@ export default async function MyProfilePage() {
       <Title className="my-4">내 프로필</Title>
       <div>
         <Card className="relative w-full mx-auto">
+          <div className="relative">
+            <div className="relative inline-block">
+              <Image
+                src={session?.user.profileImageUrl || DefaultProfileImage}
+                alt="프로필 이미지"
+                width={100}
+                height={100}
+              />
+            </div>
+          </div>
           <Link href="/my-profile/edit">
             <Button className="absolute top-0 right-0 m-4">수정하기</Button>
           </Link>

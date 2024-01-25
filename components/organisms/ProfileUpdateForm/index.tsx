@@ -8,6 +8,9 @@ import {
   ProfileUpdateFormData
 } from '@/lib/definitions';
 import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import { useSession } from 'next-auth/react';
 
 const ProfileUpdateForm = ({
   profile,
@@ -18,11 +21,10 @@ const ProfileUpdateForm = ({
   positionSelectItems: { name: string }[];
   skillsSelectItems: { name: string }[];
 }) => {
+  const { data: session, update } = useSession();
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined }
   });
-
-  // console.log(profile.dateOfBirth?.toISOString().substring(0, 10));
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -38,8 +40,66 @@ const ProfileUpdateForm = ({
     }
   });
 
+  const onInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    if (file.size > (1024 * 1024 * 10) / 2) {
+      alert('10MB 이하의 파일만 업로드 가능합니다.');
+      return;
+    }
+    if (!file.type.includes('image')) {
+      alert('이미지 파일만 업로드 가능합니다.');
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch(
+        'http://localhost:3000/api/file?upload-type=profile-image',
+        {
+          method: 'POST',
+          body: formData
+        }
+      );
+      if (response.ok) {
+        const { profileImageUrl } = await response.json();
+        update({ profileImageUrl });
+      }
+    } catch (error) {
+      alert('업로드 실패');
+      return;
+    }
+  };
+
   return (
     <form action={action}>
+      <div className="relative">
+        <input
+          type="file"
+          className="hidden"
+          name="profileImageInput"
+          id="profileImageInput"
+          onChange={onInputChange}
+        />
+        <div className="relative inline-block">
+          <Image
+            src={session?.user.profileImageUrl || DefaultProfileImage}
+            alt="프로필 이미지"
+            width={100}
+            height={100}
+          />
+          <label
+            className="absolute bottom-0 right-0 cursor-pointer"
+            htmlFor="profileImageInput"
+          >
+            edit
+          </label>
+        </div>
+      </div>
       <div>
         <label htmlFor="name">이름</label>
         <input
