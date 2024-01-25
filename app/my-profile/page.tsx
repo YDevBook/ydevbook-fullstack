@@ -80,8 +80,8 @@ export default async function MyProfilePage() {
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
       <Title className="my-4">내 프로필</Title>
-      <div className="flex">
-        <div className="basis-1/3">
+      <div className="flex flex-col sm:flex-row">
+        <div className="sm:basis-1/3">
           <Card className="relative w-full mx-auto">
             <div className="relative">
               <div className="relative inline-block">
@@ -122,7 +122,7 @@ export default async function MyProfilePage() {
             <Title>{webLink || '웹 페이지 링크를 등록해주세요.'}</Title>
           </Card>
         </div>
-        <div className="basis-2/3 ml-4">
+        <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
           <Card className="w-full mx-auto">
             <Link href="/my-profile/edit">
               <Button className="absolute top-0 right-0 m-4">수정하기</Button>
