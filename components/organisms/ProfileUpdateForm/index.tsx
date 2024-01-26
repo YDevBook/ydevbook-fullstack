@@ -55,13 +55,10 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch(
-        'http://localhost:3000/api/file?upload-type=profile-image',
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
+      const response = await fetch('/api/file?upload-type=profile-image', {
+        method: 'POST',
+        body: formData
+      });
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
