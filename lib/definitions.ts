@@ -71,7 +71,16 @@ export interface ProfileFormData {
 
 export type ProfileUpdateFormData = Omit<
   Profile,
-  'personalStatement' | 'mainStrength' | 'expectationText'
+  | 'personalStatement'
+  | 'mainStrength'
+  | 'expectationText'
+  | 'positions'
+  | 'skills'
+>;
+
+export type ProfilePositionAndSkillsUpdateFormData = Pick<
+  Profile,
+  'positions' | 'skills'
 >;
 
 export interface Experience {
