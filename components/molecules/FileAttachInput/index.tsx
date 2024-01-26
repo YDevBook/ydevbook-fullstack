@@ -34,7 +34,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:3000/api/file', {
+      const response = await fetch('/api/file', {
         method: 'POST',
         body: formData
       });
