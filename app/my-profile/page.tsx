@@ -124,7 +124,7 @@ export default async function MyProfilePage() {
         </div>
         <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
           <Card className="w-full mx-auto">
-            <Link href="/my-profile/edit">
+            <Link href="/my-profile/edit-position-and-skills">
               <Button className="absolute top-0 right-0 m-4">수정하기</Button>
             </Link>
             <Title>구직중인 포지션</Title>

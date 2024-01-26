@@ -8,10 +8,9 @@ import {
   ExperienceFormData,
   ExperienceUpdateFormData,
   ProfileFormData,
+  ProfilePositionAndSkillsUpdateFormData,
   ProfileUpdateFormData
 } from '@/lib/definitions';
-import { uploadFile } from '@/lib/gcsBucket';
-import path from 'path';
 
 // ...
 
@@ -150,8 +149,6 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       dateOfBirth,
       sex,
       address,
-      positions,
-      skills,
       school,
       major,
       graduateStatus,
@@ -166,14 +163,12 @@ export async function updateProfile(data: ProfileUpdateFormData) {
     "dateOfBirth" = $4,
     "sex" = $5,
     "address" = $6,
-    "positions" = $7,
-    "skills" = $8,
-    "school" = $9,
-    "major" = $10,
-    "graduateStatus" = $11,
-    "githubLink" = $12,
-    "webLink" = $13
-    WHERE "userId" = $14
+    "school" = $7,
+    "major" = $8,
+    "graduateStatus" = $9,
+    "githubLink" = $10,
+    "webLink" = $11
+    WHERE "userId" = $12
   `;
     const updateResult = await sql.query(query, [
       name,
@@ -182,8 +177,6 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       dateOfBirth || undefined,
       sex || undefined,
       address || undefined,
-      positions || undefined,
-      skills || undefined,
       school || undefined,
       major || undefined,
       graduateStatus || undefined,
@@ -230,6 +223,42 @@ export async function updateProfileText(
     WHERE "userId" = $2
   `;
     const updateResult = await sql.query(query, [value, userId]);
+    if (updateResult.rowCount === 0) {
+      throw new Error('Something went wrong.');
+    } else {
+      return 'success';
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      // if (error.message.includes('oneofeachuser')) {
+      //   return 'Profile already exists';
+      // }
+    }
+    throw error;
+  }
+}
+
+export async function updateProfilePositionAndSkills(
+  data: ProfilePositionAndSkillsUpdateFormData
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return 'User not logged In';
+    }
+    const { id: userId } = session?.user;
+    const { positions, skills } = data;
+    const query = `
+    UPDATE profiles
+    SET "positions" = $1,
+    "skills" = $2
+    WHERE "userId" = $3
+  `;
+    const updateResult = await sql.query(query, [
+      positions || undefined,
+      skills || undefined,
+      userId
+    ]);
     if (updateResult.rowCount === 0) {
       throw new Error('Something went wrong.');
     } else {

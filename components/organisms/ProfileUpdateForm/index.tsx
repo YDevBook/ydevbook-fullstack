@@ -3,6 +3,7 @@
 import { Button } from '@/components/atoms/Button';
 import { updateProfile } from '@/lib/actions';
 import {
+  ArrayItemQueryRows,
   GraduateStatusOptions,
   Profile,
   ProfileUpdateFormData
@@ -12,15 +13,11 @@ import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { useSession } from 'next-auth/react';
 
-const ProfileUpdateForm = ({
-  profile,
-  positionSelectItems,
-  skillsSelectItems
-}: {
+interface ProfileUpdateFormProps {
   profile: Profile;
-  positionSelectItems: { name: string }[];
-  skillsSelectItems: { name: string }[];
-}) => {
+}
+
+const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined }
@@ -165,26 +162,6 @@ const ProfileUpdateForm = ({
       <div>
         <label htmlFor="webLink">웹 링크</label>
         <input className="border border-gray-300" {...register('webLink')} />
-      </div>
-      <div>
-        <label htmlFor="positions">구직중인 포지션</label>
-        <select {...register('positions')} multiple>
-          {positionSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="skills">보유 기술</label>
-        <select {...register('skills')} multiple>
-          {skillsSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
       </div>
       <Button type="submit">제출</Button>
     </form>
