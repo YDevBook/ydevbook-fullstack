@@ -10,6 +10,7 @@ declare module 'next-auth' {
       name: string;
       email: string;
       profileImageUrl?: string;
+      isStartup?: boolean;
     };
   }
   interface User {
@@ -18,5 +19,6 @@ declare module 'next-auth' {
     password: string;
     name: string;
     profileImageUrl?: string;
+    isStartup?: boolean;
   }
 }
