@@ -1,6 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import fs from 'fs';
 import path from 'path';
+import { Stream } from 'stream';
 
 const credentials = {
   type: 'service_account',
@@ -34,6 +35,30 @@ export const uploadFile = async (
     const response = await bucket.upload('./' + file.name, options);
     fs.unlinkSync('./' + file.name);
     return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const streamFileUpload = async (
+  file: File,
+  directory: string,
+  publicAccess = true
+) => {
+  try {
+    const bucketFile = bucket.file(path.join(directory, file.name));
+    const passthroughStream = new Stream.PassThrough();
+    passthroughStream.write(Buffer.from(await file.arrayBuffer()));
+    passthroughStream.end();
+    const wait = new Promise<void>((resolve, reject) => {
+      const pipe = passthroughStream.pipe(bucketFile.createWriteStream());
+      pipe.on('finish', () => {
+        resolve();
+      });
+      pipe.on('error', (error) => reject(error));
+    });
+    await wait;
+    return bucketFile;
   } catch (error) {
     throw error;
   }
