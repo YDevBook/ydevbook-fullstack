@@ -1,5 +1,6 @@
 import EmployeeCard from '@/components/molecules/EmployeeCard';
-import { fetchFilteredProfile } from '@/lib/data';
+import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
+import { fetchFilteredProfile, fetchFilteredProfilesPages } from '@/lib/data';
 import { Title, Text } from '@tremor/react';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -8,6 +9,7 @@ interface DeveloperListPageProps {
   searchParams?: {
     query?: string;
     page?: string;
+    position?: string;
   };
 }
 
@@ -16,16 +18,26 @@ export default async function DeveloperListPage({
 }: DeveloperListPageProps) {
   const query = searchParams?.query || '';
   const currentPageNum = Number(searchParams?.page) || 1;
+  const position = searchParams?.position || '';
+
   const profiles = await fetchFilteredProfile(
-    { query, position: undefined },
+    { query, position },
     currentPageNum
   );
-  const totalPageNum = Math.ceil(profiles.length / 10);
+  const totalPageNum = await fetchFilteredProfilesPages({
+    query,
+    position
+  });
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
       <Title>DeveloperList</Title>
       <Text>DeveloperList</Text>
+      <div>
+        <div>
+          <EmployeeListSearch />
+        </div>
+      </div>
       <div className="mt-4">
         {profiles.map((profile) => (
           <EmployeeCard key={profile.id} profile={profile} />
