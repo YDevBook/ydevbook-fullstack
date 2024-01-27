@@ -14,6 +14,9 @@ import Image from 'next/image';
 export default async function MyProfilePage() {
   noStore();
   const session = await auth();
+  if (session?.user.isStartup) {
+    redirect('/startup/my-info');
+  }
   let profile = {} as Profile;
   let experiences = [] as Experience[];
   let attachedFiles = [] as AttachmentFiles[];
@@ -56,7 +59,7 @@ export default async function MyProfilePage() {
     console.log(error);
   }
 
-  if (!profile) {
+  if (!profile.id) {
     redirect('/profile-form');
   }
 
