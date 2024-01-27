@@ -34,7 +34,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/file', {
+      const response = await fetch('/api/file?upload-type=attachment-file', {
         method: 'POST',
         body: formData
       });

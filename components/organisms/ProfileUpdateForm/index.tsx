@@ -77,6 +77,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="hidden"
           name="profileImageInput"
           id="profileImageInput"
+          accept="image/*"
           onChange={onInputChange}
         />
         <div className="relative inline-block">
