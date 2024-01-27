@@ -4,6 +4,7 @@ export interface User {
   password: string;
   name: string;
   profileImageUrl?: string;
+  isStartup?: boolean;
 }
 
 export interface ArrayItemQueryRows {

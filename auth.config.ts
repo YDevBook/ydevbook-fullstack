@@ -31,6 +31,7 @@ export const authConfig = {
       if (user) {
         token.id = user.id;
         token.picture = user.profileImageUrl;
+        token.isStartup = user.isStartup;
       }
       return token;
     },
@@ -39,7 +40,8 @@ export const authConfig = {
         id: token.id as string,
         name: token.name as string,
         email: token.email as string,
-        profileImageUrl: (token.picture as string) || undefined
+        profileImageUrl: (token.picture as string) || undefined,
+        isStartup: (token.isStartup as boolean) || undefined
       };
       return session;
     }

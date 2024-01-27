@@ -11,13 +11,21 @@ import { authenticate } from '@/lib/actions';
 import { Button } from '@/components/atoms/Button';
 import Link from 'next/link';
 
-export default function LoginForm() {
+interface LoginFormProps {
+  isStartup?: boolean;
+}
+
+export default function LoginForm({ isStartup }: LoginFormProps) {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
 
   return (
     <form action={dispatch} className="space-y-3">
       <div className="flex-1 px-6 pt-8 pb-4 rounded-lg bg-gray-50">
-        <h1 className={` mb-3 text-2xl`}>Please log in to continue.</h1>
+        <h1 className={` mb-3 text-2xl`}>
+          {isStartup
+            ? '스타트업 계정으로 로그인 해주세요.'
+            : 'Please log in to continue.'}
+        </h1>
         <div className="w-full">
           <div>
             <label
@@ -58,6 +66,11 @@ export default function LoginForm() {
               <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
+          <input
+            type="hidden"
+            name="isStartup"
+            value={isStartup ? 'true' : 'false'}
+          />
         </div>
         <LoginButton />
         <div
@@ -72,14 +85,39 @@ export default function LoginForm() {
             </>
           )}
         </div>
-        <div>
-          <p className="text-sm text-gray-500">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="font-medium text-gray-900">
-              Sign up
-            </Link>
-          </p>
-        </div>
+        {!isStartup && (
+          <div>
+            <p className="text-sm text-gray-500">
+              Don&apos;t have an account?{' '}
+              <Link href="/signup" className="font-medium text-gray-900">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        )}
+        {isStartup && (
+          <div>
+            <p className="text-sm text-gray-500">
+              스타트업 계정이 없으신가요?{' '}
+              <Link
+                href="/startup/signup"
+                className="font-medium text-gray-900"
+              >
+                계정 신청하기
+              </Link>
+            </p>
+          </div>
+        )}
+        {!isStartup && (
+          <div>
+            <p className="text-sm text-gray-500">
+              스타트업 회원이신가요?{' '}
+              <Link href="/startup/login" className="font-medium text-gray-900">
+                스타트업 로그인
+              </Link>
+            </p>
+          </div>
+        )}
       </div>
     </form>
   );

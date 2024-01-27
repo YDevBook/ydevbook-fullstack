@@ -33,6 +33,27 @@ export async function authenticate(
   }
 }
 
+export async function startupAccountAuthenticate(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    // console.log('startupAccountAuthenticate formData', formData);
+    await signIn('startupCredentials', formData);
+  } catch (error) {
+    // console.error(error);
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
+}
+
 export async function signUp(
   prevState: string | undefined,
   formData: FormData
