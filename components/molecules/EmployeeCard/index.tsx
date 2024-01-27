@@ -6,7 +6,7 @@ interface EmployeeCardProps {
 }
 
 const EmployeeCard = ({ profile }: EmployeeCardProps) => {
-  return <Card>{profile.name}</Card>;
+  return <Card className="mt-2">{profile.name}</Card>;
 };
 
 export default EmployeeCard;
