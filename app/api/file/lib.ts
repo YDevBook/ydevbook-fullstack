@@ -39,7 +39,6 @@ export async function profileImageUpload(file: File) {
       file,
       path.join('profile-images', `${userId}`)
     );
-    console.log(gcsResponse);
     const profileImageUrl = gcsResponse.publicUrl();
     const query = `UPDATE users SET "profileImageUrl" = $1 WHERE id = $2`;
     const insertResult = await sql.query(query, [profileImageUrl, userId]);
