@@ -10,6 +10,7 @@ import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/lib/actions';
 import { Button } from '@/components/atoms/Button';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface LoginFormProps {
   isStartup?: boolean;
@@ -17,6 +18,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ isStartup }: LoginFormProps) {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
+  const searchParams = useSearchParams();
 
   return (
     <form action={dispatch} className="space-y-3">
@@ -70,6 +72,11 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
             type="hidden"
             name="isStartup"
             value={isStartup ? 'true' : 'false'}
+          />
+          <input
+            type="hidden"
+            name="redirectTo"
+            value={searchParams.get('callbackUrl') ?? '/'}
           />
         </div>
         <LoginButton />
