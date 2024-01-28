@@ -24,6 +24,7 @@ export async function attachmentFileUpload(file: File) {
       return 'success';
     }
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
@@ -48,6 +49,7 @@ export async function profileImageUpload(file: File) {
       return { message: 'success', profileImageUrl, status: 200 };
     }
   } catch (error) {
+    console.error(error);
     throw error;
   }
 }
