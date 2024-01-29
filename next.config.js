@@ -15,6 +15,10 @@ const nextConfig = {
         hostname: 'storage.googleapis.com'
       }
     ]
+  },
+  experimental: {
+    // @google-cloud/storage Minification 이슈로 TypeError: Expected signal to be an instanceof AbortSignal 에러 발생하여 비활성화
+    serverMinification: false
   }
 };
 
