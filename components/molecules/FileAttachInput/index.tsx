@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
+import { Button } from '@tremor/react';
 import { useState } from 'react';
 
 interface FileAttachInputProps {

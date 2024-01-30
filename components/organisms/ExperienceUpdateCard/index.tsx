@@ -6,8 +6,7 @@ import dynamic from 'next/dynamic';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Experience, ExperienceFormData } from '@/lib/definitions';
 import { updateExperience } from '@/lib/actions';
-import { Text } from '@tremor/react';
-import { Button } from '@/components/atoms/Button';
+import { Text, Button } from '@tremor/react';
 
 const ExperienceForm = dynamic(
   () => import('@/components/molecules/ExperienceForm')

@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { updateProfile } from '@/lib/actions';
 import {
   ArrayItemQueryRows,
@@ -12,6 +11,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { useSession } from 'next-auth/react';
+import { Button } from '@tremor/react';
 
 interface ProfileUpdateFormProps {
   profile: Profile;

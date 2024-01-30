@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
-import { Button } from '@/components/atoms/Button';
-import { Text, Title } from '@tremor/react';
+import { Text, Title, Button } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import Link from 'next/link';
 

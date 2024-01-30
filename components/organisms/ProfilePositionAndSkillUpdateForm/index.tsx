@@ -1,12 +1,12 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { updateProfilePositionAndSkills } from '@/lib/actions';
 import {
   ArrayItemQueryRows,
   Profile,
   ProfilePositionAndSkillsUpdateFormData
 } from '@/lib/definitions';
+import { Button } from '@tremor/react';
 import { useForm } from 'react-hook-form';
 
 interface ProfilePositionAndSkillUpdateFormProps {

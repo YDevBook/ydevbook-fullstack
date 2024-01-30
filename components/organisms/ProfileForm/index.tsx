@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { ProfileFormData } from '@/lib/definitions';
 import { useForm } from 'react-hook-form';
 import useLocalStorage from '@/lib/useLocalStorage';
 import { insertProfile } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
+import { Button } from '@tremor/react';
 
 const ProfileForm = ({
   positionSelectItems,

@@ -1,8 +1,7 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { updateProfileText } from '@/lib/actions';
-import { Textarea } from '@tremor/react';
+import { Button, Textarea } from '@tremor/react';
 
 const ProfileTextUpdateForm = ({
   columnName,
