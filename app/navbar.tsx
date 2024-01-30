@@ -164,7 +164,7 @@ export default function Navbar({ user }: { user: any }) {
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="sm:hidden absolute bg-white z-10 w-full shadow-sm">
             <div className="space-y-1 pt-2 pb-3">
               {navigation.map((item) => (
                 <Disclosure.Button
@@ -206,15 +206,24 @@ export default function Navbar({ user }: { user: any }) {
                     </div>
                   </div>
                   <div className="mt-3 space-y-1">
-                    <button
-                      onClick={() => router.push('/my-profile')}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                    <Disclosure.Button
+                      as="a"
+                      href={'/my-profile'}
+                      className={classNames(
+                        pathname === '/my-profile'
+                          ? 'bg-slate-50 border-slate-500 text-slate-700'
+                          : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                        'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                      )}
+                      aria-current={
+                        pathname === '/my-profile' ? 'page' : undefined
+                      }
                     >
                       내 프로필
-                    </button>
+                    </Disclosure.Button>
                     <button
                       onClick={async () => await signOut()}
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                      className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                     >
                       로그아웃
                     </button>
