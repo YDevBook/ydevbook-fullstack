@@ -12,12 +12,11 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log(file);
     if (!file) {
       return;
     }
-    if (file.size > 1024 * 1024 * 10) {
-      alert('10MB 이하의 파일만 업로드 가능합니다.');
+    if (file.size > 1024 * 1024 * 4) {
+      alert('4MB 이하의 파일만 업로드 가능합니다.');
       return;
     }
     setFiles((prev) => [...prev, file]);
@@ -26,7 +25,6 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
   const fileAttachInputAction = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(files);
       const file = files[0];
       if (!file) {
         return;
@@ -41,9 +39,13 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
       if (response.ok) {
         alert('업로드 성공');
         window.location.reload();
+      } else {
+        alert('업로드 실패');
+        return;
       }
     } catch (error) {
       alert('업로드 실패');
+      return;
     }
   };
 
