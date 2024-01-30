@@ -43,8 +43,8 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (!file) {
       return;
     }
-    if (file.size > (1024 * 1024 * 10) / 2) {
-      alert('10MB 이하의 파일만 업로드 가능합니다.');
+    if (file.size > 1024 * 1024 * 4) {
+      alert('4MB 이하의 파일만 업로드 가능합니다.');
       return;
     }
     if (!file.type.includes('image')) {
@@ -62,6 +62,9 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
+      } else {
+        alert('업로드 실패');
+        return;
       }
     } catch (error) {
       alert('업로드 실패');
