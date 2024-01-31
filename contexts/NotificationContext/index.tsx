@@ -1,16 +1,21 @@
 'use client';
 
-import { Button, Dialog, DialogPanel, Title } from '@tremor/react';
+import { Button, Dialog, DialogPanel, Title, Text } from '@tremor/react';
 import { ReactNode, createContext, useState } from 'react';
 
-interface NotificationContextProps {
-  content?: string | ReactNode;
-  type?: 'error' | 'success';
+interface NotificationContent {
+  title?: string;
+  description: ReactNode;
   confirmText?: string;
+  onConfirm?: () => void;
+}
+
+interface NotificationContextProps {
+  type?: 'error' | 'alert';
+  content?: NotificationContent;
   setIsOpen?: (open: boolean) => void;
-  setContent?: (content: string | ReactNode) => void;
-  setType?: (type: 'error' | 'success') => void;
-  setConfirmText?: (text: string) => void;
+  setType?: (type: 'error' | 'alert') => void;
+  setContent?: (content: NotificationContent) => void;
 }
 
 export const NotificationContext = createContext<NotificationContextProps>({});
@@ -21,29 +26,38 @@ export const NotificationContextProvider = ({
   children: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [content, setContent] = useState<string | ReactNode>('');
-  const [type, setType] = useState<'error' | 'success'>('success');
-  const [confirmText, setConfirmText] = useState<string>('OK');
+  const [content, setContent] = useState<NotificationContent>({
+    description: ''
+  });
+  const [type, setType] = useState<'error' | 'alert'>('alert');
 
+  // TODO: 에러, 경고, 알림 등의 타입에 따라 색깔 다른 컴포넌트를 렌더링하도록 구현
   return (
     <NotificationContext.Provider
       value={{
         content,
         type,
-        confirmText,
         setIsOpen,
         setContent,
-        setType,
-        setConfirmText
+        setType
       }}
     >
       {children}
       <Dialog open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>
         <DialogPanel>
-          <Title>{content}</Title>
-          <div>
-            <Button onClick={() => setIsOpen(false)} variant="light">
-              {confirmText}
+          <Title>
+            {content.title || (type === 'alert' ? 'Alert' : 'Error')}
+          </Title>
+          <Text className="mt-4">{content.description}</Text>
+          <div className="mt-4">
+            <Button
+              onClick={() => {
+                setIsOpen(false);
+                content.onConfirm?.();
+              }}
+              variant="light"
+            >
+              {content.confirmText || '확인'}
             </Button>
           </div>
         </DialogPanel>

@@ -30,13 +30,28 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     try {
       const result = await updateProfile(data);
       if (result === 'success') {
-        alert('프로필 수정 성공');
-        return window.location.replace('/my-profile');
+        setContent?.({
+          title: 'Success',
+          description: '프로필을 수정했습니다.',
+          onConfirm: () => window.location.replace('/my-profile')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('프로필 수정 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       console.error(error);
+      return;
     }
   });
 
@@ -47,11 +62,19 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       return;
     }
     if (file.size > 1024 * 1024 * 4) {
-      alert('4MB 이하의 파일만 업로드 가능합니다.');
+      setContent?.({
+        title: 'Error',
+        description: '4MB 이하의 이미지만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     if (!file.type.includes('image')) {
-      alert('이미지 파일만 업로드 가능합니다.');
+      setContent?.({
+        title: 'Error',
+        description: '이미지 파일만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     try {
@@ -65,12 +88,25 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
+        setContent?.({
+          title: 'Success',
+          description: '프로필 이미지를 변경했습니다.'
+        });
+        setIsOpen?.(true);
       } else {
-        alert('업로드 실패');
+        setContent?.({
+          title: 'Error',
+          description: '프로필 이미지 업로드에 실패했습니다.'
+        });
+        setIsOpen?.(true);
         return;
       }
     } catch (error) {
-      alert('업로드 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 이미지 업로드에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
   };
@@ -168,9 +204,6 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <input className="border border-gray-300" {...register('webLink')} />
       </div>
       <Button type="submit">제출</Button>
-      <Button onClick={() => setIsOpen?.(true)} type="button">
-        팝업테스트
-      </Button>
     </form>
   );
 };

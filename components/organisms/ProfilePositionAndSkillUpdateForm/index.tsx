@@ -1,5 +1,6 @@
 'use client';
 
+import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfilePositionAndSkills } from '@/lib/actions';
 import {
   ArrayItemQueryRows,
@@ -7,6 +8,7 @@ import {
   ProfilePositionAndSkillsUpdateFormData
 } from '@/lib/definitions';
 import { Button } from '@tremor/react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface ProfilePositionAndSkillUpdateFormProps {
@@ -24,19 +26,33 @@ const ProfilePositionAndSkillUpdateForm = ({
     useForm<ProfilePositionAndSkillsUpdateFormData>({
       defaultValues: { positions: profile.positions, skills: profile.skills }
     });
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const action: () => void = handleSubmit(async (data) => {
     try {
       const result = await updateProfilePositionAndSkills(data);
       if (result === 'success') {
-        alert('프로필 수정 성공');
-        return window.location.replace('/my-profile');
+        setContent?.({
+          title: 'Success',
+          description: '프로필을 수정했습니다.',
+          onConfirm: () => window.location.replace('/my-profile')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('프로필 수정 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
       console.error(error);
-      alert('프로필 수정 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
   });

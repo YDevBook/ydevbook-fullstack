@@ -1,7 +1,8 @@
 'use client';
 
+import { NotificationContext } from '@/contexts/NotificationContext';
 import { Button } from '@tremor/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 interface FileAttachInputProps {
   attachmentFiles?: string[];
@@ -9,6 +10,7 @@ interface FileAttachInputProps {
 
 const FileAttachInput = ({}: FileAttachInputProps) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -16,7 +18,11 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
       return;
     }
     if (file.size > 1024 * 1024 * 4) {
-      alert('4MB 이하의 파일만 업로드 가능합니다.');
+      setContent?.({
+        title: 'Error',
+        description: '4MB 이하의 파일만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     setFiles((prev) => [...prev, file]);
@@ -37,14 +43,27 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
         body: formData
       });
       if (response.ok) {
-        alert('업로드 성공');
-        window.location.reload();
+        setContent?.({
+          title: 'Success',
+          description: '파일을 업로드 했습니다.',
+          onConfirm: () => window.location.reload()
+        });
+        setIsOpen?.(true);
+        return;
       } else {
-        alert('업로드 실패');
+        setContent?.({
+          title: 'Error',
+          description: '파일 업로드에 실패했습니다.'
+        });
+        setIsOpen?.(true);
         return;
       }
     } catch (error) {
-      alert('업로드 실패');
+      setContent?.({
+        title: 'Error',
+        description: '파일 업로드에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
   };

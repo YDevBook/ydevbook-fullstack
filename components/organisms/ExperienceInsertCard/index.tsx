@@ -1,12 +1,13 @@
 'use client';
 
 import { Card } from '@tremor/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import dynamic from 'next/dynamic';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ExperienceFormData } from '@/lib/definitions';
 import { insertExperience } from '@/lib/actions';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 const ExperienceForm = dynamic(
   () => import('@/components/molecules/ExperienceForm')
@@ -22,20 +23,36 @@ const ExperienceInsertCard = ({
   skillsSelectItems
 }: ExperienceInsertCardProps) => {
   const [addClicked, setAddClicked] = useState(false);
-
+  const { setContent, setIsOpen } = useContext(NotificationContext);
   const methods = useForm<ExperienceFormData>();
 
   const action: () => void = methods.handleSubmit(async (data) => {
     try {
       const result = await insertExperience(data);
       if (result === 'success') {
-        alert('업무 경험 추가 성공');
-        return window.location.replace('/my-profile/edit-experiences');
+        setContent?.({
+          title: 'Success',
+          description: '업무 경험을 추가했습니다.',
+          onConfirm: () =>
+            window.location.replace('/my-profile/edit-experiences')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('업무 경험 추가 실패');
+      setContent?.({
+        title: 'Error',
+        description: '업무 경험 추가에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
+      setContent?.({
+        title: 'Error',
+        description: '업무 경험 추가에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       console.error(error);
+      return;
     }
   });
 
