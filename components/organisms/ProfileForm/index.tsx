@@ -1,11 +1,13 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { ProfileFormData } from '@/lib/definitions';
 import { useForm } from 'react-hook-form';
 import useLocalStorage from '@/lib/useLocalStorage';
 import { insertProfile } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
+import { Button } from '@tremor/react';
+import { useContext } from 'react';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 const ProfileForm = ({
   positionSelectItems,
@@ -15,6 +17,7 @@ const ProfileForm = ({
   skillsSelectItems: { name: string }[];
 }) => {
   const router = useRouter();
+  const { setIsOpen, setContent } = useContext(NotificationContext);
   const [localStorageValue, setLocalStorageValue] =
     useLocalStorage<ProfileFormData>('profileForm', {
       phoneNumber: '',
@@ -36,14 +39,27 @@ const ProfileForm = ({
     try {
       const result = await insertProfile(data);
       if (result === 'Profile already exists') {
-        alert('프로필이 이미 존재합니다');
+        setContent?.({
+          title: 'Error',
+          description: '프로필이 이미 존재합니다.',
+          onConfirm: () => router.replace('/my-profile')
+        });
         return;
       }
       if (result === 'success') {
-        alert('프로필 생성 성공');
-        return router.replace('/my-profile');
+        setContent?.({
+          title: 'Success',
+          description: '프로필을 생성했습니다.',
+          onConfirm: () => router.replace('/my-profile')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('프로필 생성 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 생성에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
       console.error(error);

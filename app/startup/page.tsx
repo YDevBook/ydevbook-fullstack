@@ -1,5 +1,4 @@
-import { Button } from '@/components/atoms/Button';
-import { Title, Text } from '@tremor/react';
+import { Title, Text, Button } from '@tremor/react';
 import Link from 'next/link';
 
 export default function StartupLandingPage() {

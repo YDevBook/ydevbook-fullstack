@@ -1,7 +1,8 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
-import { useState } from 'react';
+import { NotificationContext } from '@/contexts/NotificationContext';
+import { Button } from '@tremor/react';
+import { useContext, useState } from 'react';
 
 interface FileAttachInputProps {
   attachmentFiles?: string[];
@@ -9,15 +10,19 @@ interface FileAttachInputProps {
 
 const FileAttachInput = ({}: FileAttachInputProps) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log(file);
     if (!file) {
       return;
     }
-    if (file.size > 1024 * 1024 * 10) {
-      alert('10MB 이하의 파일만 업로드 가능합니다.');
+    if (file.size > 1024 * 1024 * 4) {
+      setContent?.({
+        title: 'Error',
+        description: '4MB 이하의 파일만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     setFiles((prev) => [...prev, file]);
@@ -26,7 +31,6 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
   const fileAttachInputAction = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(files);
       const file = files[0];
       if (!file) {
         return;
@@ -39,11 +43,28 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
         body: formData
       });
       if (response.ok) {
-        alert('업로드 성공');
-        window.location.reload();
+        setContent?.({
+          title: 'Success',
+          description: '파일을 업로드 했습니다.',
+          onConfirm: () => window.location.reload()
+        });
+        setIsOpen?.(true);
+        return;
+      } else {
+        setContent?.({
+          title: 'Error',
+          description: '파일 업로드에 실패했습니다.'
+        });
+        setIsOpen?.(true);
+        return;
       }
     } catch (error) {
-      alert('업로드 실패');
+      setContent?.({
+        title: 'Error',
+        description: '파일 업로드에 실패했습니다.'
+      });
+      setIsOpen?.(true);
+      return;
     }
   };
 
