@@ -12,6 +12,8 @@ import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { useSession } from 'next-auth/react';
 import { Button } from '@tremor/react';
+import { useContext } from 'react';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ProfileUpdateFormProps {
   profile: Profile;
@@ -22,6 +24,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined }
   });
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -165,6 +168,9 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <input className="border border-gray-300" {...register('webLink')} />
       </div>
       <Button type="submit">제출</Button>
+      <Button onClick={() => setIsOpen?.(true)} type="button">
+        팝업테스트
+      </Button>
     </form>
   );
 };
