@@ -30,8 +30,8 @@ const ProfilePositionAndSkillUpdateForm = ({
 
   const action: () => void = handleSubmit(async (data) => {
     try {
-      const result = await updateProfilePositionAndSkills(data);
-      if (result === 'success') {
+      const response = await updateProfilePositionAndSkills(data);
+      if (response.status === 200) {
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
@@ -47,7 +47,6 @@ const ProfilePositionAndSkillUpdateForm = ({
       setIsOpen?.(true);
       return;
     } catch (error) {
-      console.error(error);
       setContent?.({
         title: 'Error',
         description: '프로필 수정에 실패했습니다.'

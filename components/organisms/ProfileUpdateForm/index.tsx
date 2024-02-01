@@ -28,8 +28,8 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
 
   const action: () => void = handleSubmit(async (data) => {
     try {
-      const result = await updateProfile(data);
-      if (result === 'success') {
+      const response = await updateProfile(data);
+      if (response.status === 200) {
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
@@ -50,7 +50,6 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         description: '프로필 수정에 실패했습니다.'
       });
       setIsOpen?.(true);
-      console.error(error);
       return;
     }
   });

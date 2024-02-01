@@ -20,11 +20,11 @@ export default async function DeveloperListPage({
   const currentPageNum = Number(searchParams?.page) || 1;
   const position = searchParams?.position || '';
 
-  const profiles = await fetchFilteredProfile(
+  const { data: profiles } = await fetchFilteredProfile(
     { query, position },
     currentPageNum
   );
-  const totalPageNum = await fetchFilteredProfilesPages({
+  const { data: totalPageNum } = await fetchFilteredProfilesPages({
     query,
     position
   });
@@ -39,13 +39,13 @@ export default async function DeveloperListPage({
         </div>
       </div>
       <div className="mt-4">
-        {profiles.map((profile) => (
+        {profiles?.map((profile) => (
           <EmployeeCard key={profile.id} profile={profile} />
         ))}
       </div>
       <div className="my-4">
         <div className="flex max-w-md bg-red m-auto justify-center">
-          {Array.from({ length: totalPageNum }, (_, i) => (
+          {Array.from({ length: totalPageNum ?? 1 }, (_, i) => (
             <Link
               href={`/startup/developer-list?page=${i + 1}${
                 !!query ? `&query=${query}` : ''
