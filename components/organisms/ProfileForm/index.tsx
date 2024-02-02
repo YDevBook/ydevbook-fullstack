@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@tremor/react';
 import { useContext } from 'react';
 import { NotificationContext } from '@/contexts/NotificationContext';
+import { set } from 'zod';
 
 const ProfileForm = ({
   positionSelectItems,
@@ -21,13 +22,8 @@ const ProfileForm = ({
   const [localStorageValue, setLocalStorageValue] =
     useLocalStorage<ProfileFormData>('profileForm', {
       phoneNumber: '',
-      dateOfBirth: '',
-      address: '',
-      school: '',
-      major: '',
       positions: [],
-      skills: [],
-      githubLink: ''
+      skills: []
     });
 
   const { register, handleSubmit } = useForm<ProfileFormData>({
@@ -37,16 +33,17 @@ const ProfileForm = ({
   const action: () => void = handleSubmit(async (data) => {
     setLocalStorageValue(data);
     try {
-      const result = await insertProfile(data);
-      if (result === 'Profile already exists') {
+      const response = await insertProfile(data);
+      if (response.status === 409) {
         setContent?.({
           title: 'Error',
           description: '프로필이 이미 존재합니다.',
           onConfirm: () => router.replace('/my-profile')
         });
+        setIsOpen?.(true);
         return;
       }
-      if (result === 'success') {
+      if (response.status === 200) {
         setContent?.({
           title: 'Success',
           description: '프로필을 생성했습니다.',
@@ -62,7 +59,12 @@ const ProfileForm = ({
       setIsOpen?.(true);
       return;
     } catch (error) {
-      console.error(error);
+      setContent?.({
+        title: 'Error',
+        description: '프로필 생성에 실패했습니다.'
+      });
+      setIsOpen?.(true);
+      return;
     }
   });
 

@@ -28,8 +28,8 @@ const ExperienceInsertCard = ({
 
   const action: () => void = methods.handleSubmit(async (data) => {
     try {
-      const result = await insertExperience(data);
-      if (result === 'success') {
+      const response = await insertExperience(data);
+      if (response.status === 200) {
         setContent?.({
           title: 'Success',
           description: '업무 경험을 추가했습니다.',
@@ -51,7 +51,6 @@ const ExperienceInsertCard = ({
         description: '업무 경험 추가에 실패했습니다.'
       });
       setIsOpen?.(true);
-      console.error(error);
       return;
     }
   });

@@ -95,15 +95,21 @@ export async function signUp(
   }
 }
 
-function reduceToArrayString(arr: string[]) {
-  return `{${arr.join(',')}}`;
-}
+const removeEmptyString = <T extends Record<string, any>>(obj: T): T => {
+  const returnObj = {} as T;
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== '') {
+      returnObj[key as keyof T] = value;
+    }
+  }
+  return returnObj;
+};
 
 export async function insertProfile(data: ProfileFormData) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId, email, name } = session?.user;
     const {
@@ -116,43 +122,34 @@ export async function insertProfile(data: ProfileFormData) {
       major,
       graduateStatus,
       githubLink
-    } = data;
-    const positionsInsertArray = reduceToArrayString(positions || []);
-    const skillsInsertArray = reduceToArrayString(skills || []);
+    } = removeEmptyString(data);
     const query = `
-    INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
-    VALUES (${userId}, ${name}, ${email}, ${phoneNumber}, ${
-      dateOfBirth || undefined
-    }, ${
-      address || undefined
-    }, ${positionsInsertArray}, ${skillsInsertArray}, ${school || undefined}, ${
-      major || undefined
-    }, ${graduateStatus || undefined}, ${githubLink || undefined})
+  INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
   `;
-    const insertResult = await sql`
-      INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
-      VALUES (${userId}, ${name}, ${email}, ${phoneNumber}, ${
-        dateOfBirth || undefined
-      }, ${
-        address || undefined
-      }, ${positionsInsertArray}, ${skillsInsertArray}, ${
-        school || undefined
-      }, ${major || undefined}, ${graduateStatus || undefined}, ${
-        githubLink || undefined
-      })
-    `;
-    if (insertResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+    await sql.query(query, [
+      userId,
+      name,
+      email,
+      phoneNumber,
+      dateOfBirth,
+      address,
+      positions,
+      skills,
+      school,
+      major,
+      graduateStatus,
+      githubLink
+    ]);
+    return { status: 200 };
   } catch (error) {
     if (error instanceof Error) {
       if (error.message.includes('oneofeachuser')) {
-        return 'Profile already exists';
+        return { status: 409 };
       }
     }
-    throw error;
+    console.error(error);
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -160,7 +157,7 @@ export async function updateProfile(data: ProfileUpdateFormData) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const {
@@ -175,49 +172,41 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       graduateStatus,
       githubLink,
       webLink
-    } = data;
+    } = removeEmptyString(data);
     const query = `
-    UPDATE profiles
-    SET "name" = $1,
-    "email" = $2,
-    "phoneNumber" = $3,
-    "dateOfBirth" = $4,
-    "sex" = $5,
-    "address" = $6,
-    "school" = $7,
-    "major" = $8,
-    "graduateStatus" = $9,
-    "githubLink" = $10,
-    "webLink" = $11
-    WHERE "userId" = $12
-  `;
-    const updateResult = await sql.query(query, [
+      UPDATE profiles
+      SET "name" = $1,
+      "email" = $2,
+      "phoneNumber" = $3,
+      "dateOfBirth" = $4,
+      "sex" = $5,
+      "address" = $6,
+      "school" = $7,
+      "major" = $8,
+      "graduateStatus" = $9,
+      "githubLink" = $10,
+      "webLink" = $11
+      WHERE "userId" = $12
+    `;
+    await sql.query(query, [
       name,
       email,
       phoneNumber,
-      dateOfBirth || undefined,
-      sex || undefined,
-      address || undefined,
-      school || undefined,
-      major || undefined,
-      graduateStatus || undefined,
-      githubLink || undefined,
-      webLink || undefined,
+      dateOfBirth,
+      sex,
+      address,
+      school,
+      major,
+      graduateStatus,
+      githubLink,
+      webLink,
       userId
     ]);
-    if (updateResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+    return { status: 200 };
   } catch (error) {
-    console.log(error);
-    if (error instanceof Error) {
-      // if (error.message.includes('oneofeachuser')) {
-      //   return 'Profile already exists';
-      // }
-    }
-    throw error;
+    console.error(error);
+
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -228,34 +217,27 @@ export async function updateProfileText(
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const data = Object.fromEntries(formData);
     const value = data[columnName];
 
     if (typeof value !== 'string') {
-      throw new Error('Wrong Access');
+      return { status: 400 };
     }
 
     const query = `
-    UPDATE profiles
-    SET "${columnName}" = $1
-    WHERE "userId" = $2
-  `;
-    const updateResult = await sql.query(query, [value, userId]);
-    if (updateResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+      UPDATE profiles
+      SET "${columnName}" = $1
+      WHERE "userId" = $2
+    `;
+    await sql.query(query, [value, userId]);
+    return { status: 200 };
   } catch (error) {
-    if (error instanceof Error) {
-      // if (error.message.includes('oneofeachuser')) {
-      //   return 'Profile already exists';
-      // }
-    }
-    throw error;
+    console.error(error);
+
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -265,33 +247,22 @@ export async function updateProfilePositionAndSkills(
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const { positions, skills } = data;
     const query = `
-    UPDATE profiles
-    SET "positions" = $1,
-    "skills" = $2
-    WHERE "userId" = $3
-  `;
-    const updateResult = await sql.query(query, [
-      positions || undefined,
-      skills || undefined,
-      userId
-    ]);
-    if (updateResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+      UPDATE profiles
+      SET "positions" = $1,
+      "skills" = $2
+      WHERE "userId" = $3
+    `;
+    await sql.query(query, [positions, skills, userId]);
+    return { status: 200 };
   } catch (error) {
-    if (error instanceof Error) {
-      // if (error.message.includes('oneofeachuser')) {
-      //   return 'Profile already exists';
-      // }
-    }
-    throw error;
+    console.error(error);
+
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -299,7 +270,7 @@ export async function insertExperience(data: ExperienceFormData) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const {
@@ -310,31 +281,24 @@ export async function insertExperience(data: ExperienceFormData) {
       isWorkingNow,
       skills,
       description
-    } = data;
+    } = removeEmptyString(data);
     const query = `INSERT INTO experiences ("userId", "companyName", "position", "startDate", "endDate", "isWorkingNow", "skills", "description")
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
-    const insertResult = await sql.query(query, [
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
+    await sql.query(query, [
       userId,
       companyName,
       position,
       startDate,
       !isWorkingNow ? endDate || undefined : undefined,
       isWorkingNow,
-      skills || undefined,
-      description || undefined
+      skills,
+      description
     ]);
-    if (insertResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+    return { status: 200 };
   } catch (error) {
-    if (error instanceof Error) {
-      // if (error.message.includes('oneofeachuser')) {
-      //   return 'Profile already exists';
-      // }
-    }
-    throw error;
+    console.error(error);
+
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -342,7 +306,7 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const {
@@ -354,39 +318,32 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       isWorkingNow,
       skills,
       description
-    } = data;
+    } = removeEmptyString(data);
     const query = `UPDATE experiences
-    SET "companyName" = $1,
-    "position" = $2,
-    "startDate" = $3,
-    "endDate" = $4,
-    "isWorkingNow" = $5,
-    "skills" = $6,
-    "description" = $7
-    WHERE "userId" = $8 AND "id" = $9`;
-    const updateResult = await sql.query(query, [
+      SET "companyName" = $1,
+      "position" = $2,
+      "startDate" = $3,
+      "endDate" = $4,
+      "isWorkingNow" = $5,
+      "skills" = $6,
+      "description" = $7
+      WHERE "userId" = $8 AND "id" = $9`;
+    await sql.query(query, [
       companyName,
       position,
       startDate,
       !isWorkingNow ? endDate || undefined : undefined,
       isWorkingNow,
-      skills || undefined,
-      description || undefined,
+      skills,
+      description,
       userId,
       id
     ]);
-    if (updateResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
-    } else {
-      return 'success';
-    }
+    return { status: 200 };
   } catch (error) {
-    if (error instanceof Error) {
-      // if (error.message.includes('oneofeachuser')) {
-      //   return 'Profile already exists';
-      // }
-    }
-    throw error;
+    console.error(error);
+
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -394,7 +351,7 @@ export async function deleteAttachmentFile(id: number) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const query = `DELETE FROM files WHERE "userId" = $1 AND "id" = $2`;
@@ -410,6 +367,7 @@ export async function deleteAttachmentFile(id: number) {
       //   return 'Profile already exists';
       // }
     }
-    throw error;
+
+    throw new Error('Something went wrong.');
   }
 }

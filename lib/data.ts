@@ -1,5 +1,6 @@
 'use server';
 
+import { auth } from '@/auth';
 import { Profile } from '@/lib/definitions';
 import { sql } from '@vercel/postgres';
 
@@ -17,6 +18,11 @@ export async function fetchFilteredProfile(
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
+    const session = await auth();
+    if (!session?.user?.isStartup) {
+      return { status: 401 };
+    }
+
     let query = '';
     if (!!filter) {
       query = `SELECT * FROM profiles `;
@@ -40,10 +46,10 @@ export async function fetchFilteredProfile(
     }
     const profiles = await sql.query<Profile>(query);
 
-    return profiles.rows;
+    return { data: profiles.rows, status: 200 };
   } catch (error) {
     console.error(error);
-    throw new Error('Error fetching profiles');
+    throw new Error('Something went wrong.');
   }
 }
 
@@ -51,6 +57,11 @@ export async function fetchFilteredProfilesPages(
   filter?: Record<FilterName, string | undefined>
 ) {
   try {
+    const session = await auth();
+    if (!session?.user?.isStartup) {
+      return { status: 401 };
+    }
+
     let query = '';
     if (!!filter) {
       query = `SELECT COUNT(*) FROM profiles `;
@@ -72,9 +83,12 @@ export async function fetchFilteredProfilesPages(
     }
     const count = await sql.query<{ count: string }>(query);
 
-    return Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return {
+      data: Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE),
+      status: 200
+    };
   } catch (error) {
     console.error(error);
-    throw new Error('Error fetching profiles');
+    throw new Error('Something went wrong.');
   }
 }
