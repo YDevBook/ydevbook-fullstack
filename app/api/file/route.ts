@@ -18,66 +18,67 @@ export async function POST(request: Request) {
     uploadType !== UploadType.ProfileImage &&
     uploadType !== UploadType.AttachmentFile
   ) {
-    throw { message: '잘못된 요청입니다.', status: 400 } as CustomErrorObject;
+    return NextResponse.json(
+      { message: '잘못된 요청입니다.' },
+      { status: 400 }
+    );
   }
-  const formData = await request.formData();
-
-  const file = formData.get('file') as File;
 
   try {
+    const formData = await request.formData();
+
+    const file = formData.get('file') as File;
     if (!file || !file.name || !file.type || !file.size) {
-      throw { message: '잘못된 파일입니다.', status: 400 } as CustomErrorObject;
+      return NextResponse.json({ message: '잘못된 파일입니다.', status: 400 });
     }
 
     if (uploadType === UploadType.ProfileImage) {
-      const responseData = await profileImageUpload(file);
-      if (!responseData) {
-        throw {
-          message: '이미지 업로드에 실패했습니다.',
-          status: 400
-        } as CustomErrorObject;
-      }
+      const response = await profileImageUpload(file);
 
-      if (responseData.status === 401) {
-        throw {
+      if (response.status === 401) {
+        return NextResponse.json({
           message: '로그인이 필요합니다.',
           status: 401
-        } as CustomErrorObject;
+        });
       }
 
-      if (responseData.status === 200) {
+      if (response.status === 200) {
         return NextResponse.json(
-          { profileImageUrl: responseData.profileImageUrl },
+          { profileImageUrl: response.profileImageUrl },
           { status: 200 }
         );
       }
+
+      return NextResponse.json({
+        message: '프로필 이미지 업로드에 실패했습니다.',
+        status: response.status
+      });
     } else if (uploadType === UploadType.AttachmentFile) {
-      const responseData = await attachmentFileUpload(file);
-      if (!responseData) {
-        throw {
-          message: '파일 업로드에 실패했습니다.',
-          status: 400
-        } as CustomErrorObject;
-      }
-
-      if (responseData === 'User not logged In') {
-        throw {
+      const response = await attachmentFileUpload(file);
+      if (response.status === 401) {
+        return NextResponse.json({
           message: '로그인이 필요합니다.',
-          status: 400
-        } as CustomErrorObject;
+          status: 401
+        });
       }
 
-      if (responseData === 'success') {
-        return new Response('파일이 업로드 되었습니다.', { status: 200 });
+      if (response.status === 200) {
+        return NextResponse.json(
+          { message: '파일이 업로드 되었습니다.' },
+          { status: 200 }
+        );
       }
+
+      return NextResponse.json({
+        message: '파일 업로드에 실패했습니다.',
+        status: response.status
+      });
     }
-  } catch (error: unknown) {
+  } catch (error) {
     console.error(error);
-    if (!!(error as any).status && (error as any).status === 400) {
-      const errorObject = error as CustomErrorObject;
-      return new Response(errorObject.message, { status: errorObject.status });
-    }
-
-    return new Response('일시적인 오류가 발생했습니다.', { status: 500 });
+    return NextResponse.json({
+      message: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+      status: 500
+    });
   }
 }

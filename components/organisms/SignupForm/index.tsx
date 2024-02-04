@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { signUp } from '@/lib/actions';
 import {
   ArrowRightIcon,
@@ -9,6 +8,7 @@ import {
   KeyIcon,
   UserIcon
 } from '@heroicons/react/24/outline';
+import { Button } from '@tremor/react';
 import { useFormState, useFormStatus } from 'react-dom';
 
 const SignUpForm = () => {

@@ -1,7 +1,7 @@
 'use client';
-import { Button } from '@/components/atoms/Button';
+
 import { Experience } from '@/lib/definitions';
-import { Badge, Card, Divider, Text, Title } from '@tremor/react';
+import { Badge, Card, Divider, Text, Title, Button } from '@tremor/react';
 import Link from 'next/link';
 
 interface ExperiencesCardProps {

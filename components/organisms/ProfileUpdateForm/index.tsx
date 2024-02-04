@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
 import { updateProfile } from '@/lib/actions';
 import {
   ArrayItemQueryRows,
@@ -12,6 +11,9 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { useSession } from 'next-auth/react';
+import { Button } from '@tremor/react';
+import { useContext } from 'react';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ProfileUpdateFormProps {
   profile: Profile;
@@ -22,18 +24,33 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined }
   });
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const action: () => void = handleSubmit(async (data) => {
     try {
-      const result = await updateProfile(data);
-      if (result === 'success') {
-        alert('프로필 수정 성공');
-        return window.location.replace('/my-profile');
+      const response = await updateProfile(data);
+      if (response.status === 200) {
+        setContent?.({
+          title: 'Success',
+          description: '프로필을 수정했습니다.',
+          onConfirm: () => window.location.replace('/my-profile')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('프로필 수정 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
-      console.error(error);
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
+      return;
     }
   });
 
@@ -43,12 +60,20 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (!file) {
       return;
     }
-    if (file.size > (1024 * 1024 * 10) / 2) {
-      alert('10MB 이하의 파일만 업로드 가능합니다.');
+    if (file.size > 1024 * 1024 * 4) {
+      setContent?.({
+        title: 'Error',
+        description: '4MB 이하의 이미지만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     if (!file.type.includes('image')) {
-      alert('이미지 파일만 업로드 가능합니다.');
+      setContent?.({
+        title: 'Error',
+        description: '이미지 파일만 업로드 가능합니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
     try {
@@ -62,9 +87,25 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
+        setContent?.({
+          title: 'Success',
+          description: '프로필 이미지를 변경했습니다.'
+        });
+        setIsOpen?.(true);
+      } else {
+        setContent?.({
+          title: 'Error',
+          description: '프로필 이미지 업로드에 실패했습니다.'
+        });
+        setIsOpen?.(true);
+        return;
       }
     } catch (error) {
-      alert('업로드 실패');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 이미지 업로드에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
   };

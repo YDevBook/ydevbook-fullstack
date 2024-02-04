@@ -8,9 +8,9 @@ import {
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/lib/actions';
-import { Button } from '@/components/atoms/Button';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Button } from '@tremor/react';
 
 interface LoginFormProps {
   isStartup?: boolean;

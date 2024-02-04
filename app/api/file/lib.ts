@@ -7,7 +7,7 @@ export async function attachmentFileUpload(file: File) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return 'User not logged In';
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const timeString = new Date().toUTCString();
@@ -19,12 +19,12 @@ export async function attachmentFileUpload(file: File) {
     const query = `INSERT INTO files ("userId", "fileName", "mediaLink") VALUES ($1, $2, $3)`;
     const insertResult = await sql.query(query, [userId, file.name, mediaLink]);
     if (insertResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
+      return { status: 400 };
     } else {
-      return 'success';
+      return { status: 200 };
     }
   } catch (error) {
-    console.error(error);
+    console.log('Attachment File Upload Error Caught');
     throw error;
   }
 }
@@ -33,7 +33,7 @@ export async function profileImageUpload(file: File) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return { message: 'User not logged In', status: 401 };
+      return { status: 401 };
     }
     const { id: userId } = session?.user;
     const gcsResponse = await streamFileUpload(
@@ -44,12 +44,12 @@ export async function profileImageUpload(file: File) {
     const query = `UPDATE users SET "profileImageUrl" = $1 WHERE id = $2`;
     const insertResult = await sql.query(query, [profileImageUrl, userId]);
     if (insertResult.rowCount === 0) {
-      throw new Error('Something went wrong.');
+      return { status: 400 };
     } else {
-      return { message: 'success', profileImageUrl, status: 200 };
+      return { profileImageUrl, status: 200 };
     }
   } catch (error) {
-    console.error(error);
+    console.log('Profile Image Upload Error');
     throw error;
   }
 }

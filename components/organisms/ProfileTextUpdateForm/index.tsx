@@ -1,8 +1,9 @@
 'use client';
 
-import { Button } from '@/components/atoms/Button';
+import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfileText } from '@/lib/actions';
-import { Textarea } from '@tremor/react';
+import { Button, Textarea } from '@tremor/react';
+import { useContext } from 'react';
 
 const ProfileTextUpdateForm = ({
   columnName,
@@ -11,23 +12,36 @@ const ProfileTextUpdateForm = ({
   columnName: string;
   defaultValue?: string;
 }) => {
+  const { setContent, setIsOpen } = useContext(NotificationContext);
+
   const updateAction = async (formData: FormData) => {
-    let result;
     try {
-      result = await updateProfileText(formData, columnName);
+      const response = await updateProfileText(formData, columnName);
+      if (response.status === 200) {
+        setContent?.({
+          title: 'Success',
+          description: '프로필을 수정했습니다.',
+          onConfirm: () => window.location.replace('/my-profile')
+        });
+        setIsOpen?.(true);
+        return;
+      }
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
+      return;
     } catch (error) {
-      console.error(error);
-      // alert('프로필 업데이트에 실패했습니다.');
+      setContent?.({
+        title: 'Error',
+        description: '프로필 수정에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     }
-
-    if (result === 'success') {
-      alert('프로필 업데이트 성공');
-      return window.location.replace('/my-profile');
-    } else {
-      alert('프로필 업데이트 실패');
-    }
   };
+
   return (
     <form action={updateAction} className="my-4">
       <div>

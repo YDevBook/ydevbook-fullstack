@@ -1,13 +1,13 @@
 'use client';
 
 import { Badge, Card, Title } from '@tremor/react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Experience, ExperienceFormData } from '@/lib/definitions';
 import { updateExperience } from '@/lib/actions';
-import { Text } from '@tremor/react';
-import { Button } from '@/components/atoms/Button';
+import { Text, Button } from '@tremor/react';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 const ExperienceForm = dynamic(
   () => import('@/components/molecules/ExperienceForm')
@@ -25,6 +25,7 @@ const ExperienceUpdateCard = ({
   skillsSelectItems
 }: ExperienceUpdateCardProps) => {
   const [addClicked, setAddClicked] = useState(false);
+  const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const methods = useForm<ExperienceFormData>({
     defaultValues: { ...experience, startDate: undefined, endDate: undefined }
@@ -32,15 +33,30 @@ const ExperienceUpdateCard = ({
 
   const action: () => void = methods.handleSubmit(async (data) => {
     try {
-      const result = await updateExperience({ ...data, id: experience.id });
-      if (result === 'success') {
-        alert('업무 경험 수정 성공');
-        return window.location.replace('/my-profile/edit-experiences');
+      const response = await updateExperience({ ...data, id: experience.id });
+      if (response.status === 200) {
+        setContent?.({
+          title: 'Success',
+          description: '업무 경험을 추가했습니다.',
+          onConfirm: () =>
+            window.location.replace('/my-profile/edit-experiences')
+        });
+        setIsOpen?.(true);
+        return;
       }
-      alert('업무 경험 수정 실패');
+      setContent?.({
+        title: 'Error',
+        description: '업무 경험 추가에 실패했습니다.'
+      });
+      setIsOpen?.(true);
       return;
     } catch (error) {
-      console.error(error);
+      setContent?.({
+        title: 'Error',
+        description: '업무 경험 추가에 실패했습니다.'
+      });
+      setIsOpen?.(true);
+      return;
     }
   });
 
