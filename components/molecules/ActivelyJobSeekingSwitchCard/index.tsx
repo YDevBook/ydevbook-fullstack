@@ -1,7 +1,7 @@
 'use client';
 
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { Card, Title, Switch } from '@tremor/react';
+import { Card, Title, Switch, Text } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -42,8 +42,11 @@ const ActivelyJobSeekingSwitchCard = ({
   return (
     <Card className="w-full mx-auto mt-4">
       <div className="w-full flex justify-between">
-        <Title>적극 구직 중</Title>
-        <Switch checked={isActive} onChange={handleOnChange} />
+        <div>
+          <Title>적극 구직 중</Title>
+          <Text>토글 Off 시, 구직 중이 아님으로 표시됩니다.(Temp)</Text>
+        </div>
+        <Switch checked={isActive} onChange={handleOnChange} className="ml-2" />
       </div>
     </Card>
   );
