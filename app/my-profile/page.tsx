@@ -2,13 +2,14 @@ import { auth } from '@/auth';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
-import { Badge, Card, Text, Title, Button } from '@tremor/react';
+import { Badge, Card, Text, Title, Button, Switch } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import Image from 'next/image';
+import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
 
 export default async function MyProfilePage() {
   noStore();
@@ -76,8 +77,26 @@ export default async function MyProfilePage() {
     graduateStatus,
     personalStatement,
     githubLink,
-    webLink
+    webLink,
+    isActivelySeeking
   } = profile;
+
+  const onClickJobSeekingSwitch = async (isActive: boolean) => {
+    'use server';
+    try {
+      await sql.query(
+        `
+        UPDATE profiles
+        SET "isActivelySeeking" = $1
+        WHERE "userId" = $2;
+      `,
+        [isActive, session?.user.id]
+      );
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
@@ -123,6 +142,10 @@ export default async function MyProfilePage() {
             <Text>웹 링크</Text>
             <Title>{webLink || '웹 페이지 링크를 등록해주세요.'}</Title>
           </Card>
+          <ActivelyJobSeekingSwitchCard
+            initialIsActive={isActivelySeeking}
+            onChange={onClickJobSeekingSwitch}
+          />
         </div>
         <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
           <Card className="w-full mx-auto">
