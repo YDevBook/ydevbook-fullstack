@@ -56,6 +56,7 @@ export interface Profile {
   githubLink?: string;
   webLink?: string;
   attachedFiles?: string[];
+  isActivelySeeking: boolean;
 }
 
 export interface ProfileFormData {
@@ -77,6 +78,7 @@ export type ProfileUpdateFormData = Omit<
   | 'expectationText'
   | 'positions'
   | 'skills'
+  | 'isActivelySeeking'
 >;
 
 export type ProfilePositionAndSkillsUpdateFormData = Pick<
