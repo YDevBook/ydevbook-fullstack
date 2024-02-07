@@ -11,6 +11,7 @@ import { authenticate } from '@/lib/actions';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@tremor/react';
+import { signIn } from 'next-auth/react';
 
 interface LoginFormProps {
   isStartup?: boolean;
@@ -80,6 +81,18 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
           />
         </div>
         <LoginButton />
+        <Button
+          className="w-full mt-4 bg-yellow-300 border-yellow-300 text-gray-900 hover:bg-yellow-300 hover:border-yellow-300 hover:text-gray-900"
+          onClick={() => {
+            console.log(searchParams.get('callbackUrl'));
+            signIn('kakao', {
+              callbackUrl: searchParams.get('callbackUrl') ?? '/'
+            });
+          }}
+          type="button"
+        >
+          카카오로 로그인
+        </Button>
         <div
           className="flex items-end h-8 space-x-1"
           aria-live="polite"
