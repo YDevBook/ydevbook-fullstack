@@ -1,28 +1,10 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import KakaoProvider from 'next-auth/providers/kakao';
 import { authConfig } from './auth.config';
 import { z } from 'zod';
-import { User } from '@/lib/definitions';
-import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
-
-async function getUser(
-  email: string,
-  isStartup = false
-): Promise<User | undefined> {
-  try {
-    if (isStartup) {
-      const user =
-        await sql<User>`SELECT * FROM users WHERE email=${email} AND "isStartup" = true`;
-      return user.rows[0];
-    }
-    const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
-    return user.rows[0];
-  } catch (error) {
-    console.error('Failed to fetch user:', error);
-    throw new Error('Failed to fetch user.');
-  }
-}
+import { getUserByCredentials } from '@/lib/userDB';
 
 export const {
   handlers: { GET, POST },
@@ -44,7 +26,7 @@ export const {
           .safeParse(credentials);
 
         if (parsedCredentials.success) {
-          const user = await getUser(
+          const user = await getUserByCredentials(
             parsedCredentials.data.email,
             parsedCredentials.data.isStartup === 'true'
           );
@@ -59,6 +41,10 @@ export const {
         console.log('Invalid Credentials');
         return null;
       }
+    }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_OAUTH_CLIENT_ID as string,
+      clientSecret: process.env.KAKAO_OAUTH_CLIENT_SECRET as string
     })
     // 스타트업 용 Provider 따로 구현하였으나 next-auth Package 에 버그가 있는 걸로 나와서 일단 주석처리
     // 위 Credentials Provider 에서 조건부 처리로 대체

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@tremor/react';
 import { useContext } from 'react';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { set } from 'zod';
+import { useSession } from 'next-auth/react';
 
 const ProfileForm = ({
   positionSelectItems,
@@ -18,10 +18,12 @@ const ProfileForm = ({
   skillsSelectItems: { name: string }[];
 }) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const { setIsOpen, setContent } = useContext(NotificationContext);
   const [localStorageValue, setLocalStorageValue] =
     useLocalStorage<ProfileFormData>('profileForm', {
       phoneNumber: '',
+      email: session?.user?.email || '',
       positions: [],
       skills: []
     });
@@ -75,6 +77,14 @@ const ProfileForm = ({
         <input
           className="border border-gray-300"
           {...register('phoneNumber', { required: true, maxLength: 11 })}
+        />
+      </div>
+      <div>
+        <label htmlFor="email">이메일</label>
+        <input
+          className="border border-gray-300"
+          type="email"
+          {...register('email', { required: true })}
         />
       </div>
       <div>
