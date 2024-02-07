@@ -61,6 +61,7 @@ export interface Profile {
 
 export interface ProfileFormData {
   phoneNumber: string;
+  email: string;
   dateOfBirth?: string;
   address?: string;
   positions?: string[];

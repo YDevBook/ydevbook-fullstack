@@ -111,9 +111,10 @@ export async function insertProfile(data: ProfileFormData) {
     if (!session?.user) {
       return { status: 401 };
     }
-    const { id: userId, email, name } = session?.user;
+    const { id: userId, name } = session?.user;
     const {
       phoneNumber,
+      email,
       dateOfBirth,
       address,
       positions,
