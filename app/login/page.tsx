@@ -1,4 +1,3 @@
-import LoginForm from '@/components/organisms/LoginForm';
 import LoginFormOnlyKakao from '@/components/organisms/LoginFormOnlyKakao';
 
 export default function LoginPage() {
