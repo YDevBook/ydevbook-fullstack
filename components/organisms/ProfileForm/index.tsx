@@ -11,6 +11,8 @@ import { NotificationContext } from '@/contexts/NotificationContext';
 import { useSession } from 'next-auth/react';
 import ProfileFormPositionInput from '@/components/molecules/ProfileFormPositionInput';
 import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput';
+import ProfileFormSchoolInput from '@/components/molecules/ProfileFormSchoolInput';
+import ProfileFormContactInput from '@/components/molecules/ProfileFormContactInput';
 
 // 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호
 
@@ -90,6 +92,8 @@ const ProfileForm = ({
           {stage === '기술' && (
             <ProfileFormSkillInput skillsSelectItems={skillsSelectItems} />
           )}
+          {stage === '학력' && <ProfileFormSchoolInput />}
+          {stage === '연락처' && <ProfileFormContactInput />}
           {/* <div>
           <label htmlFor="phoneNumber">전화번호</label>
           <input
