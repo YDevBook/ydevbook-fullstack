@@ -14,7 +14,12 @@ const ProfileFormSkillInput = ({
   skillsSelectItems
 }: ProfileFormSkillInputProps) => {
   const router = useRouter();
-  const { setValue, watch } = useFormContext<ProfileFormData>();
+  const {
+    setValue,
+    watch,
+    setError,
+    formState: { errors }
+  } = useFormContext<ProfileFormData>();
   const { skills } = watch();
 
   const onClickBadge = (value: string, prevClicked?: boolean) => {
@@ -23,6 +28,18 @@ const ProfileFormSkillInput = ({
       setValue('skills', newList);
     } else {
       setValue('skills', [...(skills ?? []), value]);
+    }
+  };
+
+  const onClick = () => {
+    if (!skills || skills.length === 0) {
+      setError('skills', {
+        type: 'required',
+        message: '최소 하나의 기술을 선택해주세요.'
+      });
+      return;
+    } else {
+      router.replace('/profile-form?stage=' + '학력');
     }
   };
 
@@ -43,10 +60,10 @@ const ProfileFormSkillInput = ({
           />
         ))}
       </div>
-      <Button
-        type="button"
-        onClick={() => router.push('/profile-form?stage=' + '학력')}
-      >
+      {!!errors.skills && (
+        <p className="py-2 text-red-500">{errors.skills.message}</p>
+      )}
+      <Button type="button" onClick={onClick}>
         다음
       </Button>
     </div>

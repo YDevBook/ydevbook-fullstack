@@ -20,9 +20,9 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
     <div className="w-full">
       <h2>최종 학력</h2>
       <label htmlFor="school">학교명</label>
-      <TextInput {...register('school')} placeholder="학교명을 입력해주세요." />
+      <TextInput {...register('school')} placeholder="" maxLength={50} />
       <label htmlFor="major">전공</label>
-      <TextInput {...register('major')} placeholder="전공을 입력해주세요." />
+      <TextInput {...register('major')} placeholder="" maxLength={50} />
       <label htmlFor="graduateStatus">졸업 여부</label>
       <Select
         defaultValue=""
@@ -38,7 +38,7 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
 
       <Button
         type="button"
-        onClick={() => router.push('/profile-form?stage=' + '연락처')}
+        onClick={() => router.replace('/profile-form?stage=' + '연락처')}
       >
         다음
       </Button>
