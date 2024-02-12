@@ -1,14 +1,17 @@
 'use client';
 
-import { ProfileFormData } from '@/lib/definitions';
-import { useForm } from 'react-hook-form';
-import useLocalStorage from '@/lib/useLocalStorage';
-import { insertProfile } from '@/lib/actions';
-import { useRouter } from 'next/navigation';
-import { Button } from '@tremor/react';
-import { useContext } from 'react';
+import ProfileFormContactInput from '@/components/molecules/ProfileFormContactInput';
+import ProfileFormPositionInput from '@/components/molecules/ProfileFormPositionInput';
+import ProfileFormSchoolInput from '@/components/molecules/ProfileFormSchoolInput';
+import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { useSession } from 'next-auth/react';
+import { insertProfile } from '@/lib/actions';
+import { ProfileFormData } from '@/lib/definitions';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useContext } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+
+// 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호
 
 const ProfileForm = ({
   positionSelectItems,
@@ -18,22 +21,30 @@ const ProfileForm = ({
   skillsSelectItems: { name: string }[];
 }) => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const stage = searchParams.get('stage');
   const { setIsOpen, setContent } = useContext(NotificationContext);
-  const [localStorageValue, setLocalStorageValue] =
-    useLocalStorage<ProfileFormData>('profileForm', {
-      phoneNumber: '',
-      email: session?.user?.email || '',
+
+  const methods = useForm<ProfileFormData>({
+    defaultValues: {
       positions: [],
       skills: []
-    });
-
-  const { register, handleSubmit } = useForm<ProfileFormData>({
-    defaultValues: localStorageValue
+    }
   });
+  const { handleSubmit, watch } = methods;
+  const { positions, skills } = watch();
 
   const action: () => void = handleSubmit(async (data) => {
-    setLocalStorageValue(data);
+    if (positions?.length === 0 || skills?.length === 0) {
+      setContent?.({
+        title: 'Error',
+        description:
+          '정보가 정확하게 입력되지 않았습니다. 처음부터 다시 입력해주세요.',
+        onConfirm: () => router.replace('/profile-form?stage=포지션')
+      });
+      setIsOpen?.(true);
+      return;
+    }
     try {
       const response = await insertProfile(data);
       if (response.status === 409) {
@@ -71,68 +82,25 @@ const ProfileForm = ({
   });
 
   return (
-    <form action={action}>
-      <div>
-        <label htmlFor="phoneNumber">전화번호</label>
-        <input
-          className="border border-gray-300"
-          {...register('phoneNumber', { required: true, maxLength: 11 })}
-        />
-      </div>
-      <div>
-        <label htmlFor="email">이메일</label>
-        <input
-          className="border border-gray-300"
-          type="email"
-          {...register('email', { required: true })}
-        />
-      </div>
-      <div>
-        <label htmlFor="dateOfBirth">생년월일</label>
-        <input
-          className="border border-gray-300"
-          type="date"
-          {...register('dateOfBirth')}
-        />
-      </div>
-      <div>
-        <label htmlFor="address">거주 지역</label>
-        <input className="border border-gray-300" {...register('address')} />
-      </div>
-      <div>
-        <label htmlFor="school">최종 학력</label>
-        <input className="border border-gray-300" {...register('school')} />
-      </div>
-      <div>
-        <label htmlFor="major">전공</label>
-        <input className="border border-gray-300" {...register('major')} />
-      </div>
-      <div>
-        <label htmlFor="githubLink">깃헙 링크</label>
-        <input className="border border-gray-300" {...register('githubLink')} />
-      </div>
-      <div>
-        <label htmlFor="positions">구직중인 포지션</label>
-        <select {...register('positions')} multiple>
-          {positionSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label htmlFor="skills">보유 기술</label>
-        <select {...register('skills')} multiple>
-          {skillsSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <Button type="submit">제출</Button>
-    </form>
+    <div className="mx-auto w-full max-w-[640px] space-y-2.5 p-8">
+      <h1 className="text-lg">
+        간편 이력을 등록하고 스카우트 제안을 받아보세요.
+      </h1>
+      <FormProvider {...methods}>
+        <form action={action}>
+          {stage === '포지션' && (
+            <ProfileFormPositionInput
+              positionSelectItems={positionSelectItems}
+            />
+          )}
+          {stage === '기술' && (
+            <ProfileFormSkillInput skillsSelectItems={skillsSelectItems} />
+          )}
+          {stage === '학력' && <ProfileFormSchoolInput />}
+          {stage === '연락처' && <ProfileFormContactInput />}
+        </form>
+      </FormProvider>
+    </div>
   );
 };
 

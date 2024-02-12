@@ -14,7 +14,7 @@ export default async function IndexPage({}: {}) {
     hasProfile = result.rows[0].count !== '0';
   }
   const mainCTAHref =
-    isLoggedIn && hasProfile ? '/my-profile' : '/profile-form';
+    isLoggedIn && hasProfile ? '/my-profile' : '/profile-form?stage=포지션';
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
