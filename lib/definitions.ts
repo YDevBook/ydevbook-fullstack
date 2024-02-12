@@ -60,6 +60,7 @@ export interface Profile {
 }
 
 export interface ProfileFormData {
+  name: string;
   phoneNumber: string;
   email: string;
   dateOfBirth?: string;
