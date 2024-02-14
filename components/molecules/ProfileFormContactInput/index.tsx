@@ -1,8 +1,8 @@
 'use client';
 
-import { ProfileFormData } from '@/lib/definitions';
 import { Button, TextInput } from '@tremor/react';
 import { useFormContext } from 'react-hook-form';
+import { ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormContactlInputProps {}
 

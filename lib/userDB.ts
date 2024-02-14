@@ -1,5 +1,5 @@
-import { User } from '@/lib/definitions';
 import { sql } from '@vercel/postgres';
+import { User } from '@/lib/definitions';
 
 export async function getUserByCredentials(
   email: string,

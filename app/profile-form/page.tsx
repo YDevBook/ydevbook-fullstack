@@ -1,7 +1,6 @@
+import { sql } from '@vercel/postgres';
 import ProfileForm from '@/components/organisms/ProfileForm';
 import { ArrayItemQueryRows } from '@/lib/definitions';
-import { Title, Text } from '@tremor/react';
-import { sql } from '@vercel/postgres';
 
 export default async function ProfileFormPage() {
   let positionSelectItems = [] as ArrayItemQueryRows[];

@@ -1,18 +1,17 @@
 'use client';
 
-import { updateProfile } from '@/lib/actions';
+import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { Button } from '@tremor/react';
+import { useContext } from 'react';
+import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import {
-  ArrayItemQueryRows,
   GraduateStatusOptions,
   Profile,
   ProfileUpdateFormData
 } from '@/lib/definitions';
-import { useForm } from 'react-hook-form';
-import Image from 'next/image';
-import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
-import { useSession } from 'next-auth/react';
-import { Button } from '@tremor/react';
-import { useContext } from 'react';
+import { updateProfile } from '@/lib/actions';
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ProfileUpdateFormProps {

@@ -1,9 +1,9 @@
 'use server';
-import { auth, signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
+import { auth, signIn } from '@/auth';
 import {
   ExperienceFormData,
   ExperienceUpdateFormData,

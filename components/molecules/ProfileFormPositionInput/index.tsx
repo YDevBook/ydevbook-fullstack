@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 import { Button, MultiSelect, MultiSelectItem } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
+import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormPositionInputProps {
   positionSelectItems: ArrayItemQueryRows[];

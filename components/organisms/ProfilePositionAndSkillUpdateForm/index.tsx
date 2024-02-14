@@ -1,5 +1,8 @@
 'use client';
 
+import { Button } from '@tremor/react';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfilePositionAndSkills } from '@/lib/actions';
 import {
@@ -7,9 +10,6 @@ import {
   Profile,
   ProfilePositionAndSkillsUpdateFormData
 } from '@/lib/definitions';
-import { Button } from '@tremor/react';
-import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
 
 interface ProfilePositionAndSkillUpdateFormProps {
   profile: Profile;

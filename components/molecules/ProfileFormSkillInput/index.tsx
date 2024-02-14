@@ -1,10 +1,10 @@
 'use client';
 
-import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
-import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 import { Button } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
+import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
+import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
 
 interface ProfileFormSkillInputProps {
   skillsSelectItems: ArrayItemQueryRows[];

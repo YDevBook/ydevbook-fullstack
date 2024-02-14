@@ -1,14 +1,14 @@
-import { auth } from '@/auth';
-import FileAttachInput from '@/components/molecules/FileAttachInput';
-import ExperiencesCard from '@/components/organisms/ExperiencesCard';
-import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
-import { Badge, Card, Text, Title, Button, Switch } from '@tremor/react';
+import { Badge, Card, Text, Title, Button } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import Image from 'next/image';
+import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
+import ExperiencesCard from '@/components/organisms/ExperiencesCard';
+import FileAttachInput from '@/components/molecules/FileAttachInput';
+import { auth } from '@/auth';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
 
 export default async function MyProfilePage() {

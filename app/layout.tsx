@@ -1,9 +1,9 @@
 import { auth } from '@/auth';
 import './globals.css';
 
-import Nav from './nav';
 import { Suspense } from 'react';
 import { SessionProvider } from 'next-auth/react';
+import Nav from './nav';
 import { NotificationContextProvider } from '@/contexts/NotificationContext';
 
 export const metadata = {

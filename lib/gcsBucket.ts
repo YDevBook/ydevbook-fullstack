@@ -1,6 +1,6 @@
-import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import { Stream } from 'stream';
+import { Storage } from '@google-cloud/storage';
 
 const credentials = {
   type: 'service_account',

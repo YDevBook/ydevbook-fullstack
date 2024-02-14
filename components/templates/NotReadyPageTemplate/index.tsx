@@ -1,5 +1,5 @@
-import MainPageComponent from '@/components/templates/MainPageComponent';
 import { Title } from '@tremor/react';
+import MainPageComponent from '@/components/templates/MainPageComponent';
 
 const NotReadyPageTemplate = () => {
   return (

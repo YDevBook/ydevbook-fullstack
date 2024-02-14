@@ -1,10 +1,10 @@
-import { auth } from '@/auth';
-import ProfileUpdateForm from '@/components/organisms/ProfileUpdateForm';
-import { Profile } from '@/lib/definitions';
 import { Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { Profile } from '@/lib/definitions';
+import ProfileUpdateForm from '@/components/organisms/ProfileUpdateForm';
+import { auth } from '@/auth';
 
 export default async function MyProfileEditPage() {
   noStore();

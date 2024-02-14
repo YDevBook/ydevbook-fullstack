@@ -1,9 +1,9 @@
-import { auth } from '@/auth';
-import ProfilePositionAndSkillUpdateForm from '@/components/organisms/ProfilePositionAndSkillUpdateForm';
-import { ArrayItemQueryRows, Profile } from '@/lib/definitions';
 import { Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
+import { auth } from '@/auth';
+import ProfilePositionAndSkillUpdateForm from '@/components/organisms/ProfilePositionAndSkillUpdateForm';
+import { ArrayItemQueryRows, Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditSkillsPage() {
   noStore();

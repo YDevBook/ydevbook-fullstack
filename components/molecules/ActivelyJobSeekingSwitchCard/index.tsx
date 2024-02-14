@@ -1,10 +1,10 @@
 'use client';
 
-import { NotificationContext } from '@/contexts/NotificationContext';
 import { Card, Title, Switch, Text } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ActivelyJobSeekingSwitchCardProps {
   initialIsActive?: boolean;

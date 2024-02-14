@@ -1,9 +1,9 @@
-import EmployeeCard from '@/components/molecules/EmployeeCard';
-import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
-import { fetchFilteredProfile, fetchFilteredProfilesPages } from '@/lib/data';
 import { Title, Text } from '@tremor/react';
 import clsx from 'clsx';
 import Link from 'next/link';
+import EmployeeCard from '@/components/molecules/EmployeeCard';
+import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
+import { fetchFilteredProfile, fetchFilteredProfilesPages } from '@/lib/data';
 
 interface DeveloperListPageProps {
   searchParams?: {

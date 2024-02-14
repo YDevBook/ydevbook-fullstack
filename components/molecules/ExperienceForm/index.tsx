@@ -1,9 +1,9 @@
 'use client';
 
-import { ExperienceFormData } from '@/lib/definitions';
 import { Textarea, Button } from '@tremor/react';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { ExperienceFormData } from '@/lib/definitions';
 
 interface ExperienceFormProps {
   action: () => void;

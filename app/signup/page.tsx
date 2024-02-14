@@ -1,5 +1,4 @@
 import SignUpForm from '@/components/organisms/SignupForm';
-import { Title, Text } from '@tremor/react';
 
 export default function SignUpPage() {
   return (
