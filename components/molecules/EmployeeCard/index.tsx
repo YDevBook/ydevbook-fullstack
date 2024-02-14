@@ -1,5 +1,5 @@
-import { Profile } from '@/lib/definitions';
 import { Card } from '@tremor/react';
+import { Profile } from '@/lib/definitions';
 
 interface EmployeeCardProps {
   profile: Profile;

@@ -7,11 +7,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { useFormState, useFormStatus } from 'react-dom';
-import { authenticate } from '@/lib/actions';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@tremor/react';
 import { signIn } from 'next-auth/react';
+import { authenticate } from '@/lib/actions';
 
 interface LoginFormProps {
   isStartup?: boolean;

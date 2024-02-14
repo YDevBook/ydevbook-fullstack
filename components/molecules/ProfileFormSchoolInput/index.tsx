@@ -1,9 +1,9 @@
 'use client';
 
-import { GraduateStatusOptions, ProfileFormData } from '@/lib/definitions';
 import { Button, Select, SelectItem, TextInput } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
+import { GraduateStatusOptions, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormSchoolInputProps {}
 

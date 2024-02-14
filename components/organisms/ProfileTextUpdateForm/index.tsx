@@ -1,9 +1,9 @@
 'use client';
 
-import { NotificationContext } from '@/contexts/NotificationContext';
-import { updateProfileText } from '@/lib/actions';
 import { Button, Textarea } from '@tremor/react';
 import { useContext } from 'react';
+import { NotificationContext } from '@/contexts/NotificationContext';
+import { updateProfileText } from '@/lib/actions';
 
 const ProfileTextUpdateForm = ({
   columnName,

@@ -4,9 +4,9 @@ import { Badge, Card, Title } from '@tremor/react';
 import { useContext, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Text, Button } from '@tremor/react';
 import { Experience, ExperienceFormData } from '@/lib/definitions';
 import { updateExperience } from '@/lib/actions';
-import { Text, Button } from '@tremor/react';
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 const ExperienceForm = dynamic(

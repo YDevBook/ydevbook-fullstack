@@ -1,6 +1,5 @@
 'use client';
 
-import { signUp } from '@/lib/actions';
 import {
   ArrowRightIcon,
   AtSymbolIcon,
@@ -10,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from '@tremor/react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { signUp } from '@/lib/actions';
 
 const SignUpForm = () => {
   const [errorMessage, dispatch] = useFormState(signUp, undefined);

@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useContext } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import ProfileFormContactInput from '@/components/molecules/ProfileFormContactInput';
 import ProfileFormPositionInput from '@/components/molecules/ProfileFormPositionInput';
 import ProfileFormSchoolInput from '@/components/molecules/ProfileFormSchoolInput';
@@ -7,9 +10,6 @@ import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput'
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { insertProfile } from '@/lib/actions';
 import { ProfileFormData } from '@/lib/definitions';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useContext } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
 
 // 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호
 

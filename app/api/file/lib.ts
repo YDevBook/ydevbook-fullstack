@@ -1,7 +1,7 @@
+import path from 'path';
+import { sql } from '@vercel/postgres';
 import { auth } from '@/auth';
 import { streamFileUpload } from '@/lib/gcsBucket';
-import { sql } from '@vercel/postgres';
-import path from 'path';
 
 export async function attachmentFileUpload(file: File) {
   try {

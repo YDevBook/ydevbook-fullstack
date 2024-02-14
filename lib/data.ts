@@ -1,8 +1,8 @@
 'use server';
 
+import { sql } from '@vercel/postgres';
 import { auth } from '@/auth';
 import { Profile } from '@/lib/definitions';
-import { sql } from '@vercel/postgres';
 
 const ITEMS_PER_PAGE = 6;
 
