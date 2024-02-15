@@ -8,6 +8,8 @@ interface NotificationContent {
   description: ReactNode;
   confirmText?: string;
   onConfirm?: () => void;
+  cancelText?: string;
+  onCancel?: () => void;
 }
 
 interface NotificationContextProps {
@@ -55,10 +57,23 @@ export const NotificationContextProvider = ({
                 setIsOpen(false);
                 content.onConfirm?.();
               }}
-              variant="light"
             >
               {content.confirmText || '확인'}
             </Button>
+            {!!content.onCancel && (
+              <span className="pl-2">
+                <Button
+                  className="ml-4"
+                  onClick={() => {
+                    setIsOpen(false);
+                    content.onCancel?.();
+                  }}
+                  variant="secondary"
+                >
+                  {content.cancelText || '취소'}
+                </Button>
+              </span>
+            )}
           </div>
         </DialogPanel>
       </Dialog>

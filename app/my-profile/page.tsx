@@ -103,6 +103,21 @@ export default async function MyProfilePage() {
     }
   };
 
+  const onClickFileDelete = async (fileId: number) => {
+    'use server';
+    try {
+      await sql.query(
+        `
+        DELETE FROM files WHERE id = $1;
+      `,
+        [fileId]
+      );
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return (
     <main className="p-4 mx-auto md:p-10 max-w-7xl">
       <Title className="my-4">내 프로필</Title>
@@ -203,7 +218,10 @@ export default async function MyProfilePage() {
                     {file.fileName}
                   </a>
                   <div className="mx-2 flex items-center">
-                    <FileDeleteButton />
+                    <FileDeleteButton
+                      onDelete={onClickFileDelete}
+                      fileId={file.id}
+                    />
                   </div>
                 </div>
               ))}
