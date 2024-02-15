@@ -15,6 +15,7 @@ import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import { auth } from '@/auth';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
+import FileDeleteButton from '@/components/atoms/FileDeleteButton';
 
 export default async function MyProfilePage() {
   noStore();
@@ -195,13 +196,18 @@ export default async function MyProfilePage() {
               첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
               아래의 버튼을 눌러주세요.
             </Text>
-            {attachedFiles.map((file) => (
-              <div key={file.id}>
-                <a href={file.mediaLink} download={file.fileName}>
-                  {file.fileName}
-                </a>
-              </div>
-            ))}
+            <div className="mt-4">
+              {attachedFiles.map((file) => (
+                <div key={file.id} className="flex justify-start items-center">
+                  <a href={file.mediaLink} download={file.fileName}>
+                    {file.fileName}
+                  </a>
+                  <div className="mx-2 flex items-center">
+                    <FileDeleteButton />
+                  </div>
+                </div>
+              ))}
+            </div>
             <FileAttachInput />
           </Card>
         </div>
