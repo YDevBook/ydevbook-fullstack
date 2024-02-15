@@ -5,11 +5,17 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
-import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
+import {
+  AttachmentFiles,
+  Experience,
+  GraduateStatusOptions,
+  Profile
+} from '@/lib/definitions';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import { auth } from '@/auth';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
+import FileDeleteButton from '@/components/atoms/FileDeleteButton';
 
 export default async function MyProfilePage() {
   noStore();
@@ -68,7 +74,6 @@ export default async function MyProfilePage() {
     phoneNumber,
     email,
     dateOfBirth,
-    sex,
     address,
     positions,
     skills,
@@ -91,6 +96,21 @@ export default async function MyProfilePage() {
         WHERE "userId" = $2;
       `,
         [isActive, session?.user.id]
+      );
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const onClickFileDelete = async (fileId: number) => {
+    'use server';
+    try {
+      await sql.query(
+        `
+        DELETE FROM files WHERE id = $1;
+      `,
+        [fileId]
       );
     } catch (error) {
       console.log(error);
@@ -128,15 +148,21 @@ export default async function MyProfilePage() {
               {dateOfBirth?.toDateString() ||
                 '생년월일 정보를 업데이트 해주세요.'}
             </Title>
-            <Text>성별</Text>
-            <Title>{sex}</Title>
             <Text>거주 지역</Text>
-            <Title>{address}</Title>
+            <Title>{address || '거주 지역 정보를 업데이트 해주세요.'}</Title>
             <Text>학력</Text>
             <Title>{school}</Title>
             <Text>전공</Text>
-            <Title>{major}</Title>
-            <Title>{graduateStatus}</Title>
+            <Title>
+              {major}(
+              {
+                GraduateStatusOptions.find(
+                  (option) => option.value === graduateStatus
+                )?.label
+              }
+              )
+            </Title>
+            <Title></Title>
             <Text>깃헙 링크</Text>
             <Title>{githubLink || '깃헙 페이지 링크를 등록해주세요.'}</Title>
             <Text>웹 링크</Text>
@@ -185,13 +211,21 @@ export default async function MyProfilePage() {
               첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
               아래의 버튼을 눌러주세요.
             </Text>
-            {attachedFiles.map((file) => (
-              <div key={file.id}>
-                <a href={file.mediaLink} download={file.fileName}>
-                  {file.fileName}
-                </a>
-              </div>
-            ))}
+            <div className="mt-4">
+              {attachedFiles.map((file) => (
+                <div key={file.id} className="flex justify-start items-center">
+                  <a href={file.mediaLink} download={file.fileName}>
+                    {file.fileName}
+                  </a>
+                  <div className="mx-2 flex items-center">
+                    <FileDeleteButton
+                      onDelete={onClickFileDelete}
+                      fileId={file.id}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
             <FileAttachInput />
           </Card>
         </div>

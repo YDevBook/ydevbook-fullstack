@@ -82,8 +82,25 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
         id="file"
         onChange={onInputChange}
       />
-      <label htmlFor="file">추가하기</label>
-      <Button type="submit">업로드</Button>
+      <label
+        className="bg-tremor-brand-faint border-2 border-tremor-brand-muted rounded-tremor-default p-2 my-2 inline-block cursor-pointer"
+        htmlFor="file"
+        onClick={(e) => {
+          if (files.length > 0) {
+            e.preventDefault();
+            setContent?.({
+              title: 'Alert',
+              description: '한번에 한개의 파일만 업로드 가능합니다.'
+            });
+            setIsOpen?.(true);
+          }
+        }}
+      >
+        추가하기
+      </label>
+      <div>
+        <Button type="submit">업로드</Button>
+      </div>
     </form>
   );
 };
