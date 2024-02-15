@@ -5,7 +5,12 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
-import { AttachmentFiles, Experience, Profile } from '@/lib/definitions';
+import {
+  AttachmentFiles,
+  Experience,
+  GraduateStatusOptions,
+  Profile
+} from '@/lib/definitions';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import { auth } from '@/auth';
@@ -68,7 +73,6 @@ export default async function MyProfilePage() {
     phoneNumber,
     email,
     dateOfBirth,
-    sex,
     address,
     positions,
     skills,
@@ -128,15 +132,21 @@ export default async function MyProfilePage() {
               {dateOfBirth?.toDateString() ||
                 '생년월일 정보를 업데이트 해주세요.'}
             </Title>
-            <Text>성별</Text>
-            <Title>{sex}</Title>
             <Text>거주 지역</Text>
-            <Title>{address}</Title>
+            <Title>{address || '거주 지역 정보를 업데이트 해주세요.'}</Title>
             <Text>학력</Text>
             <Title>{school}</Title>
             <Text>전공</Text>
-            <Title>{major}</Title>
-            <Title>{graduateStatus}</Title>
+            <Title>
+              {major}(
+              {
+                GraduateStatusOptions.find(
+                  (option) => option.value === graduateStatus
+                )?.label
+              }
+              )
+            </Title>
+            <Title></Title>
             <Text>깃헙 링크</Text>
             <Title>{githubLink || '깃헙 페이지 링크를 등록해주세요.'}</Title>
             <Text>웹 링크</Text>
