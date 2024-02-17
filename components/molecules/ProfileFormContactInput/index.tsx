@@ -2,17 +2,17 @@
 
 import { Button, TextInput } from '@tremor/react';
 import { useFormContext } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormContactlInputProps {}
 
 const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
   const {
-    watch,
     register,
     formState: { errors }
   } = useFormContext<ProfileFormData>();
-  const all = watch();
+  const router = useRouter();
 
   return (
     <div className="w-full">
@@ -46,7 +46,10 @@ const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
           placeholder=""
           maxLength={50}
         />
-        <Button type="submit" onClick={() => console.log(all)}>
+        <Button
+          type="button"
+          onClick={() => router.replace('/profile-form?stage=' + '한줄소개')}
+        >
           다음
         </Button>
       </div>
