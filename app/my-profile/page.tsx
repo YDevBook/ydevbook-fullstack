@@ -81,6 +81,7 @@ export default async function MyProfilePage() {
     major,
     graduateStatus,
     personalStatement,
+    shortBio,
     githubLink,
     webLink,
     isActivelySeeking
@@ -175,6 +176,24 @@ export default async function MyProfilePage() {
         </div>
         <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
           <Card className="w-full mx-auto">
+            <Link href="/my-profile/edit-text?column=shortBio">
+              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
+            </Link>
+            <Title>한줄 소개</Title>
+            <Text className="whitespace-pre-line">
+              {shortBio || '짧은 한 줄로 본인을 표현해보세요.'}
+            </Text>
+          </Card>
+          <Card className="w-full mx-auto mt-4">
+            <Link href="/my-profile/edit-text?column=personalStatement">
+              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
+            </Link>
+            <Title>자기 소개</Title>
+            <Text className="whitespace-pre-line">
+              {personalStatement || '자기 소개 글을 등록해주세요.'}
+            </Text>
+          </Card>
+          <Card className="w-full mx-auto mt-4">
             <Link href="/my-profile/edit-position-and-skills">
               <Button className="absolute top-0 right-0 m-4">수정하기</Button>
             </Link>
@@ -196,15 +215,6 @@ export default async function MyProfilePage() {
             </div>
           </Card>
           <ExperiencesCard experiences={experiences} />
-          <Card className="w-full mx-auto mt-4">
-            <Link href="/my-profile/edit-text?column=personalStatement">
-              <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-            </Link>
-            <Title>자기 소개</Title>
-            <Text className="whitespace-pre-line">
-              {personalStatement || '자기 소개 글을 등록해주세요.'}
-            </Text>
-          </Card>
           <Card className="w-full mx-auto mt-4">
             <Title>첨부 자료</Title>
             <Text>

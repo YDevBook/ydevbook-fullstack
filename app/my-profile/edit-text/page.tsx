@@ -11,7 +11,7 @@ const MyProfileEditTextPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   if (
-    !['personalStatement', 'mainStrength', 'expectationText'].includes(
+    !['personalStatement', 'mainStrength', 'shortBio'].includes(
       (searchParams.column as string) || ''
     )
   )
@@ -29,8 +29,8 @@ const MyProfileEditTextPage = async ({
         return '자기 소개 입력';
       case 'mainStrength':
         return '주요 강점 입력';
-      case 'expectationText':
-        return '스타트업에 바라는 점 입력';
+      case 'shortBio':
+        return '한줄 소개 입력';
       default:
         return '자기 소개 입력';
     }

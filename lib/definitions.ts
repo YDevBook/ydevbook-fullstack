@@ -32,7 +32,7 @@ export const GraduateStatusOptions = [
 export interface ProfileTextData extends Record<string, string | undefined> {
   personalStatement?: string;
   mainStrength?: string;
-  expectationText?: string;
+  shortBio?: string;
 }
 
 export interface Profile {
@@ -52,7 +52,7 @@ export interface Profile {
   graduateStatus?: string;
   personalStatement?: string;
   mainStrength?: string;
-  expectationText?: string;
+  shortBio?: string;
   githubLink?: string;
   webLink?: string;
   attachedFiles?: string[];
@@ -77,7 +77,7 @@ export type ProfileUpdateFormData = Omit<
   Profile,
   | 'personalStatement'
   | 'mainStrength'
-  | 'expectationText'
+  | 'shortBio'
   | 'positions'
   | 'skills'
   | 'isActivelySeeking'
