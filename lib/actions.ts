@@ -116,32 +116,30 @@ export async function insertProfile(data: ProfileFormData) {
       name,
       phoneNumber,
       email,
-      dateOfBirth,
-      address,
       positions,
       skills,
       school,
       major,
       graduateStatus,
-      githubLink
+      shortBio,
+      introductionKeywords
     } = removeEmptyString(data);
     const query = `
-  INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+  INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "positions", "skills", "school", "major", "graduateStatus", "shortBio", "introductionKeywords")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
   `;
     await sql.query(query, [
       userId,
       name,
       email,
       phoneNumber,
-      dateOfBirth,
-      address,
       positions,
       skills,
       school,
       major,
       graduateStatus,
-      githubLink
+      shortBio,
+      introductionKeywords
     ]);
     return { status: 200 };
   } catch (error) {

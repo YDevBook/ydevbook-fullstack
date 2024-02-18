@@ -10,8 +10,9 @@ import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput'
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { insertProfile } from '@/lib/actions';
 import { ProfileFormData } from '@/lib/definitions';
+import ProfileFormShortBioInput from '@/components/molecules/ProfileFormShortBioInput';
 
-// 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호
+// 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호 -> 한줄 소개
 
 const ProfileForm = ({
   positionSelectItems,
@@ -98,6 +99,7 @@ const ProfileForm = ({
           )}
           {stage === '학력' && <ProfileFormSchoolInput />}
           {stage === '연락처' && <ProfileFormContactInput />}
+          {stage === '한줄소개' && <ProfileFormShortBioInput />}
         </form>
       </FormProvider>
     </div>
