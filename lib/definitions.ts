@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   email?: string;
-  password: string;
+  password?: string;
   name: string;
   profileImageUrl?: string;
   isStartup?: boolean;
@@ -17,7 +17,7 @@ export enum GraduateStatus {
   졸업 = 'GR',
   졸업예정 = 'GS',
   중퇴 = 'DO',
-  수료 = 'CC'
+  수료 = 'CC',
 }
 
 export const GraduateStatusOptions = [
@@ -26,7 +26,7 @@ export const GraduateStatusOptions = [
   { value: GraduateStatus.졸업, label: '졸업' },
   { value: GraduateStatus.졸업예정, label: '졸업예정' },
   { value: GraduateStatus.중퇴, label: '중퇴' },
-  { value: GraduateStatus.수료, label: '수료' }
+  { value: GraduateStatus.수료, label: '수료' },
 ];
 
 export const IntroductionKeywords = [
@@ -39,7 +39,7 @@ export const IntroductionKeywords = [
   '새로운 것을 배우는 것을 좋아해요.',
   '문제 해결 능력이 뛰어나요.',
   '자율적으로 일할 수 있어요.',
-  '신뢰할 수 있는 사람이에요.'
+  '신뢰할 수 있는 사람이에요.',
 ];
 
 export interface ProfileTextData extends Record<string, string | undefined> {

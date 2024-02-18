@@ -1,9 +1,10 @@
 import { Text, Title, Button } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import Link from 'next/link';
+
 import { auth } from '@/auth';
 
-export default async function IndexPage({}: {}) {
+export default async function IndexPage() {
   const session = await auth();
   const isLoggedIn = !!session?.user;
   let hasProfile = false;

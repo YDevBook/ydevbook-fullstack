@@ -1,6 +1,7 @@
 import { Title, Text } from '@tremor/react';
 import clsx from 'clsx';
 import Link from 'next/link';
+
 import EmployeeCard from '@/components/molecules/EmployeeCard';
 import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
 import { fetchFilteredProfile, fetchFilteredProfilesPages } from '@/lib/data';
@@ -14,7 +15,7 @@ interface DeveloperListPageProps {
 }
 
 export default async function DeveloperListPage({
-  searchParams
+  searchParams,
 }: DeveloperListPageProps) {
   const query = searchParams?.query || '';
   const currentPageNum = Number(searchParams?.page) || 1;
@@ -26,7 +27,7 @@ export default async function DeveloperListPage({
   );
   const { data: totalPageNum } = await fetchFilteredProfilesPages({
     query,
-    position
+    position,
   });
 
   return (

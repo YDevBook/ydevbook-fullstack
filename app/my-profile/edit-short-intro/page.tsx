@@ -1,9 +1,10 @@
 import { Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
+
 import { auth } from '@/auth';
-import { Profile } from '@/lib/definitions';
 import ProfileShortIntroUpdateForm from '@/components/organisms/ProfileShortIntroUpdateForm';
+import { Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditShortIntroPage() {
   noStore();

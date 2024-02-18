@@ -3,6 +3,7 @@
 import { Button, MultiSelect, MultiSelectItem } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
+
 import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormPositionInputProps {
@@ -10,14 +11,14 @@ interface ProfileFormPositionInputProps {
 }
 
 const ProfileFormPositionInput = ({
-  positionSelectItems
+  positionSelectItems,
 }: ProfileFormPositionInputProps) => {
   const router = useRouter();
   const {
     setValue,
     watch,
     formState: { errors },
-    setError
+    setError,
   } = useFormContext<ProfileFormData>();
   const { positions } = watch();
 
@@ -29,7 +30,7 @@ const ProfileFormPositionInput = ({
     if (!positions || positions.length === 0) {
       setError('positions', {
         type: 'required',
-        message: '최소 하나의 구직 포지션을 선택해주세요.'
+        message: '최소 하나의 구직 포지션을 선택해주세요.',
       });
       return;
     } else {

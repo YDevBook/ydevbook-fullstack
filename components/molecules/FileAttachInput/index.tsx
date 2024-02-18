@@ -2,6 +2,7 @@
 
 import { Button } from '@tremor/react';
 import { useContext, useState } from 'react';
+
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface FileAttachInputProps {
@@ -20,7 +21,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
     if (file.size > 1024 * 1024 * 4) {
       setContent?.({
         title: 'Error',
-        description: '4MB 이하의 파일만 업로드 가능합니다.'
+        description: '4MB 이하의 파일만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
@@ -40,20 +41,20 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
 
       const response = await fetch('/api/file?upload-type=attachment-file', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
       if (response.ok) {
         setContent?.({
           title: 'Success',
           description: '파일을 업로드 했습니다.',
-          onConfirm: () => window.location.reload()
+          onConfirm: () => window.location.reload(),
         });
         setIsOpen?.(true);
         return;
       } else {
         setContent?.({
           title: 'Error',
-          description: '파일 업로드에 실패했습니다.'
+          description: '파일 업로드에 실패했습니다.',
         });
         setIsOpen?.(true);
         return;
@@ -61,7 +62,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '파일 업로드에 실패했습니다.'
+        description: '파일 업로드에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -90,7 +91,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
             e.preventDefault();
             setContent?.({
               title: 'Alert',
-              description: '한번에 한개의 파일만 업로드 가능합니다.'
+              description: '한번에 한개의 파일만 업로드 가능합니다.',
             });
             setIsOpen?.(true);
           }

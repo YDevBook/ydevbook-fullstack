@@ -2,8 +2,9 @@
 
 import { Button, TextInput } from '@tremor/react';
 import { useFormContext } from 'react-hook-form';
-import { IntroductionKeywords, ProfileFormData } from '@/lib/definitions';
+
 import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
+import { IntroductionKeywords, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormShortBioInputProps {}
 
@@ -22,7 +23,7 @@ const ProfileFormShortBioInput = ({}: ProfileFormShortBioInputProps) => {
     } else {
       setValue('introductionKeywords', [
         ...(introductionKeywords ?? []),
-        value
+        value,
       ]);
     }
   };

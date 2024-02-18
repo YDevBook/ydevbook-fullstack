@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import { User } from '@/lib/definitions';
+import { User } from 'next-auth';
 
 export async function getUserByCredentials(
   email: string,

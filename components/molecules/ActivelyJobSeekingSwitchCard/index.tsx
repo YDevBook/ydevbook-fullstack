@@ -4,6 +4,7 @@ import { Card, Title, Switch, Text } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ActivelyJobSeekingSwitchCardProps {
@@ -13,7 +14,7 @@ interface ActivelyJobSeekingSwitchCardProps {
 
 const ActivelyJobSeekingSwitchCard = ({
   initialIsActive,
-  onChange
+  onChange,
 }: ActivelyJobSeekingSwitchCardProps) => {
   const [isActive, setIsActive] = useState<boolean>(initialIsActive || false);
   const { setContent, setIsOpen } = useContext(NotificationContext);
@@ -29,7 +30,7 @@ const ActivelyJobSeekingSwitchCard = ({
           title: 'Error',
           description:
             '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-          onConfirm: () => router.refresh()
+          onConfirm: () => router.refresh(),
         });
         setIsOpen?.(true);
         return;

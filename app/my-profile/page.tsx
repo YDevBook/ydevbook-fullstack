@@ -1,21 +1,22 @@
-import { Badge, Card, Text, Title, Button } from '@tremor/react';
+import { Badge, Button, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import Image from 'next/image';
+
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import { auth } from '@/auth';
+import FileDeleteButton from '@/components/atoms/FileDeleteButton';
+import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
+import FileAttachInput from '@/components/molecules/FileAttachInput';
+import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import {
   AttachmentFiles,
   Experience,
   GraduateStatusOptions,
-  Profile
+  Profile,
 } from '@/lib/definitions';
-import ExperiencesCard from '@/components/organisms/ExperiencesCard';
-import FileAttachInput from '@/components/molecules/FileAttachInput';
-import { auth } from '@/auth';
-import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
-import FileDeleteButton from '@/components/atoms/FileDeleteButton';
 
 export default async function MyProfilePage() {
   noStore();
@@ -48,11 +49,11 @@ export default async function MyProfilePage() {
     const [
       profileQueryResults,
       experiencesQueryResults,
-      attachedFilesQueryResults
+      attachedFilesQueryResults,
     ] = await Promise.all([
       profilePromise,
       experiencesPromise,
-      attachedFilesPromise
+      attachedFilesPromise,
     ]);
 
     if (profileQueryResults.rows.length === 0) {
@@ -85,7 +86,7 @@ export default async function MyProfilePage() {
     githubLink,
     webLink,
     isActivelySeeking,
-    introductionKeywords
+    introductionKeywords,
   } = profile;
 
   const onClickJobSeekingSwitch = async (isActive: boolean) => {

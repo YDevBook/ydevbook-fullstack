@@ -9,7 +9,7 @@ const positionList = [
   '풀스택',
   '데이터사이언티스트',
   'DevOps',
-  '게임 서버'
+  '게임 서버',
 ];
 
 const EmployeeListSearch = () => {

@@ -1,18 +1,19 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { Button } from '@tremor/react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { Button } from '@tremor/react';
 import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import { NotificationContext } from '@/contexts/NotificationContext';
+import { updateProfile } from '@/lib/actions';
 import {
   GraduateStatusOptions,
   Profile,
-  ProfileUpdateFormData
+  ProfileUpdateFormData,
 } from '@/lib/definitions';
-import { updateProfile } from '@/lib/actions';
-import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ProfileUpdateFormProps {
   profile: Profile;
@@ -21,7 +22,7 @@ interface ProfileUpdateFormProps {
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
   const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
-    defaultValues: { ...profile, dateOfBirth: undefined }
+    defaultValues: { ...profile, dateOfBirth: undefined },
   });
   const { setContent, setIsOpen } = useContext(NotificationContext);
 
@@ -32,21 +33,21 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
-          onConfirm: () => window.location.replace('/my-profile')
+          onConfirm: () => window.location.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -62,7 +63,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (file.size > 1024 * 1024 * 4) {
       setContent?.({
         title: 'Error',
-        description: '4MB 이하의 이미지만 업로드 가능합니다.'
+        description: '4MB 이하의 이미지만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
@@ -70,7 +71,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (!file.type.includes('image')) {
       setContent?.({
         title: 'Error',
-        description: '이미지 파일만 업로드 가능합니다.'
+        description: '이미지 파일만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
@@ -81,20 +82,20 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
 
       const response = await fetch('/api/file?upload-type=profile-image', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
         setContent?.({
           title: 'Success',
-          description: '프로필 이미지를 변경했습니다.'
+          description: '프로필 이미지를 변경했습니다.',
         });
         setIsOpen?.(true);
       } else {
         setContent?.({
           title: 'Error',
-          description: '프로필 이미지 업로드에 실패했습니다.'
+          description: '프로필 이미지 업로드에 실패했습니다.',
         });
         setIsOpen?.(true);
         return;
@@ -102,7 +103,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 이미지 업로드에 실패했습니다.'
+        description: '프로필 이미지 업로드에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;

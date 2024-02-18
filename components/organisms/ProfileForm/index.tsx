@@ -3,20 +3,21 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useContext } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+
 import ProfileFormContactInput from '@/components/molecules/ProfileFormContactInput';
 import ProfileFormPositionInput from '@/components/molecules/ProfileFormPositionInput';
 import ProfileFormSchoolInput from '@/components/molecules/ProfileFormSchoolInput';
+import ProfileFormShortBioInput from '@/components/molecules/ProfileFormShortBioInput';
 import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { insertProfile } from '@/lib/actions';
 import { ProfileFormData } from '@/lib/definitions';
-import ProfileFormShortBioInput from '@/components/molecules/ProfileFormShortBioInput';
 
 // 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호 -> 한줄 소개
 
 const ProfileForm = ({
   positionSelectItems,
-  skillsSelectItems
+  skillsSelectItems,
 }: {
   positionSelectItems: { name: string }[];
   skillsSelectItems: { name: string }[];
@@ -29,8 +30,8 @@ const ProfileForm = ({
   const methods = useForm<ProfileFormData>({
     defaultValues: {
       positions: [],
-      skills: []
-    }
+      skills: [],
+    },
   });
   const { handleSubmit, watch } = methods;
   const { positions, skills } = watch();
@@ -41,7 +42,7 @@ const ProfileForm = ({
         title: 'Error',
         description:
           '정보가 정확하게 입력되지 않았습니다. 처음부터 다시 입력해주세요.',
-        onConfirm: () => router.replace('/profile-form?stage=포지션')
+        onConfirm: () => router.replace('/profile-form?stage=포지션'),
       });
       setIsOpen?.(true);
       return;
@@ -52,7 +53,7 @@ const ProfileForm = ({
         setContent?.({
           title: 'Error',
           description: '프로필이 이미 존재합니다.',
-          onConfirm: () => router.replace('/my-profile')
+          onConfirm: () => router.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
@@ -61,21 +62,21 @@ const ProfileForm = ({
         setContent?.({
           title: 'Success',
           description: '프로필을 생성했습니다.',
-          onConfirm: () => router.replace('/my-profile')
+          onConfirm: () => router.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '프로필 생성에 실패했습니다.'
+        description: '프로필 생성에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 생성에 실패했습니다.'
+        description: '프로필 생성에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;

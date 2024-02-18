@@ -3,22 +3,23 @@
 import { Button } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
-import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
+
 import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
+import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormSkillInputProps {
   skillsSelectItems: ArrayItemQueryRows[];
 }
 
 const ProfileFormSkillInput = ({
-  skillsSelectItems
+  skillsSelectItems,
 }: ProfileFormSkillInputProps) => {
   const router = useRouter();
   const {
     setValue,
     watch,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext<ProfileFormData>();
   const { skills } = watch();
 
@@ -35,7 +36,7 @@ const ProfileFormSkillInput = ({
     if (!skills || skills.length === 0) {
       setError('skills', {
         type: 'required',
-        message: '최소 하나의 기술을 선택해주세요.'
+        message: '최소 하나의 기술을 선택해주세요.',
       });
       return;
     } else {

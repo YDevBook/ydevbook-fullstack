@@ -1,8 +1,9 @@
 'use server';
-import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
+import { AuthError } from 'next-auth';
+
 import { auth, signIn } from '@/auth';
 import {
   ExperienceFormData,
@@ -10,7 +11,7 @@ import {
   ProfileFormData,
   ProfilePositionAndSkillsUpdateFormData,
   ProfileShortIntroUpdateFormData,
-  ProfileUpdateFormData
+  ProfileUpdateFormData,
 } from '@/lib/definitions';
 
 // ...
@@ -96,6 +97,7 @@ export async function signUp(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const removeEmptyString = <T extends Record<string, any>>(obj: T): T => {
   const returnObj = {} as T;
   for (const [key, value] of Object.entries(obj)) {
@@ -123,7 +125,7 @@ export async function insertProfile(data: ProfileFormData) {
       major,
       graduateStatus,
       shortBio,
-      introductionKeywords
+      introductionKeywords,
     } = removeEmptyString(data);
     const query = `
   INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "positions", "skills", "school", "major", "graduateStatus", "shortBio", "introductionKeywords")
@@ -140,7 +142,7 @@ export async function insertProfile(data: ProfileFormData) {
       major,
       graduateStatus,
       shortBio,
-      introductionKeywords
+      introductionKeywords,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -172,7 +174,7 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       major,
       graduateStatus,
       githubLink,
-      webLink
+      webLink,
     } = removeEmptyString(data);
     const query = `
       UPDATE profiles
@@ -201,7 +203,7 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       graduateStatus,
       githubLink,
       webLink,
-      userId
+      userId,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -305,7 +307,7 @@ export async function insertExperience(data: ExperienceFormData) {
       endDate,
       isWorkingNow,
       skills,
-      description
+      description,
     } = removeEmptyString(data);
     const query = `INSERT INTO experiences ("userId", "companyName", "position", "startDate", "endDate", "isWorkingNow", "skills", "description")
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
@@ -317,7 +319,7 @@ export async function insertExperience(data: ExperienceFormData) {
       !isWorkingNow ? endDate || undefined : undefined,
       isWorkingNow,
       skills,
-      description
+      description,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -342,7 +344,7 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       endDate,
       isWorkingNow,
       skills,
-      description
+      description,
     } = removeEmptyString(data);
     const query = `UPDATE experiences
       SET "companyName" = $1,
@@ -362,7 +364,7 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       skills,
       description,
       userId,
-      id
+      id,
     ]);
     return { status: 200 };
   } catch (error) {

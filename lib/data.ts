@@ -1,6 +1,7 @@
 'use server';
 
 import { sql } from '@vercel/postgres';
+
 import { auth } from '@/auth';
 import { Profile } from '@/lib/definitions';
 
@@ -8,7 +9,7 @@ const ITEMS_PER_PAGE = 6;
 
 enum FilterName {
   Query = 'query',
-  Position = 'position'
+  Position = 'position',
 }
 
 export async function fetchFilteredProfile(
@@ -85,7 +86,7 @@ export async function fetchFilteredProfilesPages(
 
     return {
       data: Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE),
-      status: 200
+      status: 200,
     };
   } catch (error) {
     console.error(error);

@@ -2,6 +2,7 @@
 
 import { Badge, Card, Divider, Text, Title, Button } from '@tremor/react';
 import Link from 'next/link';
+
 import { Experience } from '@/lib/definitions';
 
 interface ExperiencesCardProps {

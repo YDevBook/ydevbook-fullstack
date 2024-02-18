@@ -1,16 +1,17 @@
 'use client';
 
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import {
   AtSymbolIcon,
   KeyIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { useFormState, useFormStatus } from 'react-dom';
+import { Button } from '@tremor/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Button } from '@tremor/react';
 import { signIn } from 'next-auth/react';
+import { useFormState, useFormStatus } from 'react-dom';
+
 import { authenticate } from '@/lib/actions';
 
 interface LoginFormProps {
@@ -87,7 +88,7 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
             onClick={() => {
               console.log(searchParams.get('callbackUrl'));
               signIn('kakao', {
-                callbackUrl: searchParams.get('callbackUrl') ?? '/'
+                callbackUrl: searchParams.get('callbackUrl') ?? '/',
               });
             }}
             type="button"

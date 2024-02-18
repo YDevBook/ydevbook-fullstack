@@ -1,18 +1,19 @@
-import { auth } from '@/auth';
-import './globals.css';
-
-import { Suspense } from 'react';
 import { SessionProvider } from 'next-auth/react';
-import Nav from './nav';
+import { Suspense } from 'react';
+import { auth } from '@/auth';
+import '@/app/globals.css';
+
 import { NotificationContextProvider } from '@/contexts/NotificationContext';
+
+import Nav from './nav';
 
 export const metadata = {
   title: 'YDevBook',
-  description: '연뎁북.'
+  description: '연뎁북.',
 };
 
 export default async function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {

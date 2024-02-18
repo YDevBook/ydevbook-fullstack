@@ -1,8 +1,9 @@
 'use client';
 
 import { Button, TextInput } from '@tremor/react';
-import { useFormContext } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { useFormContext } from 'react-hook-form';
+
 import { ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormContactlInputProps {}
@@ -10,7 +11,7 @@ interface ProfileFormContactlInputProps {}
 const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
   const {
     register,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext<ProfileFormData>();
   const router = useRouter();
 
@@ -21,7 +22,7 @@ const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
         <label htmlFor="name">이름</label>
         <TextInput
           {...register('name', {
-            required: '이름을 입력해주세요.'
+            required: '이름을 입력해주세요.',
           })}
           maxLength={255}
           placeholder=""
