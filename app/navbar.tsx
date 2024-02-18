@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+
 import { signIn, signOut } from 'next-auth/react';
 import { Fragment } from 'react';
 import LogoImage from '@/assets/images/ydevbook_logo.webp';
@@ -20,7 +21,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: User }) {
+export default function Navbar({ user }: { user?: User }) {
   const pathname = usePathname();
   const router = useRouter();
 
