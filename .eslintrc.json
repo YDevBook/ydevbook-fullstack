@@ -1,17 +1,40 @@
 {
-  "extends": ["next/core-web-vitals"],
-  "plugins": ["unused-imports", "import"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "next",
+    "prettier"
+  ],
+  "plugins": ["react-hooks", "prettier", "import", "unused-imports"],
   "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
-        "argsIgnorePattern": "^_"
+    "prettier/prettier": "warn",
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "type"],
+      "pathGroups": [
+        {
+          "pattern": "react",
+          "group": "external",
+          "position": "before"
+        },
+        {
+          "pattern": "next/**",
+          "group": "external",
+          "position": "after"
+        },
+        {
+          "pattern": "@/**",
+          "group": "internal",
+          "position": "after"
+        }
+      ],
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
       }
-    ],
-    "import/order": "warn"
+    }]
   }
 }
