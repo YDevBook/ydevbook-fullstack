@@ -9,6 +9,7 @@ import {
   ExperienceUpdateFormData,
   ProfileFormData,
   ProfilePositionAndSkillsUpdateFormData,
+  ProfileShortIntroUpdateFormData,
   ProfileUpdateFormData
 } from '@/lib/definitions';
 
@@ -258,6 +259,30 @@ export async function updateProfilePositionAndSkills(
       WHERE "userId" = $3
     `;
     await sql.query(query, [positions, skills, userId]);
+    return { status: 200 };
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Something went wrong.');
+  }
+}
+
+export async function updateProfileShortIntro(
+  data: ProfileShortIntroUpdateFormData
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { status: 401 };
+    }
+    const { id: userId } = session?.user;
+    const { shortBio, introductionKeywords } = data;
+    const query = `
+      UPDATE profiles
+      SET "shortBio" = $1, "introductionKeywords" = $2
+      WHERE "userId" = $3
+    `;
+    await sql.query(query, [shortBio, introductionKeywords, userId]);
     return { status: 200 };
   } catch (error) {
     console.error(error);

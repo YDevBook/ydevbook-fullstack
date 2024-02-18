@@ -102,6 +102,11 @@ export type ProfilePositionAndSkillsUpdateFormData = Pick<
   'positions' | 'skills'
 >;
 
+export type ProfileShortIntroUpdateFormData = Pick<
+  Profile,
+  'shortBio' | 'introductionKeywords'
+>;
+
 export interface Experience {
   id: number;
   userId: string;

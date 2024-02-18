@@ -84,7 +84,8 @@ export default async function MyProfilePage() {
     shortBio,
     githubLink,
     webLink,
-    isActivelySeeking
+    isActivelySeeking,
+    introductionKeywords
   } = profile;
 
   const onClickJobSeekingSwitch = async (isActive: boolean) => {
@@ -176,13 +177,20 @@ export default async function MyProfilePage() {
         </div>
         <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
           <Card className="w-full mx-auto">
-            <Link href="/my-profile/edit-text?column=shortBio">
+            <Link href="/my-profile/edit-short-intro">
               <Button className="absolute top-0 right-0 m-4">수정하기</Button>
             </Link>
             <Title>한줄 소개</Title>
             <Text className="whitespace-pre-line">
               {shortBio || '짧은 한 줄로 본인을 표현해보세요.'}
             </Text>
+            <div className="my-2">
+              {introductionKeywords?.map((position) => (
+                <Badge color="sky" className="mx-1" key={position}>
+                  {position}
+                </Badge>
+              ))}
+            </div>
           </Card>
           <Card className="w-full mx-auto mt-4">
             <Link href="/my-profile/edit-text?column=personalStatement">
@@ -200,7 +208,7 @@ export default async function MyProfilePage() {
             <Title>구직중인 포지션</Title>
             <div className="my-2">
               {positions?.map((position) => (
-                <Badge size="xl" color="slate" className="mx-1 " key={position}>
+                <Badge color="sky" className="mx-1" key={position}>
                   {position}
                 </Badge>
               ))}
@@ -208,7 +216,7 @@ export default async function MyProfilePage() {
             <Title>보유 기술</Title>
             <div className="my-2">
               {skills?.map((skill) => (
-                <Badge size="xl" color="slate" className="mx-1 " key={skill}>
+                <Badge color="sky" className="mx-1" key={skill}>
                   {skill}
                 </Badge>
               ))}
