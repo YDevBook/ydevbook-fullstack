@@ -1,6 +1,7 @@
 import { Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
+
 import { auth } from '@/auth';
 import ExperienceInsertCard from '@/components/organisms/ExperienceInsertCard';
 import ExperienceUpdateCard from '@/components/organisms/ExperienceUpdateCard';
@@ -29,7 +30,7 @@ export default async function MyProfileEditExperiencesPage() {
       await Promise.all([
         experiencesPromise,
         positionsSelectItemsPromise,
-        skillsSelectItemsPromise
+        skillsSelectItemsPromise,
       ]);
 
     experiences = experiencesQueryResults.rows;

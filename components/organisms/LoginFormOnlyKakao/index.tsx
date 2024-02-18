@@ -1,8 +1,8 @@
 'use client';
 
 import { Button, Subtitle, Title, Text } from '@tremor/react';
-import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const LoginFormOnlyKakao = () => {
   const searchParams = useSearchParams();
@@ -26,7 +26,7 @@ const LoginFormOnlyKakao = () => {
         onClick={() => {
           console.log(searchParams.get('callbackUrl'));
           signIn('kakao', {
-            callbackUrl: searchParams.get('callbackUrl') ?? '/'
+            callbackUrl: searchParams.get('callbackUrl') ?? '/',
           });
         }}
         size="lg"

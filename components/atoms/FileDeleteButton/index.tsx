@@ -3,6 +3,7 @@
 import { RiDeleteBinLine } from '@remixicon/react';
 import { Button } from '@tremor/react';
 import { useContext } from 'react';
+
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface FileDeleteButtonProps {
@@ -23,20 +24,20 @@ const FileDeleteButton = ({ onDelete, fileId }: FileDeleteButtonProps) => {
             setContent?.({
               title: 'Success',
               description: '파일을 삭제했습니다.',
-              onConfirm: () => window.location.reload()
+              onConfirm: () => window.location.reload(),
             });
             setIsOpen?.(true);
           });
         } catch (error) {
           setContent?.({
             title: 'Error',
-            description: '파일 삭제에 실패했습니다.'
+            description: '파일 삭제에 실패했습니다.',
           });
           setIsOpen?.(true);
         }
       },
       confirmText: '삭제',
-      onCancel: () => setIsOpen?.(false)
+      onCancel: () => setIsOpen?.(false),
     });
     setIsOpen?.(true);
   };

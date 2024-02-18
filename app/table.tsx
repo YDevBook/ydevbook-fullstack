@@ -5,8 +5,9 @@ import {
   TableHeaderCell,
   TableBody,
   TableCell,
-  Text
+  Text,
 } from '@tremor/react';
+
 import { User } from '@/lib/definitions';
 
 export default function UsersTable({ users }: { users: User[] }) {

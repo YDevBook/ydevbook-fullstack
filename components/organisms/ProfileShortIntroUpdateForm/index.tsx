@@ -1,30 +1,31 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { useContext } from 'react';
 import { Button, TextInput } from '@tremor/react';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+
+import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
+import { NotificationContext } from '@/contexts/NotificationContext';
+import { updateProfileShortIntro } from '@/lib/actions';
 import {
   IntroductionKeywords,
   Profile,
-  ProfileShortIntroUpdateFormData
+  ProfileShortIntroUpdateFormData,
 } from '@/lib/definitions';
-import { NotificationContext } from '@/contexts/NotificationContext';
-import { updateProfileShortIntro } from '@/lib/actions';
-import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
 
 interface ProfileShortIntroUpdateFormProps {
   profile: Profile;
 }
 
 const ProfileShortIntroUpdateForm = ({
-  profile
+  profile,
 }: ProfileShortIntroUpdateFormProps) => {
   const { register, handleSubmit, watch, setValue } =
     useForm<ProfileShortIntroUpdateFormData>({
       defaultValues: {
         shortBio: profile.shortBio,
-        introductionKeywords: profile.introductionKeywords
-      }
+        introductionKeywords: profile.introductionKeywords,
+      },
     });
   const { introductionKeywords } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
@@ -39,7 +40,7 @@ const ProfileShortIntroUpdateForm = ({
     } else {
       setValue('introductionKeywords', [
         ...(introductionKeywords ?? []),
-        value
+        value,
       ]);
     }
   };
@@ -51,21 +52,21 @@ const ProfileShortIntroUpdateForm = ({
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
-          onConfirm: () => window.location.replace('/my-profile')
+          onConfirm: () => window.location.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;

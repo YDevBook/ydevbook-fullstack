@@ -14,7 +14,7 @@ const BadgeSelectItem = ({
   label,
   value,
   clicked,
-  onClick
+  onClick,
 }: BadgeSelectItemProps) => {
   return (
     <Badge

@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+
 import ProfileForm from '@/components/organisms/ProfileForm';
 import { ArrayItemQueryRows } from '@/lib/definitions';
 
@@ -15,7 +16,7 @@ export default async function ProfileFormPage() {
 
     const [positionsQueryResults, skillsQueryResults] = await Promise.all([
       positionsSelectItemsPromise,
-      skillsSelectItemsPromise
+      skillsSelectItemsPromise,
     ]);
     positionSelectItems = positionsQueryResults.rows;
     skillsSelectItems = skillsQueryResults.rows;

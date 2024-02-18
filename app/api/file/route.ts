@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 import { attachmentFileUpload, profileImageUpload } from '@/app/api/file/lib';
 
 export interface CustomErrorObject {
@@ -8,7 +9,7 @@ export interface CustomErrorObject {
 
 enum UploadType {
   ProfileImage = 'profile-image',
-  AttachmentFile = 'attachment-file'
+  AttachmentFile = 'attachment-file',
 }
 
 export async function POST(request: Request) {
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
       if (response.status === 401) {
         return NextResponse.json({
           message: '로그인이 필요합니다.',
-          status: 401
+          status: 401,
         });
       }
 
@@ -51,14 +52,14 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         message: '프로필 이미지 업로드에 실패했습니다.',
-        status: response.status
+        status: response.status,
       });
     } else if (uploadType === UploadType.AttachmentFile) {
       const response = await attachmentFileUpload(file);
       if (response.status === 401) {
         return NextResponse.json({
           message: '로그인이 필요합니다.',
-          status: 401
+          status: 401,
         });
       }
 
@@ -71,14 +72,14 @@ export async function POST(request: Request) {
 
       return NextResponse.json({
         message: '파일 업로드에 실패했습니다.',
-        status: response.status
+        status: response.status,
       });
     }
   } catch (error) {
     console.error(error);
     return NextResponse.json({
       message: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-      status: 500
+      status: 500,
     });
   }
 }

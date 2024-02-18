@@ -1,12 +1,13 @@
 import { Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import { notFound } from 'next/navigation';
+
 import { auth } from '@/auth';
 import ProfileTextUpdateForm from '@/components/organisms/ProfileTextUpdateForm';
 import { ProfileTextData } from '@/lib/definitions';
 
 const MyProfileEditTextPage = async ({
-  searchParams
+  searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {

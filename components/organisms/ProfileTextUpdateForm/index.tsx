@@ -2,12 +2,13 @@
 
 import { Button, Textarea } from '@tremor/react';
 import { useContext } from 'react';
+
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfileText } from '@/lib/actions';
 
 const ProfileTextUpdateForm = ({
   columnName,
-  defaultValue
+  defaultValue,
 }: {
   columnName: string;
   defaultValue?: string;
@@ -21,21 +22,21 @@ const ProfileTextUpdateForm = ({
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
-          onConfirm: () => window.location.replace('/my-profile')
+          onConfirm: () => window.location.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;

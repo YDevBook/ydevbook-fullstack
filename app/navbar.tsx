@@ -1,25 +1,26 @@
 'use client';
 
-import { Fragment } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import { signIn, signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { signIn, signOut } from 'next-auth/react';
+import { Fragment } from 'react';
 import LogoImage from '@/assets/images/ydevbook_logo.webp';
+import { User } from '@/lib/definitions';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: '채용 공고', href: '/positions' },
-  { name: '스타트업 서비스', href: '/startup' }
+  { name: '스타트업 서비스', href: '/startup' },
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({ user }: { user: User }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -175,13 +176,15 @@ export default function Navbar({ user }: { user: any }) {
                 <>
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <Image
-                        className="h-8 w-8 rounded-full"
-                        src={user.profileImageUrl}
-                        height={32}
-                        width={32}
-                        alt={`${user.name} avatar`}
-                      />
+                      {user.profileImageUrl && (
+                        <Image
+                          className="h-8 w-8 rounded-full"
+                          src={user.profileImageUrl}
+                          height={32}
+                          width={32}
+                          alt={`${user.name} avatar`}
+                        />
+                      )}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-gray-800">
