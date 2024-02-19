@@ -1,7 +1,14 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, TextInput } from '@tremor/react';
+import {
+  Button,
+  DatePicker,
+  DatePickerValue,
+  Select,
+  SelectItem,
+  TextInput,
+} from '@tremor/react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
@@ -37,7 +44,7 @@ const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
       .required('이메일을 입력해주세요.')
       .max(50, '이메일은 50자 이하여야 합니다.'),
     dateOfBirth: yup.date(),
-    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+    address: yup.string().optional().max(100, '100자 이내로 입력해주세요.'),
     school: yup.string().max(50, '50자 이내로 입력해주세요.'),
     major: yup.string().max(50, '50자 이내로 입력해주세요.'),
     graduateStatus: yup.string(),
@@ -50,12 +57,28 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<ProfileUpdateFormData>({
     resolver: yupResolver(profileUpdateFormSchema),
-    defaultValues: { ...profile, dateOfBirth: undefined },
+    defaultValues: { ...profile },
   });
+  const { dateOfBirth, graduateStatus } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
+
+  const onDateChange = (date: DatePickerValue) => {
+    if (date) {
+      const newDateofBirth = new Date(date);
+      setValue('dateOfBirth', newDateofBirth);
+    } else {
+      setValue('dateOfBirth', undefined);
+    }
+  };
+
+  const onGraduateStatusChange = (value: string) => {
+    setValue('graduateStatus', value);
+  };
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -195,12 +218,11 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       </div>
       <div className="relative min-h-[86px]">
         <label htmlFor="dateOfBirth">생년월일</label>
-        <input
-          className="border border-gray-300"
-          type="date"
-          {...register('dateOfBirth', { valueAsDate: false })}
-          defaultValue={profile.dateOfBirth?.toISOString().substring(0, 10)}
-          // error={!!errors.dateOfBirth}
+        <DatePicker
+          defaultValue={dateOfBirth}
+          onValueChange={onDateChange}
+          enableClear
+          enableYearNavigation
         />
       </div>
       <div className="relative min-h-[86px]">
@@ -209,6 +231,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="border border-gray-300"
           {...register('address')}
           error={!!errors.address}
+          errorMessage={errors.address?.message}
         />
       </div>
       <div className="relative min-h-[86px]">
@@ -229,17 +252,18 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       </div>
       <div className="relative min-h-[86px]">
         <label htmlFor="graduateStatus">재학/졸업여부</label>
-        <select
-          {...register('graduateStatus')}
-          // error={!!errors.graduateStatus}
+        <Select
+          defaultValue={graduateStatus}
+          onValueChange={onGraduateStatusChange}
+          value={graduateStatus}
+          enableClear
         >
-          <option disabled>선택해주세요</option>
-          {GraduateStatusOptions.map((item) => (
-            <option value={item.value} key={item.value}>
-              {item.label}
-            </option>
+          {GraduateStatusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
           ))}
-        </select>
+        </Select>
       </div>
       <div className="relative min-h-[86px]">
         <label htmlFor="githubLink">깃헙 링크</label>

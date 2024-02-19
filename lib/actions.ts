@@ -168,7 +168,6 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       email,
       phoneNumber,
       dateOfBirth,
-      sex,
       address,
       school,
       major,
@@ -182,21 +181,19 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       "email" = $2,
       "phoneNumber" = $3,
       "dateOfBirth" = $4,
-      "sex" = $5,
-      "address" = $6,
-      "school" = $7,
-      "major" = $8,
-      "graduateStatus" = $9,
-      "githubLink" = $10,
-      "webLink" = $11
-      WHERE "userId" = $12
+      "address" = $5,
+      "school" = $6,
+      "major" = $7,
+      "graduateStatus" = $8,
+      "githubLink" = $9,
+      "webLink" = $10
+      WHERE "userId" = $11
     `;
     await sql.query(query, [
       name,
       email,
       phoneNumber,
       dateOfBirth,
-      sex,
       address,
       school,
       major,

@@ -1,32 +1,21 @@
 import { Title } from '@tremor/react';
-import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { auth } from '@/auth';
 import ProfileUpdateForm from '@/components/organisms/ProfileUpdateForm';
 import MobileOnlyTemplate from '@/components/templates/MobileOnlyTemplate';
-import { Profile } from '@/lib/definitions';
+import { fetchMyProfile } from '@/lib/data';
 
 export default async function MyProfileEditPage() {
   noStore();
-  const session = await auth();
-  let profile = {} as Profile;
+  const { data: profile, status } = await fetchMyProfile();
 
-  try {
-    const profilePromise = sql.query<Profile>(`
-    SELECT * FROM profiles WHERE "userId" = '${session?.user.id}';
-  `);
+  if (status === 401) {
+    redirect('/login');
+  }
 
-    const [profileQueryResults] = await Promise.all([profilePromise]);
-
-    if (profileQueryResults.rows.length === 0) {
-      redirect('/profile-form');
-    }
-
-    profile = profileQueryResults.rows[0];
-  } catch (error) {
-    console.log(error);
+  if (status === 404 || !profile) {
+    redirect('/profile-form');
   }
 
   return (
