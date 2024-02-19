@@ -12,7 +12,7 @@ enum FilterName {
   Position = 'position',
 }
 
-export async function fetchFilteredProfile(
+export async function fetchFilteredProfiles(
   filter?: Record<FilterName, string | undefined>,
   currentPage = 1
 ) {
