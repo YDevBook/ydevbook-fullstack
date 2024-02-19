@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/auth';
 import ProfileUpdateForm from '@/components/organisms/ProfileUpdateForm';
+import MobileOnlyTemplate from '@/components/templates/MobileOnlyTemplate';
 import { Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditPage() {
@@ -29,9 +30,9 @@ export default async function MyProfileEditPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MobileOnlyTemplate>
       <Title>프로필 기본 정보 수정</Title>
       <ProfileUpdateForm profile={profile} />
-    </main>
+    </MobileOnlyTemplate>
   );
 }
