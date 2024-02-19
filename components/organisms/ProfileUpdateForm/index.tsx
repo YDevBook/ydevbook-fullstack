@@ -44,7 +44,7 @@ const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
       .required('이메일을 입력해주세요.')
       .max(50, '이메일은 50자 이하여야 합니다.'),
     dateOfBirth: yup.date(),
-    address: yup.string().optional().max(100, '100자 이내로 입력해주세요.'),
+    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
     school: yup.string().max(50, '50자 이내로 입력해주세요.'),
     major: yup.string().max(50, '50자 이내로 입력해주세요.'),
     graduateStatus: yup.string(),
@@ -197,6 +197,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="border border-gray-300"
           {...register('name', { required: true })}
           error={!!errors.name}
+          errorMessage={errors.name?.message}
         />
       </div>
       <div className="relative min-h-[86px]">
@@ -214,6 +215,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="border border-gray-300"
           {...register('email', { required: true })}
           error={!!errors.email}
+          errorMessage={errors.email?.message}
         />
       </div>
       <div className="relative min-h-[86px]">
@@ -240,6 +242,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="border border-gray-300"
           {...register('school')}
           error={!!errors.school}
+          errorMessage={errors.school?.message}
         />
       </div>
       <div className="relative min-h-[86px]">
@@ -248,6 +251,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="border border-gray-300"
           {...register('major')}
           error={!!errors.major}
+          errorMessage={errors.major?.message}
         />
       </div>
       <div className="relative min-h-[86px]">
