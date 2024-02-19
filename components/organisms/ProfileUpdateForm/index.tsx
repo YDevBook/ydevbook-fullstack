@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@tremor/react';
+import { Button, TextInput } from '@tremor/react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
@@ -21,7 +21,11 @@ interface ProfileUpdateFormProps {
 
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
-  const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile, dateOfBirth: undefined },
   });
   const { setContent, setIsOpen } = useContext(NotificationContext);
@@ -127,6 +131,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
             alt="프로필 이미지"
             width={100}
             height={100}
+            priority
           />
           <label
             className="absolute bottom-0 right-0 cursor-pointer"
@@ -138,21 +143,28 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       </div>
       <div>
         <label htmlFor="name">이름</label>
-        <input
+        <TextInput
           className="border border-gray-300"
-          {...register('name', { required: true })}
+          {...register('name', { required: true, maxLength: 50 })}
+          error={!!errors.name}
+          maxLength={50}
         />
       </div>
       <div>
         <label htmlFor="phoneNumber">전화번호</label>
-        <input
+        <TextInput
           className="border border-gray-300"
           {...register('phoneNumber', { required: true, maxLength: 11 })}
+          error={!!errors.phoneNumber}
         />
       </div>
       <div>
         <label htmlFor="email">이메일</label>
-        <input className="border border-gray-300" {...register('email')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('email', { required: true, maxLength: 50 })}
+          error={!!errors.email}
+        />
       </div>
       <div>
         <label htmlFor="dateOfBirth">생년월일</label>
@@ -161,31 +173,39 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           type="date"
           {...register('dateOfBirth', { valueAsDate: false })}
           defaultValue={profile.dateOfBirth?.toISOString().substring(0, 10)}
+          // error={!!errors.dateOfBirth}
         />
       </div>
       <div>
-        <label htmlFor="sex">성별</label>
-        <select {...register('sex')}>
-          <option disabled>선택해주세요</option>
-          <option value={'M'}>남</option>
-          <option value={'F'}>여</option>
-        </select>
-      </div>
-      <div>
         <label htmlFor="address">거주 지역</label>
-        <input className="border border-gray-300" {...register('address')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('address', { maxLength: 100 })}
+          error={!!errors.address}
+        />
       </div>
       <div>
         <label htmlFor="school">최종 학력</label>
-        <input className="border border-gray-300" {...register('school')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('school', { maxLength: 50 })}
+          error={!!errors.school}
+        />
       </div>
       <div>
         <label htmlFor="major">전공</label>
-        <input className="border border-gray-300" {...register('major')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('major', { maxLength: 50 })}
+          error={!!errors.major}
+        />
       </div>
       <div>
         <label htmlFor="graduateStatus">재학/졸업여부</label>
-        <select {...register('graduateStatus')}>
+        <select
+          {...register('graduateStatus')}
+          // error={!!errors.graduateStatus}
+        >
           <option disabled>선택해주세요</option>
           {GraduateStatusOptions.map((item) => (
             <option value={item.value} key={item.value}>
@@ -196,13 +216,23 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
       </div>
       <div>
         <label htmlFor="githubLink">깃헙 링크</label>
-        <input className="border border-gray-300" {...register('githubLink')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('githubLink')}
+          error={!!errors.githubLink}
+        />
       </div>
       <div>
         <label htmlFor="webLink">웹 링크</label>
-        <input className="border border-gray-300" {...register('webLink')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('webLink')}
+          error={!!errors.webLink}
+        />
       </div>
-      <Button type="submit">제출</Button>
+      <Button className="w-full mt-4" type="submit">
+        제출
+      </Button>
     </form>
   );
 };

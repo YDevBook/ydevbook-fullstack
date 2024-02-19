@@ -31,7 +31,7 @@ export default async function MyProfileEditPage() {
 
   return (
     <MobileOnlyTemplate>
-      <Title>프로필 기본 정보 수정</Title>
+      <Title className="text-xl">프로필 기본 정보 수정</Title>
       <ProfileUpdateForm profile={profile} />
     </MobileOnlyTemplate>
   );
