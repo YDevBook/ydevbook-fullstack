@@ -168,7 +168,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           </label>
         </div>
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="name">이름</label>
         <TextInput
           className="border border-gray-300"
@@ -176,15 +176,16 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.name}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="phoneNumber">전화번호</label>
         <TextInput
           className="border border-gray-300"
           {...register('phoneNumber', { required: true })}
           error={!!errors.phoneNumber}
+          errorMessage={errors.phoneNumber?.message}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="email">이메일</label>
         <TextInput
           className="border border-gray-300"
@@ -192,7 +193,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.email}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="dateOfBirth">생년월일</label>
         <input
           className="border border-gray-300"
@@ -202,7 +203,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           // error={!!errors.dateOfBirth}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="address">거주 지역</label>
         <TextInput
           className="border border-gray-300"
@@ -210,7 +211,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.address}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="school">최종 학력</label>
         <TextInput
           className="border border-gray-300"
@@ -218,7 +219,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.school}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="major">전공</label>
         <TextInput
           className="border border-gray-300"
@@ -226,7 +227,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.major}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="graduateStatus">재학/졸업여부</label>
         <select
           {...register('graduateStatus')}
@@ -240,7 +241,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="githubLink">깃헙 링크</label>
         <TextInput
           className="border border-gray-300"
@@ -248,7 +249,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           error={!!errors.githubLink}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="webLink">웹 링크</label>
         <TextInput
           className="border border-gray-300"
