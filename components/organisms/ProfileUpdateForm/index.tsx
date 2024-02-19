@@ -1,11 +1,13 @@
 'use client';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, TextInput } from '@tremor/react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
+import * as yup from 'yup';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfile } from '@/lib/actions';
@@ -19,6 +21,30 @@ interface ProfileUpdateFormProps {
   profile: Profile;
 }
 
+const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
+  .object()
+  .shape({
+    name: yup
+      .string()
+      .required('이름을 입력해주세요.')
+      .max(50, '이름은 50자 이하여야 합니다.'),
+    phoneNumber: yup
+      .string()
+      .required('전화번호를 입력해주세요.')
+      .max(11, '전화번호는 11자 이하여야 합니다.'),
+    email: yup
+      .string()
+      .required('이메일을 입력해주세요.')
+      .max(50, '이메일은 50자 이하여야 합니다.'),
+    dateOfBirth: yup.date(),
+    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+    school: yup.string().max(50, '50자 이내로 입력해주세요.'),
+    major: yup.string().max(50, '50자 이내로 입력해주세요.'),
+    graduateStatus: yup.string(),
+    githubLink: yup.string(),
+    webLink: yup.string(),
+  });
+
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
   const {
@@ -26,6 +52,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileUpdateFormData>({
+    resolver: yupResolver(profileUpdateFormSchema),
     defaultValues: { ...profile, dateOfBirth: undefined },
   });
   const { setContent, setIsOpen } = useContext(NotificationContext);
@@ -145,16 +172,15 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <label htmlFor="name">이름</label>
         <TextInput
           className="border border-gray-300"
-          {...register('name', { required: true, maxLength: 50 })}
+          {...register('name', { required: true })}
           error={!!errors.name}
-          maxLength={50}
         />
       </div>
       <div>
         <label htmlFor="phoneNumber">전화번호</label>
         <TextInput
           className="border border-gray-300"
-          {...register('phoneNumber', { required: true, maxLength: 11 })}
+          {...register('phoneNumber', { required: true })}
           error={!!errors.phoneNumber}
         />
       </div>
@@ -162,7 +188,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <label htmlFor="email">이메일</label>
         <TextInput
           className="border border-gray-300"
-          {...register('email', { required: true, maxLength: 50 })}
+          {...register('email', { required: true })}
           error={!!errors.email}
         />
       </div>
@@ -180,7 +206,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <label htmlFor="address">거주 지역</label>
         <TextInput
           className="border border-gray-300"
-          {...register('address', { maxLength: 100 })}
+          {...register('address')}
           error={!!errors.address}
         />
       </div>
@@ -188,7 +214,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <label htmlFor="school">최종 학력</label>
         <TextInput
           className="border border-gray-300"
-          {...register('school', { maxLength: 50 })}
+          {...register('school')}
           error={!!errors.school}
         />
       </div>
@@ -196,7 +222,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         <label htmlFor="major">전공</label>
         <TextInput
           className="border border-gray-300"
-          {...register('major', { maxLength: 50 })}
+          {...register('major')}
           error={!!errors.major}
         />
       </div>

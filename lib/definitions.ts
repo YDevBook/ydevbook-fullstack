@@ -55,7 +55,6 @@ export interface Profile {
   phoneNumber: string;
   email: string;
   dateOfBirth?: Date;
-  sex?: string;
   address?: string;
   profileImage?: string;
   positions?: string[];
@@ -88,6 +87,10 @@ export interface ProfileFormData {
 
 export type ProfileUpdateFormData = Omit<
   Profile,
+  | 'id'
+  | 'userId'
+  | 'profileImage'
+  | 'attachedFiles'
   | 'personalStatement'
   | 'mainStrength'
   | 'shortBio'
