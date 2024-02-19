@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import EmployeeCard from '@/components/molecules/EmployeeCard';
 import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
-import { fetchFilteredProfile, fetchFilteredProfilesPages } from '@/lib/data';
+import { fetchFilteredProfiles, fetchFilteredProfilesPages } from '@/lib/data';
 
 interface DeveloperListPageProps {
   searchParams?: {
@@ -21,7 +21,7 @@ export default async function DeveloperListPage({
   const currentPageNum = Number(searchParams?.page) || 1;
   const position = searchParams?.position || '';
 
-  const { data: profiles } = await fetchFilteredProfile(
+  const { data: profiles } = await fetchFilteredProfiles(
     { query, position },
     currentPageNum
   );

@@ -1,11 +1,20 @@
 'use client';
 
-import { Button } from '@tremor/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  Button,
+  DatePicker,
+  DatePickerValue,
+  Select,
+  SelectItem,
+  TextInput,
+} from '@tremor/react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
+import * as yup from 'yup';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfile } from '@/lib/actions';
@@ -19,12 +28,57 @@ interface ProfileUpdateFormProps {
   profile: Profile;
 }
 
+const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
+  .object()
+  .shape({
+    name: yup
+      .string()
+      .required('이름을 입력해주세요.')
+      .max(50, '이름은 50자 이하여야 합니다.'),
+    phoneNumber: yup
+      .string()
+      .required('전화번호를 입력해주세요.')
+      .max(11, '전화번호는 11자 이하여야 합니다.'),
+    email: yup
+      .string()
+      .required('이메일을 입력해주세요.')
+      .max(50, '이메일은 50자 이하여야 합니다.'),
+    dateOfBirth: yup.date(),
+    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+    school: yup.string().max(50, '50자 이내로 입력해주세요.'),
+    major: yup.string().max(50, '50자 이내로 입력해주세요.'),
+    graduateStatus: yup.string(),
+    githubLink: yup.string(),
+    webLink: yup.string(),
+  });
+
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
-  const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
-    defaultValues: { ...profile, dateOfBirth: undefined },
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<ProfileUpdateFormData>({
+    resolver: yupResolver(profileUpdateFormSchema),
+    defaultValues: { ...profile },
   });
+  const { dateOfBirth, graduateStatus } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
+
+  const onDateChange = (date: DatePickerValue) => {
+    if (date) {
+      const newDateofBirth = new Date(date);
+      setValue('dateOfBirth', newDateofBirth);
+    } else {
+      setValue('dateOfBirth', undefined);
+    }
+  };
+
+  const onGraduateStatusChange = (value: string) => {
+    setValue('graduateStatus', value);
+  };
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -127,6 +181,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
             alt="프로필 이미지"
             width={100}
             height={100}
+            priority
           />
           <label
             className="absolute bottom-0 right-0 cursor-pointer"
@@ -136,73 +191,103 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           </label>
         </div>
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="name">이름</label>
-        <input
+        <TextInput
           className="border border-gray-300"
           {...register('name', { required: true })}
+          error={!!errors.name}
+          errorMessage={errors.name?.message}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="phoneNumber">전화번호</label>
-        <input
+        <TextInput
           className="border border-gray-300"
-          {...register('phoneNumber', { required: true, maxLength: 11 })}
+          {...register('phoneNumber', { required: true })}
+          error={!!errors.phoneNumber}
+          errorMessage={errors.phoneNumber?.message}
         />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="email">이메일</label>
-        <input className="border border-gray-300" {...register('email')} />
-      </div>
-      <div>
-        <label htmlFor="dateOfBirth">생년월일</label>
-        <input
+        <TextInput
           className="border border-gray-300"
-          type="date"
-          {...register('dateOfBirth', { valueAsDate: false })}
-          defaultValue={profile.dateOfBirth?.toISOString().substring(0, 10)}
+          {...register('email', { required: true })}
+          error={!!errors.email}
+          errorMessage={errors.email?.message}
         />
       </div>
-      <div>
-        <label htmlFor="sex">성별</label>
-        <select {...register('sex')}>
-          <option disabled>선택해주세요</option>
-          <option value={'M'}>남</option>
-          <option value={'F'}>여</option>
-        </select>
+      <div className="relative min-h-[86px]">
+        <label htmlFor="dateOfBirth">생년월일</label>
+        <DatePicker
+          defaultValue={dateOfBirth}
+          onValueChange={onDateChange}
+          enableClear
+          enableYearNavigation
+        />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="address">거주 지역</label>
-        <input className="border border-gray-300" {...register('address')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('address')}
+          error={!!errors.address}
+          errorMessage={errors.address?.message}
+        />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="school">최종 학력</label>
-        <input className="border border-gray-300" {...register('school')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('school')}
+          error={!!errors.school}
+          errorMessage={errors.school?.message}
+        />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="major">전공</label>
-        <input className="border border-gray-300" {...register('major')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('major')}
+          error={!!errors.major}
+          errorMessage={errors.major?.message}
+        />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="graduateStatus">재학/졸업여부</label>
-        <select {...register('graduateStatus')}>
-          <option disabled>선택해주세요</option>
-          {GraduateStatusOptions.map((item) => (
-            <option value={item.value} key={item.value}>
-              {item.label}
-            </option>
+        <Select
+          defaultValue={graduateStatus}
+          onValueChange={onGraduateStatusChange}
+          value={graduateStatus}
+          enableClear
+        >
+          {GraduateStatusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
           ))}
-        </select>
+        </Select>
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="githubLink">깃헙 링크</label>
-        <input className="border border-gray-300" {...register('githubLink')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('githubLink')}
+          error={!!errors.githubLink}
+        />
       </div>
-      <div>
+      <div className="relative min-h-[86px]">
         <label htmlFor="webLink">웹 링크</label>
-        <input className="border border-gray-300" {...register('webLink')} />
+        <TextInput
+          className="border border-gray-300"
+          {...register('webLink')}
+          error={!!errors.webLink}
+        />
       </div>
-      <Button type="submit">제출</Button>
+      <Button className="w-full mt-4" type="submit">
+        제출
+      </Button>
     </form>
   );
 };
