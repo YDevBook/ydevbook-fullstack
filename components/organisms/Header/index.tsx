@@ -14,13 +14,18 @@ const drawerNavigation = [{ name: '메인페이지', href: '/' }, ...navigation]
 const Header = async () => {
   return (
     <header className="w-full bg-white shadow-sm">
-      <div className="mx-auto max-w-[640px] px-4 h-[64px] flex justify-between items-center sm:max-w-7xl sm:px-10">
+      <div className="relative mx-auto max-w-[640px] px-4 h-[64px] flex justify-between items-center sm:max-w-7xl sm:px-10">
         <HeaderNavDrawer navigation={drawerNavigation} />
         <Link href="/">
-          <div className="sm:hidden font-bold text-lg">YDevBook</div>
           <div className="hidden sm:block">
             <Image alt="header logo" src={HeaderLogo} width={40} height={40} />
           </div>
+        </Link>
+        <Link
+          href="/"
+          className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] sm:hidden font-bold text-lg"
+        >
+          YDevBook
         </Link>
         <div className="flex items-center">
           <div className="hidden sm:flex items-center font-medium">

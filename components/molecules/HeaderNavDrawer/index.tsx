@@ -26,11 +26,18 @@ const HeaderNavDrawer = ({ navigation }: HeaderNavDrawerProps) => {
       </button>
       <div
         className={clsx(
-          isOpen ? 'block' : 'hidden',
-          'absolute top-0 left-0 bg-black/70 w-screen h-screen z-50'
+          isOpen ? 'z-50 bg-black/70' : '-z-10 bg-black/0',
+          'absolute top-0 left-0 w-screen h-screen',
+          'transition-[background-color z-index] duration-200 ease-in-out'
         )}
       >
-        <div className="bg-white w-64 h-full p-4">
+        <div
+          className={clsx(
+            'absolute left-0 top-0 bg-white w-64 h-full p-4',
+            'transition-transform duration-200 ease-in-out',
+            isOpen ? 'translate-x-0' : 'translate-x-[-100%]'
+          )}
+        >
           <div>
             <button
               onClick={() => setIsOpen(false)}
