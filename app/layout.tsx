@@ -1,11 +1,9 @@
-import { SessionProvider } from 'next-auth/react';
-import { Suspense } from 'react';
-import { auth } from '@/auth';
 import '@/app/globals.css';
+import { SessionProvider } from 'next-auth/react';
+import { auth } from '@/auth';
 
+import Header from '@/components/organisms/Header';
 import { NotificationContextProvider } from '@/contexts/NotificationContext';
-
-import Nav from './nav';
 
 export const metadata = {
   title: 'YDevBook',
@@ -23,9 +21,7 @@ export default async function RootLayout({
       <body className="h-full">
         <SessionProvider session={session}>
           <NotificationContextProvider>
-            <Suspense>
-              <Nav />
-            </Suspense>
+            <Header />
             {children}
           </NotificationContextProvider>
         </SessionProvider>
