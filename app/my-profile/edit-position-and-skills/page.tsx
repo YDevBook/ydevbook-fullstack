@@ -4,6 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 import { auth } from '@/auth';
 import ProfilePositionAndSkillUpdateForm from '@/components/organisms/ProfilePositionAndSkillUpdateForm';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ArrayItemQueryRows, Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditSkillsPage() {
@@ -40,13 +41,13 @@ export default async function MyProfileEditSkillsPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>포지션 및 기술 스택 수정</Title>
       <ProfilePositionAndSkillUpdateForm
         profile={profile}
         positionSelectItems={positionSelectItems}
         skillsSelectItems={skillsSelectItems}
       />
-    </main>
+    </MainPageTemplate>
   );
 }

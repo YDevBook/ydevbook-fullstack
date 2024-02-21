@@ -3,6 +3,7 @@ import { sql } from '@vercel/postgres';
 import Link from 'next/link';
 
 import { auth } from '@/auth';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 
 export default async function IndexPage() {
   const session = await auth();
@@ -18,7 +19,7 @@ export default async function IndexPage() {
     isLoggedIn && hasProfile ? '/my-profile' : '/profile-form?stage=포지션';
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>메인 랜딩 페이지</Title>
       <Text>서비스 소개 및 랜딩 디자인, 메인 CTA 생성</Text>
       <div className="flex flex-col space-y-2.5">
@@ -26,6 +27,6 @@ export default async function IndexPage() {
           <Button>프로필 생성 / 마이 프로필(메인 CTA)</Button>
         </Link>
       </div>
-    </main>
+    </MainPageTemplate>
   );
 }

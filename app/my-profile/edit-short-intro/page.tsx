@@ -4,6 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 import { auth } from '@/auth';
 import ProfileShortIntroUpdateForm from '@/components/organisms/ProfileShortIntroUpdateForm';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditShortIntroPage() {
@@ -21,9 +22,9 @@ export default async function MyProfileEditShortIntroPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>간편 이력 수정</Title>
       <ProfileShortIntroUpdateForm profile={profile} />
-    </main>
+    </MainPageTemplate>
   );
 }
