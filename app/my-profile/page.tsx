@@ -11,6 +11,7 @@ import FileDeleteButton from '@/components/atoms/FileDeleteButton';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import {
   AttachmentFiles,
   Experience,
@@ -122,7 +123,7 @@ export default async function MyProfilePage() {
   };
 
   return (
-    <main className="p-4 mx-auto md:p-10 max-w-7xl">
+    <MainPageTemplate>
       <Title className="my-4">내 프로필</Title>
       <div className="flex flex-col sm:flex-row">
         <div className="sm:basis-1/3">
@@ -249,6 +250,6 @@ export default async function MyProfilePage() {
           </Card>
         </div>
       </div>
-    </main>
+    </MainPageTemplate>
   );
 }

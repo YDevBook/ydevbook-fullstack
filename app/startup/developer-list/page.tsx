@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import EmployeeCard from '@/components/molecules/EmployeeCard';
 import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { fetchFilteredProfiles, fetchFilteredProfilesPages } from '@/lib/data';
 
 interface DeveloperListPageProps {
@@ -31,7 +32,7 @@ export default async function DeveloperListPage({
   });
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>DeveloperList</Title>
       <Text>DeveloperList</Text>
       <div>
@@ -65,6 +66,6 @@ export default async function DeveloperListPage({
           ))}
         </div>
       </div>
-    </main>
+    </MainPageTemplate>
   );
 }

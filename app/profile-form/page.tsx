@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres';
 
 import ProfileForm from '@/components/organisms/ProfileForm';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ArrayItemQueryRows } from '@/lib/definitions';
 
 export default async function ProfileFormPage() {
@@ -25,11 +26,11 @@ export default async function ProfileFormPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <ProfileForm
         positionSelectItems={positionSelectItems}
         skillsSelectItems={skillsSelectItems}
       />
-    </main>
+    </MainPageTemplate>
   );
 }

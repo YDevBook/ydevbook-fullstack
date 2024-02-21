@@ -5,6 +5,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { auth } from '@/auth';
 import ExperienceInsertCard from '@/components/organisms/ExperienceInsertCard';
 import ExperienceUpdateCard from '@/components/organisms/ExperienceUpdateCard';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ArrayItemQueryRows, Experience } from '@/lib/definitions';
 
 export default async function MyProfileEditExperiencesPage() {
@@ -41,7 +42,7 @@ export default async function MyProfileEditExperiencesPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>업무 경험 수정 및 추가</Title>
       {!!experiences &&
         experiences.length > 0 &&
@@ -57,6 +58,6 @@ export default async function MyProfileEditExperiencesPage() {
         positionSelectItems={positionSelectItems}
         skillsSelectItems={skillsSelectItems}
       />
-    </main>
+    </MainPageTemplate>
   );
 }

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { auth } from '@/auth';
 import ProfileTextUpdateForm from '@/components/organisms/ProfileTextUpdateForm';
+import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ProfileTextData } from '@/lib/definitions';
 
 const MyProfileEditTextPage = async ({
@@ -38,13 +39,13 @@ const MyProfileEditTextPage = async ({
   })();
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <MainPageTemplate>
       <Title>{title}</Title>
       <ProfileTextUpdateForm
         columnName={columnName}
         defaultValue={defaultValue}
       />
-    </main>
+    </MainPageTemplate>
   );
 };
 
