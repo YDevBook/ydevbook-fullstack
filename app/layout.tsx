@@ -2,6 +2,7 @@ import '@/app/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
 
+import Footer from '@/components/organisms/Footer';
 import Header from '@/components/organisms/Header';
 import { NotificationContextProvider } from '@/contexts/NotificationContext';
 
@@ -23,6 +24,7 @@ export default async function RootLayout({
           <NotificationContextProvider>
             <Header />
             {children}
+            <Footer />
           </NotificationContextProvider>
         </SessionProvider>
       </body>
