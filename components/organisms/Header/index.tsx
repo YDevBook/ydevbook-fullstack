@@ -3,6 +3,7 @@ import Link from 'next/link';
 import HeaderLogo from '@/assets/images/ydevbook-logo.png';
 import HeaderNavDrawer from '@/components/molecules/HeaderNavDrawer';
 import HeaderProfileMenu from '@/components/molecules/HeaderProfileMenu';
+import TopWIPBanner from '@/components/organisms/TopWIPBanner';
 
 const navigation = [
   { name: '채용 공고', href: '/positions' },
@@ -13,7 +14,8 @@ const drawerNavigation = [{ name: '메인페이지', href: '/' }, ...navigation]
 
 const Header = async () => {
   return (
-    <header className="w-full bg-white shadow-sm">
+    <header className="w-full bg-white shadow-sm sticky -top-12 z-10 sm:-top-14">
+      <TopWIPBanner />
       <div className="relative mx-auto max-w-[640px] px-4 h-[64px] flex justify-between items-center sm:max-w-7xl sm:px-10">
         <HeaderNavDrawer navigation={drawerNavigation} />
         <Link href="/">
