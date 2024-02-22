@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { auth } from '@/auth';
 import ProfileTextUpdateForm from '@/components/organisms/ProfileTextUpdateForm';
-import MainPageTemplate from '@/components/templates/MainPageTemplate';
+import MobileOnlyTemplate from '@/components/templates/MobileOnlyTemplate';
 import { ProfileTextData } from '@/lib/definitions';
 
 const MyProfileEditTextPage = async ({
@@ -39,13 +39,13 @@ const MyProfileEditTextPage = async ({
   })();
 
   return (
-    <MainPageTemplate>
+    <MobileOnlyTemplate>
       <Title>{title}</Title>
       <ProfileTextUpdateForm
         columnName={columnName}
         defaultValue={defaultValue}
       />
-    </MainPageTemplate>
+    </MobileOnlyTemplate>
   );
 };
 
