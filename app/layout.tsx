@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 
 import Footer from '@/components/organisms/Footer';
 import Header from '@/components/organisms/Header';
+import TopWIPBanner from '@/components/organisms/TopWIPBanner';
 import { NotificationContextProvider } from '@/contexts/NotificationContext';
 
 export const metadata = {
@@ -22,6 +23,7 @@ export default async function RootLayout({
       <body className="h-full">
         <SessionProvider session={session}>
           <NotificationContextProvider>
+            <TopWIPBanner />
             <Header />
             {children}
             <Footer />
