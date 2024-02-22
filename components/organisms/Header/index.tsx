@@ -14,7 +14,7 @@ const drawerNavigation = [{ name: '메인페이지', href: '/' }, ...navigation]
 
 const Header = async () => {
   return (
-    <header className="w-full bg-white shadow-sm">
+    <header className="w-full bg-white shadow-sm sticky -top-12 z-10 sm:-top-14">
       <TopWIPBanner />
       <div className="relative mx-auto max-w-[640px] px-4 h-[64px] flex justify-between items-center sm:max-w-7xl sm:px-10">
         <HeaderNavDrawer navigation={drawerNavigation} />

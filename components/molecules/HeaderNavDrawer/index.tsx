@@ -27,17 +27,17 @@ const HeaderNavDrawer = ({ navigation }: HeaderNavDrawerProps) => {
       <div
         className={clsx(
           isOpen
-            ? 'translate-x-0 bg-black/70'
-            : 'translate-x-[-100%] bg-black/0',
+            ? 'transition-[background-color] translate-x-[0%] bg-black/70 delay-0'
+            : 'transition-transform translate-x-[-100%] bg-black/0 delay-200',
           'absolute top-0 left-0 w-screen h-screen z-10',
-          'transition-[background-color] duration-200 ease-in-out'
+          ' duration-200 ease-in-out'
         )}
       >
         <div
           className={clsx(
             'absolute left-0 top-0 bg-white w-64 h-full p-4',
             'transition-transform duration-200 ease-in-out delay-0',
-            isOpen ? 'translate-x-0' : 'translate-x-[-100%]'
+            isOpen ? 'translate-x-[0%]' : 'translate-x-[-100%]'
           )}
         >
           <div>
