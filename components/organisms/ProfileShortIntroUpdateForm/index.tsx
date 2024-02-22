@@ -81,7 +81,7 @@ const ProfileShortIntroUpdateForm = ({
         placeholder="자신을 드러낼 수 있는 한 문장을 써주세요."
         maxLength={50}
       />
-      <div className="h-40 m-4 overflow-auto">
+      <div className="h-full m-4 overflow-auto">
         {IntroductionKeywords?.map((keyword) => (
           <BadgeSelectItem
             key={keyword}
@@ -95,7 +95,9 @@ const ProfileShortIntroUpdateForm = ({
           />
         ))}
       </div>
-      <Button type="submit">제출</Button>
+      <Button className="w-full mt-12" type="submit">
+        제출
+      </Button>
     </form>
   );
 };
