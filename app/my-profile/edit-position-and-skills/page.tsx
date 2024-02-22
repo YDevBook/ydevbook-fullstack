@@ -4,7 +4,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 
 import { auth } from '@/auth';
 import ProfilePositionAndSkillUpdateForm from '@/components/organisms/ProfilePositionAndSkillUpdateForm';
-import MainPageTemplate from '@/components/templates/MainPageTemplate';
+import MobileOnlyTemplate from '@/components/templates/MobileOnlyTemplate';
 import { ArrayItemQueryRows, Profile } from '@/lib/definitions';
 
 export default async function MyProfileEditSkillsPage() {
@@ -41,13 +41,13 @@ export default async function MyProfileEditSkillsPage() {
   }
 
   return (
-    <MainPageTemplate>
+    <MobileOnlyTemplate>
       <Title>포지션 및 기술 스택 수정</Title>
       <ProfilePositionAndSkillUpdateForm
         profile={profile}
         positionSelectItems={positionSelectItems}
         skillsSelectItems={skillsSelectItems}
       />
-    </MainPageTemplate>
+    </MobileOnlyTemplate>
   );
 }
