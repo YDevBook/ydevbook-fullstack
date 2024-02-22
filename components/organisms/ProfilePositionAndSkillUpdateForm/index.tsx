@@ -1,9 +1,10 @@
 'use client';
 
-import { Button } from '@tremor/react';
+import { Button, MultiSelect, MultiSelectItem } from '@tremor/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
+import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfilePositionAndSkills } from '@/lib/actions';
 import {
@@ -23,11 +24,29 @@ const ProfilePositionAndSkillUpdateForm = ({
   positionSelectItems,
   skillsSelectItems,
 }: ProfilePositionAndSkillUpdateFormProps) => {
-  const { register, handleSubmit } =
-    useForm<ProfilePositionAndSkillsUpdateFormData>({
-      defaultValues: { positions: profile.positions, skills: profile.skills },
-    });
+  const {
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<ProfilePositionAndSkillsUpdateFormData>({
+    defaultValues: { positions: profile.positions, skills: profile.skills },
+  });
+  const { positions, skills } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
+
+  const onPositionChange = (values: string[]) => {
+    setValue('positions', values);
+  };
+
+  const onClickSkillBadge = (value: string, prevClicked?: boolean) => {
+    if (prevClicked) {
+      const newList = skills?.filter((skill) => skill !== value);
+      setValue('skills', newList);
+    } else {
+      setValue('skills', [...(skills ?? []), value]);
+    }
+  };
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -61,23 +80,41 @@ const ProfilePositionAndSkillUpdateForm = ({
     <form action={action}>
       <div>
         <label htmlFor="positions">구직중인 포지션</label>
-        <select {...register('positions')} multiple>
+        <MultiSelect
+          className=""
+          placeholder="선택해주세요. "
+          defaultValue={[]}
+          value={positions}
+          onValueChange={onPositionChange}
+          error={!!errors.positions}
+          errorMessage={errors.positions && errors.positions.message}
+        >
           {positionSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
+            <MultiSelectItem key={item.name} value={item.name}>
               {item.name}
-            </option>
+            </MultiSelectItem>
           ))}
-        </select>
+        </MultiSelect>
       </div>
-      <div>
+      <div className="mt-12">
         <label htmlFor="skills">보유 기술</label>
-        <select {...register('skills')} multiple>
-          {skillsSelectItems.map((item) => (
-            <option value={item.name} key={item.name}>
-              {item.name}
-            </option>
+        <div className="h-40 m-4 overflow-auto">
+          {skillsSelectItems?.map((skill) => (
+            <BadgeSelectItem
+              key={skill.name}
+              label={skill.name}
+              value={skill.name}
+              clicked={
+                !!skills &&
+                skills?.findIndex((item) => item === skill.name) !== -1
+              }
+              onClick={onClickSkillBadge}
+            />
           ))}
-        </select>
+        </div>
+        {!!errors.skills && (
+          <p className="py-2 text-red-500">{errors.skills.message}</p>
+        )}
       </div>
       <Button type="submit">제출</Button>
     </form>
