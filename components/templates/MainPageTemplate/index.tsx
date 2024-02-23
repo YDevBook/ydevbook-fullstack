@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 interface MainPageTemplateProps {
   children?: React.ReactNode;
   className?: string;
@@ -6,9 +8,10 @@ interface MainPageTemplateProps {
 const MainPageTemplate = ({ children, className }: MainPageTemplateProps) => {
   return (
     <main
-      className={
-        'p-4 sm:p-10 mx-auto max-w-7xl min-h-[calc(100vh-400px)] ' + className
-      }
+      className={clsx(
+        'p-4 sm:p-10 mx-auto max-w-7xl min-h-[calc(100vh-400px)]',
+        className
+      )}
     >
       {children}
     </main>

@@ -1,6 +1,5 @@
 'use client';
 
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import {
   AtSymbolIcon,
   KeyIcon,
@@ -10,8 +9,10 @@ import { Button } from '@tremor/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import { useContext } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 
+import { NotificationContext } from '@/contexts/NotificationContext';
 import { authenticate } from '@/lib/actions';
 
 interface LoginFormProps {
@@ -21,9 +22,19 @@ interface LoginFormProps {
 export default function LoginForm({ isStartup }: LoginFormProps) {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   const searchParams = useSearchParams();
+  const { setContent, setIsOpen } = useContext(NotificationContext);
+
+  const onClickStartupSignup = () => {
+    setContent?.({
+      title: '스타트업 계정 신청',
+      description:
+        '스타트업 계정 신청은 현재 준비 중입니다. contact@developool.com 으로 계정 신청을 문의해주시면 빠르게 처리해드리겠습니다.',
+    });
+    setIsOpen?.(true);
+  };
 
   return (
-    <form action={dispatch} className="space-y-3">
+    <form action={dispatch} className="mt-10 space-y-3">
       <div className="flex-1 px-6 pt-8 pb-4 rounded-lg bg-gray-50">
         <h1 className={` mb-3 text-2xl`}>
           {isStartup
@@ -36,7 +47,7 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
               className="block mt-5 mb-3 text-xs font-medium text-gray-900"
               htmlFor="email"
             >
-              Email
+              이메일
             </label>
             <div className="relative">
               <input
@@ -44,7 +55,7 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="이메일을 입력해주세요."
                 required
               />
               <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -55,7 +66,7 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
               className="block mt-5 mb-3 text-xs font-medium text-gray-900"
               htmlFor="password"
             >
-              Password
+              비밀번호
             </label>
             <div className="relative">
               <input
@@ -63,7 +74,7 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
                 id="password"
                 type="password"
                 name="password"
-                placeholder="Enter password"
+                placeholder="비밀번호를 입력해주세요."
                 required
                 minLength={6}
               />
@@ -122,12 +133,12 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
           <div>
             <p className="text-sm text-gray-500">
               스타트업 계정이 없으신가요?{' '}
-              <Link
-                href="/startup/signup"
-                className="font-medium text-gray-900"
+              <span
+                onClick={onClickStartupSignup}
+                className="font-medium text-gray-900 cursor-pointer"
               >
                 계정 신청하기
-              </Link>
+              </span>
             </p>
           </div>
         )}
@@ -149,8 +160,8 @@ export default function LoginForm({ isStartup }: LoginFormProps) {
 function LoginButton() {
   const { pending } = useFormStatus();
   return (
-    <Button className="w-full mt-4" aria-disabled={pending}>
-      Log in <ArrowRightIcon className="w-5 h-5 ml-auto text-gray-50" />
+    <Button className="w-full mt-4 " aria-disabled={pending}>
+      로그인
     </Button>
   );
 }
