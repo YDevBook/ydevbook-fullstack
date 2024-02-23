@@ -12,7 +12,7 @@ const MobileOnlyTemplate = ({
   return (
     <main
       className={clsx(
-        'mx-auto w-full max-w-[640px] min-h-[calc(100vh - 400px)] p-4',
+        'mx-auto w-full max-w-[640px] min-h-[calc(100vh-400px)] p-4',
         className
       )}
     >
