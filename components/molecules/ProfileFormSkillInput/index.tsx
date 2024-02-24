@@ -20,6 +20,7 @@ const ProfileFormSkillInput = ({
     watch,
     setError,
     formState: { errors },
+    clearErrors,
   } = useFormContext<ProfileFormData>();
   const { skills } = watch();
 
@@ -40,6 +41,7 @@ const ProfileFormSkillInput = ({
       });
       return;
     } else {
+      clearErrors('skills');
       router.push('/profile-form?stage=' + '학력');
     }
   };

@@ -20,6 +20,7 @@ const ProfileFormPositionInput = ({
     watch,
     formState: { errors },
     setError,
+    clearErrors,
   } = useFormContext<ProfileFormData>();
   const { positions } = watch();
 
@@ -40,6 +41,7 @@ const ProfileFormPositionInput = ({
       });
       return;
     } else {
+      clearErrors('positions');
       router.push('/profile-form?stage=' + '기술');
     }
   };
