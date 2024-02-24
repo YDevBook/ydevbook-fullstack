@@ -90,11 +90,12 @@ const ProfileForm = ({
       </h1>
       <FormProvider {...methods}>
         <form action={action}>
-          {stage === '포지션' && (
-            <ProfileFormPositionInput
-              positionSelectItems={positionSelectItems}
-            />
-          )}
+          {!stage ||
+            (stage === '포지션' && (
+              <ProfileFormPositionInput
+                positionSelectItems={positionSelectItems}
+              />
+            ))}
           {stage === '기술' && (
             <ProfileFormSkillInput skillsSelectItems={skillsSelectItems} />
           )}

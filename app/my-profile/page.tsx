@@ -68,7 +68,7 @@ export default async function MyProfilePage() {
   }
 
   if (!profile.id) {
-    redirect('/profile-form');
+    redirect('/profile-form?stage=포지션');
   }
 
   const {
