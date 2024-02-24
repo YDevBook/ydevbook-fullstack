@@ -1,11 +1,9 @@
-import { Title, Text } from '@tremor/react';
-import clsx from 'clsx';
-import Link from 'next/link';
+import { Text } from '@tremor/react';
 
-import EmployeeCard from '@/components/molecules/EmployeeCard';
+import { Suspense } from 'react';
 import EmployeeListSearch from '@/components/organisms/EmployeeListSearch';
+import EmployeeListView from '@/components/organisms/EmployeeListView';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
-import { fetchFilteredProfiles, fetchFilteredProfilesPages } from '@/lib/data';
 
 interface DeveloperListPageProps {
   searchParams?: {
@@ -22,50 +20,20 @@ export default async function DeveloperListPage({
   const currentPageNum = Number(searchParams?.page) || 1;
   const position = searchParams?.position || '';
 
-  const { data: profiles } = await fetchFilteredProfiles(
-    { query, position },
-    currentPageNum
-  );
-  const { data: totalPageNum } = await fetchFilteredProfilesPages({
-    query,
-    position,
-  });
-
   return (
     <MainPageTemplate>
-      <Title>DeveloperList</Title>
-      <Text>DeveloperList</Text>
+      <h1 className="text-2xl">인재풀 조회하기</h1>
+      <Text>대학생 개발자들의 프로필을 확인하실 수 있습니다.</Text>
       <div>
-        <div>
-          <EmployeeListSearch />
-        </div>
+        <EmployeeListSearch />
       </div>
-      <div className="mt-4">
-        {profiles?.map((profile) => (
-          <EmployeeCard key={profile.id} profile={profile} />
-        ))}
-      </div>
-      <div className="my-4">
-        <div className="flex max-w-md bg-red m-auto justify-center">
-          {Array.from({ length: totalPageNum ?? 1 }, (_, i) => (
-            <Link
-              href={`/startup/developer-list?page=${i + 1}${
-                !!query ? `&query=${query}` : ''
-              }`}
-              key={i}
-            >
-              <button
-                className={clsx(
-                  ' m-4 w-8 h-8 text-center',
-                  currentPageNum === i + 1 && 'bg-red-500'
-                )}
-              >
-                {i + 1}
-              </button>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <EmployeeListView
+          query={query}
+          position={position}
+          currentPageNum={currentPageNum}
+        />
+      </Suspense>
     </MainPageTemplate>
   );
 }
