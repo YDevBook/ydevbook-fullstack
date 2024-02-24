@@ -68,7 +68,7 @@ const ProfileFormSkillInput = ({
           <p className="py-2 text-red-500">{errors.skills.message}</p>
         )}
       </div>
-      <Button type="button" onClick={onClick} className="w-full">
+      <Button type="button" onClick={onClick}>
         다음
       </Button>
     </>

@@ -58,7 +58,7 @@ const ProfileFormPositionInput = ({
           ))}
         </MultiSelect>
       </div>
-      <Button className="w-full" type="button" onClick={onClick}>
+      <Button type="button" onClick={onClick}>
         다음
       </Button>
     </>

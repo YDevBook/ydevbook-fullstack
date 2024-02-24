@@ -19,10 +19,10 @@ export default {
         // light mode
         'tremor': {
           brand: {
-            faint: colors.blue[50],
+            faint: '#D2D9FF',
             muted: colors.blue[200],
             subtle: colors.blue[400],
-            DEFAULT: colors.blue[500],
+            DEFAULT: '#4328EB',
             emphasis: colors.blue[700],
             inverted: colors.white,
           },
