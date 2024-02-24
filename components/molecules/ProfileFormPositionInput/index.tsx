@@ -34,7 +34,7 @@ const ProfileFormPositionInput = ({
       });
       return;
     } else {
-      router.replace('/profile-form?stage=' + '기술');
+      router.push('/profile-form?stage=' + '기술');
     }
   };
 

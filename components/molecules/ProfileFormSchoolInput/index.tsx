@@ -39,7 +39,7 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
 
       <Button
         type="button"
-        onClick={() => router.replace('/profile-form?stage=' + '연락처')}
+        onClick={() => router.push('/profile-form?stage=' + '연락처')}
       >
         다음
       </Button>

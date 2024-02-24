@@ -40,7 +40,7 @@ const ProfileFormSkillInput = ({
       });
       return;
     } else {
-      router.replace('/profile-form?stage=' + '학력');
+      router.push('/profile-form?stage=' + '학력');
     }
   };
 

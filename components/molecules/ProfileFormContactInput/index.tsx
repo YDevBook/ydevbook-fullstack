@@ -49,7 +49,7 @@ const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
         />
         <Button
           type="button"
-          onClick={() => router.replace('/profile-form?stage=' + '한줄소개')}
+          onClick={() => router.push('/profile-form?stage=' + '한줄소개')}
         >
           다음
         </Button>

@@ -51,9 +51,7 @@ const ProfileFormShortBioInput = ({}: ProfileFormShortBioInputProps) => {
           />
         ))}
       </div>
-      <Button type="submit" onClick={() => console.log(all)}>
-        제출
-      </Button>
+      <Button type="submit">제출</Button>
     </div>
   );
 };
