@@ -67,6 +67,7 @@ const ProfileFormSkillInput = ({
                 key={skill.name}
                 label={skill.name}
                 value={skill.name}
+                iconSrc="🧑‍💻"
                 clicked={
                   !!skills &&
                   skills?.findIndex((item) => item === skill.name) !== -1

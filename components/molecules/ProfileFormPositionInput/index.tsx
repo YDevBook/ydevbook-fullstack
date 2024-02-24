@@ -67,6 +67,7 @@ const ProfileFormPositionInput = ({
                 key={position.name}
                 label={position.name}
                 value={position.name}
+                iconSrc="💻"
                 clicked={
                   !!positions &&
                   positions?.findIndex((item) => item === position.name) !== -1
