@@ -29,6 +29,22 @@ export const GraduateStatusOptions = [
   { value: GraduateStatus.수료, label: '수료' },
 ];
 
+export enum ProfileFormStage {
+  포지션 = '포지션',
+  기술 = '기술',
+  학력 = '학력',
+  연락처 = '연락처',
+  한줄소개 = '한줄소개',
+}
+
+export const ProfileFormStages = [
+  ProfileFormStage.포지션,
+  ProfileFormStage.기술,
+  ProfileFormStage.학력,
+  ProfileFormStage.연락처,
+  ProfileFormStage.한줄소개,
+];
+
 export const IntroductionKeywords = [
   '책임감을 갖고 일해요.',
   '원활한 소통이 가능해요.',

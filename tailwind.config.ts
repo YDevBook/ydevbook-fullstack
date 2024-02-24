@@ -12,6 +12,10 @@ export default {
     current: 'currentColor',
     extend: {
       colors: {
+        'ydevbook': {
+          DEFAULT: '#4328EB',
+          faint: '#D2D9FF',
+        },
         // light mode
         'tremor': {
           brand: {

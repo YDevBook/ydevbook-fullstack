@@ -11,7 +11,7 @@ import ProfileFormShortBioInput from '@/components/molecules/ProfileFormShortBio
 import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { insertProfile } from '@/lib/actions';
-import { ProfileFormData } from '@/lib/definitions';
+import { ProfileFormData, ProfileFormStage } from '@/lib/definitions';
 
 // 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호 -> 한줄 소개
 
@@ -24,7 +24,7 @@ const ProfileForm = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const stage = searchParams.get('stage');
+  const stage = searchParams.get('stage') as ProfileFormStage;
   const { setIsOpen, setContent } = useContext(NotificationContext);
 
   const methods = useForm<ProfileFormData>({
