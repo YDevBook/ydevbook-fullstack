@@ -51,6 +51,20 @@ const EmployeeListSearch = () => {
   return (
     <div className="relative">
       <div className="mt-4">
+        <Select
+          onValueChange={(value) => handlePositionFilter(value)}
+          defaultValue={searchParams.get('position')?.toString()}
+          placeholder="포지션으로 검색"
+          className="w-14"
+        >
+          {positionList.map((position) => (
+            <SelectItem key={position} value={position}>
+              {position}
+            </SelectItem>
+          ))}
+        </Select>
+      </div>
+      <div className="mt-2">
         <label htmlFor="search" className="sr-only">
           Search
         </label>
@@ -59,19 +73,6 @@ const EmployeeListSearch = () => {
           onChange={(e) => handleSearch(e.target.value)}
           defaultValue={searchParams.get('query')?.toString()}
         />
-      </div>
-      <div className="mt-2">
-        <Select
-          onValueChange={(value) => handlePositionFilter(value)}
-          defaultValue={searchParams.get('position')?.toString()}
-          placeholder="포지션으로 검색"
-        >
-          {positionList.map((position) => (
-            <SelectItem key={position} value={position}>
-              {position}
-            </SelectItem>
-          ))}
-        </Select>
       </div>
     </div>
   );
