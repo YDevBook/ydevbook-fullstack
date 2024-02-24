@@ -86,10 +86,7 @@ const ProfileForm = ({
   return (
     <>
       <FormProvider {...methods}>
-        <form
-          action={action}
-          className="h-full flex-grow flex flex-col justify-between"
-        >
+        <form action={action} className="">
           {!stage ||
             (stage === '포지션' && (
               <ProfileFormPositionInput

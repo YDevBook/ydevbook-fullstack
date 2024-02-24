@@ -77,7 +77,7 @@ const ProfileFormPositionInput = ({
           </div>
         </div>
       </div>
-      <div className="w-full ">
+      <div className="w-full absolute left-0 bottom-0 p-4">
         {!!errors.positions && (
           <p className="py-4 text-red-400 text-center">
             {errors.positions.message}

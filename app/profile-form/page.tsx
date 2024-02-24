@@ -41,7 +41,7 @@ export default async function ProfileFormPage({
   }
 
   return (
-    <MobileOnlyTemplate className="!h-[calc(100vh-112px)] flex flex-col justify-between">
+    <MobileOnlyTemplate className="!h-[calc(100vh-112px)]">
       <ProfileFormStageHeader stage={stage} />
       <ProfileForm
         positionSelectItems={positionSelectItems}
