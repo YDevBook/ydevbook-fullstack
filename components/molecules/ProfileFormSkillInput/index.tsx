@@ -45,29 +45,33 @@ const ProfileFormSkillInput = ({
   };
 
   return (
-    <div className="w-full">
-      <h2>보유 기술</h2>
-      <div className="h-40 m-4 overflow-auto">
-        {skillsSelectItems?.map((skill) => (
-          <BadgeSelectItem
-            key={skill.name}
-            label={skill.name}
-            value={skill.name}
-            clicked={
-              !!skills &&
-              skills?.findIndex((item) => item === skill.name) !== -1
-            }
-            onClick={onClickBadge}
-          />
-        ))}
+    <>
+      <div className="w-full">
+        <h2>보유 기술</h2>
+        <div className="overflow-x-scroll">
+          <div className="w-[3000px] flex flex-wrap m-4">
+            {skillsSelectItems?.map((skill) => (
+              <BadgeSelectItem
+                key={skill.name}
+                label={skill.name}
+                value={skill.name}
+                clicked={
+                  !!skills &&
+                  skills?.findIndex((item) => item === skill.name) !== -1
+                }
+                onClick={onClickBadge}
+              />
+            ))}
+          </div>
+        </div>
+        {!!errors.skills && (
+          <p className="py-2 text-red-500">{errors.skills.message}</p>
+        )}
       </div>
-      {!!errors.skills && (
-        <p className="py-2 text-red-500">{errors.skills.message}</p>
-      )}
-      <Button type="button" onClick={onClick}>
+      <Button type="button" onClick={onClick} className="w-full bottom-0">
         다음
       </Button>
-    </div>
+    </>
   );
 };
 

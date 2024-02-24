@@ -84,12 +84,15 @@ const ProfileForm = ({
   });
 
   return (
-    <div className="mx-auto w-full max-w-[640px] space-y-2.5 p-8">
+    <div className="mx-auto w-full flex-grow max-w-[640px] space-y-2.5 flex flex-col">
       <h1 className="text-lg">
         간편 이력을 등록하고 스카우트 제안을 받아보세요.
       </h1>
       <FormProvider {...methods}>
-        <form action={action}>
+        <form
+          action={action}
+          className="h-full flex-grow flex flex-col justify-between"
+        >
           {!stage ||
             (stage === '포지션' && (
               <ProfileFormPositionInput
