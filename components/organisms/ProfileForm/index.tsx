@@ -85,9 +85,6 @@ const ProfileForm = ({
 
   return (
     <>
-      <h1 className="text-lg">
-        간편 이력을 등록하고 스카우트 제안을 받아보세요.
-      </h1>
       <FormProvider {...methods}>
         <form
           action={action}

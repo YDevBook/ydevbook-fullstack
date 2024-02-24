@@ -1,9 +1,10 @@
 'use client';
 
-import { Button, MultiSelect, MultiSelectItem } from '@tremor/react';
+import { Button } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
+import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
 import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
 
 interface ProfileFormPositionInputProps {
@@ -22,8 +23,13 @@ const ProfileFormPositionInput = ({
   } = useFormContext<ProfileFormData>();
   const { positions } = watch();
 
-  const onChange = (values: string[]) => {
-    setValue('positions', values);
+  const onClickBadge = (value: string, prevClicked?: boolean) => {
+    if (prevClicked) {
+      const newList = positions?.filter((position) => position !== value);
+      setValue('positions', newList);
+    } else {
+      setValue('positions', [...(positions ?? []), value]);
+    }
   };
 
   const onClick = () => {
@@ -41,26 +47,44 @@ const ProfileFormPositionInput = ({
   return (
     <>
       <div className="w-full">
-        <label htmlFor="positions">구직중인 포지션</label>
-        <MultiSelect
-          className=""
-          placeholder="선택해주세요. "
-          defaultValue={[]}
-          value={positions}
-          onValueChange={onChange}
-          error={!!errors.positions}
-          errorMessage={errors.positions && errors.positions.message}
-        >
-          {positionSelectItems.map((item) => (
-            <MultiSelectItem key={item.name} value={item.name}>
-              {item.name}
-            </MultiSelectItem>
-          ))}
-        </MultiSelect>
+        <div className="mt-12">
+          <h1 className="text-center text-[23px] font-extrabold  ">
+            어떤 개발 업무를 찾고 계신가요?
+          </h1>
+          <h2 className="mt-4 text-center text-[17px] font-normal text-gray-500">
+            구직 중인 포지션을 선택해주세요.
+          </h2>
+        </div>
+        <label className="text-[18px] font-extrabold mt-14 inline-block">
+          개발 포지션
+        </label>
+        <div className="overflow-x-scroll mt-8">
+          <div className="w-[500px] flex flex-wrap mb-8">
+            {positionSelectItems?.map((position) => (
+              <BadgeSelectItem
+                key={position.name}
+                label={position.name}
+                value={position.name}
+                clicked={
+                  !!positions &&
+                  positions?.findIndex((item) => item === position.name) !== -1
+                }
+                onClick={onClickBadge}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-      <Button type="button" onClick={onClick}>
-        다음
-      </Button>
+      <div className="w-full ">
+        {!!errors.positions && (
+          <p className="py-4 text-red-400 text-center">
+            {errors.positions.message}
+          </p>
+        )}
+        <Button className="w-full" type="button" onClick={onClick}>
+          다음
+        </Button>
+      </div>
     </>
   );
 };

@@ -47,9 +47,19 @@ const ProfileFormSkillInput = ({
   return (
     <>
       <div className="w-full">
-        <h2>보유 기술</h2>
-        <div className="overflow-x-scroll">
-          <div className="w-[3000px] flex flex-wrap m-4">
+        <div className="mt-12">
+          <h1 className="text-center text-[23px] font-extrabold  ">
+            어떤 개발 기술을 가지고 계신가요?
+          </h1>
+          <h2 className="mt-4 text-center text-[17px] font-normal text-gray-500">
+            활용 가능한 기술을 선택해주세요.
+          </h2>
+        </div>
+        <label className="text-[18px] font-extrabold mt-14 inline-block">
+          기술 스택
+        </label>
+        <div className="overflow-x-scroll mt-8">
+          <div className="w-[3000px] flex flex-wrap mb-8">
             {skillsSelectItems?.map((skill) => (
               <BadgeSelectItem
                 key={skill.name}
@@ -64,13 +74,17 @@ const ProfileFormSkillInput = ({
             ))}
           </div>
         </div>
-        {!!errors.skills && (
-          <p className="py-2 text-red-500">{errors.skills.message}</p>
-        )}
       </div>
-      <Button type="button" onClick={onClick}>
-        다음
-      </Button>
+      <div className="w-full">
+        {!!errors.skills && (
+          <p className="py-4 text-red-400 text-center">
+            {errors.skills.message}
+          </p>
+        )}
+        <Button className="w-full" type="button" onClick={onClick}>
+          다음
+        </Button>
+      </div>
     </>
   );
 };
