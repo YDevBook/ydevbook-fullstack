@@ -11,7 +11,7 @@ import ProfileFormShortBioInput from '@/components/molecules/ProfileFormShortBio
 import ProfileFormSkillInput from '@/components/molecules/ProfileFormSkillInput';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { insertProfile } from '@/lib/actions';
-import { ProfileFormData } from '@/lib/definitions';
+import { ProfileFormData, ProfileFormStage } from '@/lib/definitions';
 
 // 직군 -> 기술 -> 학력 -> 이름, 이메일, 전화번호 -> 한줄 소개
 
@@ -24,7 +24,7 @@ const ProfileForm = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const stage = searchParams.get('stage');
+  const stage = searchParams.get('stage') as ProfileFormStage;
   const { setIsOpen, setContent } = useContext(NotificationContext);
 
   const methods = useForm<ProfileFormData>({
@@ -84,17 +84,15 @@ const ProfileForm = ({
   });
 
   return (
-    <div className="mx-auto w-full max-w-[640px] space-y-2.5 p-8">
-      <h1 className="text-lg">
-        간편 이력을 등록하고 스카우트 제안을 받아보세요.
-      </h1>
+    <>
       <FormProvider {...methods}>
-        <form action={action}>
-          {stage === '포지션' && (
-            <ProfileFormPositionInput
-              positionSelectItems={positionSelectItems}
-            />
-          )}
+        <form action={action} className="">
+          {!stage ||
+            (stage === '포지션' && (
+              <ProfileFormPositionInput
+                positionSelectItems={positionSelectItems}
+              />
+            ))}
           {stage === '기술' && (
             <ProfileFormSkillInput skillsSelectItems={skillsSelectItems} />
           )}
@@ -103,7 +101,7 @@ const ProfileForm = ({
           {stage === '한줄소개' && <ProfileFormShortBioInput />}
         </form>
       </FormProvider>
-    </div>
+    </>
   );
 };
 

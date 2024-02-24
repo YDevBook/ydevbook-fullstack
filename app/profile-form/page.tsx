@@ -1,12 +1,27 @@
 import { sql } from '@vercel/postgres';
 
+import { redirect } from 'next/navigation';
 import ProfileForm from '@/components/organisms/ProfileForm';
-import MainPageTemplate from '@/components/templates/MainPageTemplate';
-import { ArrayItemQueryRows } from '@/lib/definitions';
+import ProfileFormStageHeader from '@/components/organisms/ProfileFormStageHeader';
+import MobileOnlyTemplate from '@/components/templates/MobileOnlyTemplate';
+import { ArrayItemQueryRows, ProfileFormStage } from '@/lib/definitions';
 
-export default async function ProfileFormPage() {
+interface ProfileFormPageProps {
+  searchParams?: {
+    stage?: string;
+  };
+}
+
+export default async function ProfileFormPage({
+  searchParams,
+}: ProfileFormPageProps) {
   let positionSelectItems = [] as ArrayItemQueryRows[];
   let skillsSelectItems = [] as ArrayItemQueryRows[];
+  const stage = searchParams?.stage as ProfileFormStage;
+  if (!stage) {
+    redirect('/profile-form?stage=%ED%8F%AC%EC%A7%80%EC%85%98');
+  }
+
   try {
     const positionsSelectItemsPromise = sql<ArrayItemQueryRows>`
       SELECT * FROM positions;
@@ -26,11 +41,12 @@ export default async function ProfileFormPage() {
   }
 
   return (
-    <MainPageTemplate>
+    <MobileOnlyTemplate className="!h-[calc(100vh-112px)]">
+      <ProfileFormStageHeader stage={stage} />
       <ProfileForm
         positionSelectItems={positionSelectItems}
         skillsSelectItems={skillsSelectItems}
       />
-    </MainPageTemplate>
+    </MobileOnlyTemplate>
   );
 }
