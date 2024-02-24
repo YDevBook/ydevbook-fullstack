@@ -39,27 +39,29 @@ const ProfileFormPositionInput = ({
   };
 
   return (
-    <div className="w-full">
-      <label htmlFor="positions">구직중인 포지션</label>
-      <MultiSelect
-        className=""
-        placeholder="선택해주세요. "
-        defaultValue={[]}
-        value={positions}
-        onValueChange={onChange}
-        error={!!errors.positions}
-        errorMessage={errors.positions && errors.positions.message}
-      >
-        {positionSelectItems.map((item) => (
-          <MultiSelectItem key={item.name} value={item.name}>
-            {item.name}
-          </MultiSelectItem>
-        ))}
-      </MultiSelect>
-      <Button className="mt-10" type="button" onClick={onClick}>
+    <>
+      <div className="w-full">
+        <label htmlFor="positions">구직중인 포지션</label>
+        <MultiSelect
+          className=""
+          placeholder="선택해주세요. "
+          defaultValue={[]}
+          value={positions}
+          onValueChange={onChange}
+          error={!!errors.positions}
+          errorMessage={errors.positions && errors.positions.message}
+        >
+          {positionSelectItems.map((item) => (
+            <MultiSelectItem key={item.name} value={item.name}>
+              {item.name}
+            </MultiSelectItem>
+          ))}
+        </MultiSelect>
+      </div>
+      <Button className="w-full" type="button" onClick={onClick}>
         다음
       </Button>
-    </div>
+    </>
   );
 };
 

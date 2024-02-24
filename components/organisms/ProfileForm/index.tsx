@@ -84,7 +84,7 @@ const ProfileForm = ({
   });
 
   return (
-    <div className="mx-auto w-full flex-grow max-w-[640px] space-y-2.5 flex flex-col">
+    <>
       <h1 className="text-lg">
         간편 이력을 등록하고 스카우트 제안을 받아보세요.
       </h1>
@@ -107,7 +107,7 @@ const ProfileForm = ({
           {stage === '한줄소개' && <ProfileFormShortBioInput />}
         </form>
       </FormProvider>
-    </div>
+    </>
   );
 };
 

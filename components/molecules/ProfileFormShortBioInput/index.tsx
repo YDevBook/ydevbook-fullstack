@@ -29,30 +29,35 @@ const ProfileFormShortBioInput = ({}: ProfileFormShortBioInputProps) => {
   };
 
   return (
-    <div className="w-full">
-      <label htmlFor="shortBio">한줄 소개</label>
-      <TextInput
-        {...register('shortBio')}
-        placeholder="자신을 드러낼 수 있는 한 문장을 써주세요."
-        maxLength={50}
-      />
-
-      <div className="h-40 m-4 overflow-auto">
-        {IntroductionKeywords?.map((keyword) => (
-          <BadgeSelectItem
-            key={keyword}
-            label={keyword}
-            value={keyword}
-            clicked={
-              !!introductionKeywords &&
-              introductionKeywords?.findIndex((item) => item === keyword) !== -1
-            }
-            onClick={onClickBadge}
-          />
-        ))}
+    <>
+      <div className="w-full">
+        <div className="overflow-x-scroll">
+          <div className="w-[800px] flex flex-wrap m-4">
+            {IntroductionKeywords?.map((keyword) => (
+              <BadgeSelectItem
+                key={keyword}
+                label={keyword}
+                value={keyword}
+                clicked={
+                  !!introductionKeywords &&
+                  introductionKeywords?.findIndex(
+                    (item) => item === keyword
+                  ) !== -1
+                }
+                onClick={onClickBadge}
+              />
+            ))}
+          </div>
+        </div>
+        <label htmlFor="shortBio">한줄 소개</label>
+        <TextInput
+          {...register('shortBio')}
+          placeholder="자신을 드러낼 수 있는 한 문장을 써주세요."
+          maxLength={50}
+        />
       </div>
       <Button type="submit">제출</Button>
-    </div>
+    </>
   );
 };
 

@@ -18,32 +18,33 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
   };
 
   return (
-    <div className="w-full">
-      <h2>최종 학력</h2>
-      <label htmlFor="school">학교명</label>
-      <TextInput {...register('school')} placeholder="" maxLength={50} />
-      <label htmlFor="major">전공</label>
-      <TextInput {...register('major')} placeholder="" maxLength={50} />
-      <label htmlFor="graduateStatus">졸업 여부</label>
-      <Select
-        defaultValue=""
-        onValueChange={onGraduateStatusChange}
-        value={graduateStatus}
-      >
-        {GraduateStatusOptions.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
-            {option.label}
-          </SelectItem>
-        ))}
-      </Select>
-
+    <>
+      <div className="w-full">
+        <h2>최종 학력</h2>
+        <label htmlFor="school">학교명</label>
+        <TextInput {...register('school')} placeholder="" maxLength={50} />
+        <label htmlFor="major">전공</label>
+        <TextInput {...register('major')} placeholder="" maxLength={50} />
+        <label htmlFor="graduateStatus">졸업 여부</label>
+        <Select
+          defaultValue=""
+          onValueChange={onGraduateStatusChange}
+          value={graduateStatus}
+        >
+          {GraduateStatusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </Select>
+      </div>
       <Button
         type="button"
         onClick={() => router.push('/profile-form?stage=' + '연락처')}
       >
         다음
       </Button>
-    </div>
+    </>
   );
 };
 
