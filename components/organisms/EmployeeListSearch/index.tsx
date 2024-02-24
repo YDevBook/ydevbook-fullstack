@@ -1,5 +1,6 @@
 'use client';
 
+import { Select, SelectItem, TextInput } from '@tremor/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -17,50 +18,60 @@ const EmployeeListSearch = () => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', '1');
-    if (term) {
-      params.set('query', term);
-    } else {
-      params.delete('query');
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  const handleSearch = useDebouncedCallback(
+    (term: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set('page', '1');
+      if (term) {
+        params.set('query', term);
+      } else {
+        params.delete('query');
+      }
+      replace(`${pathname}?${params.toString()}`);
+    },
+    300,
+    { leading: true }
+  );
 
-  const handlePositionFilter = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', '1');
-    if (term) {
-      params.set('position', term);
-    } else {
-      params.delete('position');
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  const handlePositionFilter = useDebouncedCallback(
+    (term: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set('page', '1');
+      if (term) {
+        params.set('position', term);
+      } else {
+        params.delete('position');
+      }
+      replace(`${pathname}?${params.toString()}`);
+    },
+    300,
+    { leading: true }
+  );
 
   return (
     <div className="relative">
-      <label htmlFor="search" className="sr-only">
-        Search
-      </label>
-      <input
-        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-        placeholder={'Search'}
-        onChange={(e) => handleSearch(e.target.value)}
-        defaultValue={searchParams.get('query')?.toString()}
-      />
-      <div>
-        <select
-          onChange={(e) => handlePositionFilter(e.target.value)}
+      <div className="mt-4">
+        <label htmlFor="search" className="sr-only">
+          Search
+        </label>
+        <TextInput
+          placeholder={'이름 및 이메일로 검색'}
+          onChange={(e) => handleSearch(e.target.value)}
+          defaultValue={searchParams.get('query')?.toString()}
+        />
+      </div>
+      <div className="mt-2">
+        <Select
+          onValueChange={(value) => handlePositionFilter(value)}
           defaultValue={searchParams.get('position')?.toString()}
+          placeholder="포지션으로 검색"
         >
           {positionList.map((position) => (
-            <option key={position} value={position}>
+            <SelectItem key={position} value={position}>
               {position}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </Select>
       </div>
     </div>
   );
