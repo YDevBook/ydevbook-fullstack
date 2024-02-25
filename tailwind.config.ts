@@ -137,4 +137,5 @@ export default {
     },
   ],
   plugins: [require('@headlessui/tailwindcss'), require('@tailwindcss/forms')],
+  darkMode: 'class', // disable dark mode
 } satisfies Config;
