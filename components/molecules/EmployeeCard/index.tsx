@@ -35,9 +35,9 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
         <div>
           <Image
             className="h-24 w-24 rounded-lg"
-            src={DefaultProfileImage}
-            height={32}
-            width={32}
+            src={profile.profileImageUrl || DefaultProfileImage}
+            height={96}
+            width={96}
             alt={`${profile.name || 'placeholder'} avatar`}
           />
         </div>
