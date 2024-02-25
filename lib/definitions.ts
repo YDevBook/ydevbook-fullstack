@@ -72,7 +72,7 @@ export interface Profile {
   email: string;
   dateOfBirth?: Date;
   address?: string;
-  profileImage?: string;
+  profileImageUrl?: string;
   positions?: string[];
   skills?: string[];
   school?: string;
@@ -105,7 +105,7 @@ export type ProfileUpdateFormData = Omit<
   Profile,
   | 'id'
   | 'userId'
-  | 'profileImage'
+  | 'profileImageUrl'
   | 'attachedFiles'
   | 'personalStatement'
   | 'mainStrength'

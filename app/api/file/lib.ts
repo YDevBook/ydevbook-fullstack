@@ -43,9 +43,18 @@ export async function profileImageUpload(file: File) {
       path.join('profile-images', `${userId}`)
     );
     const profileImageUrl = gcsResponse.publicUrl();
-    const query = `UPDATE users SET "profileImageUrl" = $1 WHERE id = $2`;
-    const insertResult = await sql.query(query, [profileImageUrl, userId]);
-    if (insertResult.rowCount === 0) {
+    const userTableUpdateQuery = `UPDATE users SET "profileImageUrl" = $1 WHERE id = $2;`;
+    const profileTableUpdateQuery = `UPDATE profiles SET "profileImageUrl" = $1 WHERE "userId" = $2;`;
+    const [userTableUpdateResult, profileTableUpdateResult] = await Promise.all(
+      [
+        sql.query(userTableUpdateQuery, [profileImageUrl, userId]),
+        sql.query(profileTableUpdateQuery, [profileImageUrl, userId]),
+      ]
+    );
+    if (
+      userTableUpdateResult.rowCount === 0 ||
+      profileTableUpdateResult.rowCount === 0
+    ) {
       return { status: 400 };
     } else {
       return { profileImageUrl, status: 200 };
