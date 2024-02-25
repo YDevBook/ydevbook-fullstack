@@ -188,7 +188,7 @@ export default async function MyProfilePage() {
             </Text>
             <div className="my-2">
               {introductionKeywords?.map((position) => (
-                <Badge color="sky" className="mx-1" key={position}>
+                <Badge className="mx-1" key={position}>
                   {position}
                 </Badge>
               ))}
@@ -210,7 +210,7 @@ export default async function MyProfilePage() {
             <Title>구직중인 포지션</Title>
             <div className="my-2">
               {positions?.map((position) => (
-                <Badge color="sky" className="mx-1" key={position}>
+                <Badge className="mx-1" key={position}>
                   {position}
                 </Badge>
               ))}
@@ -218,7 +218,7 @@ export default async function MyProfilePage() {
             <Title>보유 기술</Title>
             <div className="my-2">
               {skills?.map((skill) => (
-                <Badge color="sky" className="mx-1" key={skill}>
+                <Badge className="m-1" key={skill}>
                   {skill}
                 </Badge>
               ))}

@@ -1,4 +1,4 @@
-import { Card, Title } from '@tremor/react';
+import { Button, Card, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 
 import Link from 'next/link';
@@ -29,11 +29,10 @@ export default async function IndexPage() {
         <p className="mt-8 text-lg text-gray-700 sm:text-xl">
           대학생 개발자로서 스타트업에 합류해보세요.
         </p>
-        <Link
-          href={mainCTAHref}
-          className="mt-8 px-8 py-2 bg-blue-500 text-white rounded-md"
-        >
-          {isLoggedIn && hasProfile ? '내 프로필 보기' : '프로필 등록하기'}
+        <Link href={mainCTAHref}>
+          <Button className="mt-8" size="lg">
+            {isLoggedIn && hasProfile ? '내 프로필 보기' : '프로필 등록하기'}
+          </Button>
         </Link>
       </div>
       <div className="flex flex-col justify-center items-center my-24">
