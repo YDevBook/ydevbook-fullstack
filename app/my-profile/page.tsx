@@ -7,7 +7,7 @@ import {
   RiMapPinLine,
   RiPhoneLine,
 } from '@remixicon/react';
-import { Badge, Card, Text, Title } from '@tremor/react';
+import { Card, Divider, Text } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import clsx from 'clsx';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -17,8 +17,10 @@ import { redirect } from 'next/navigation';
 
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { auth } from '@/auth';
+import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
 import EditLinkIcon from '@/components/atoms/EditLinkIcon';
 import FileDeleteButton from '@/components/atoms/FileDeleteButton';
+import ProfileCardTitle from '@/components/atoms/ProfileCardTitle';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
@@ -182,7 +184,6 @@ export default async function MyProfilePage({
   return (
     <>
       <MainPageTemplate>
-        <Title className="my-4">내 프로필</Title>
         <div className="flex flex-col sm:flex-row">
           <div className="sm:basis-1/3">
             <Card className="relative w-full mx-auto">
@@ -269,51 +270,81 @@ export default async function MyProfilePage({
               <EditLinkIcon
                 href={`/my-profile?edit=${ProfileEditParams.간단소개}`}
               />
-              <Title>한줄 소개</Title>
-              <Text className="whitespace-pre-line">
-                {shortBio || '짧은 한 줄로 본인을 표현해보세요.'}
-              </Text>
-              <div className="my-2">
-                {introductionKeywords?.map((position) => (
-                  <Badge className="mx-1" key={position}>
-                    {position}
-                  </Badge>
-                ))}
+              <ProfileCardTitle>한줄 소개</ProfileCardTitle>
+              <div className="px-2 sm:px-10 pt-4">
+                {!shortBio && (
+                  <Text className="whitespace-pre-line">
+                    짧은 한 줄로 본인을 표현해보세요.
+                  </Text>
+                )}
+                {shortBio && <p className="text-xl">{shortBio}</p>}
+                <div className="my-2 flex flex-wrap">
+                  {introductionKeywords?.map((keyword) => (
+                    <BadgeSelectItem
+                      clicked
+                      label={keyword}
+                      value={keyword}
+                      key={keyword}
+                    />
+                  ))}
+                </div>
               </div>
             </Card>
             <Card className="w-full mx-auto mt-4">
               <EditLinkIcon
                 href={`/my-profile?edit=${ProfileEditParams.자기소개}`}
               />
-              <Title>자기 소개</Title>
-              <Text className="whitespace-pre-line">
-                {personalStatement || '자기 소개 글을 등록해주세요.'}
-              </Text>
+              <ProfileCardTitle>자기 소개</ProfileCardTitle>
+              <div className="px-2 sm:px-10 pt-4">
+                {!personalStatement && (
+                  <Text className="whitespace-pre-line">
+                    자기 소개 글을 등록해주세요.
+                  </Text>
+                )}
+                {!!personalStatement && (
+                  <p className="whitespace-pre-line text-sm">
+                    {personalStatement}
+                  </p>
+                )}
+              </div>
             </Card>
             <Card className="w-full mx-auto mt-4">
               <EditLinkIcon
                 href={`/my-profile?edit=${ProfileEditParams.포지션기술}`}
               />
-              <Title>구직중인 포지션</Title>
-              <div className="my-2">
-                {positions?.map((position) => (
-                  <Badge className="mx-1" key={position}>
-                    {position}
-                  </Badge>
-                ))}
+              <ProfileCardTitle>구직중인 포지션</ProfileCardTitle>
+              <div className="px-2 sm:px-10">
+                <div className="my-2 flex flex-wrap">
+                  {positions?.map((position) => (
+                    <BadgeSelectItem
+                      clicked
+                      label={position}
+                      value={position}
+                      iconSrc="🧑‍💻"
+                      key={position}
+                    />
+                  ))}
+                </div>
               </div>
-              <Title>보유 기술</Title>
-              <div className="my-2">
-                {skills?.map((skill) => (
-                  <Badge className="m-1" key={skill}>
-                    {skill}
-                  </Badge>
-                ))}
+              <Divider />
+              <ProfileCardTitle>보유 기술</ProfileCardTitle>
+              <div className="px-2 sm:px-10">
+                <div className="my-2 flex flex-wrap">
+                  {skills?.map((skill) => (
+                    <BadgeSelectItem
+                      clicked
+                      label={skill}
+                      value={skill}
+                      iconSrc="💻"
+                      key={skill}
+                    />
+                  ))}
+                </div>
               </div>
             </Card>
             <ExperiencesCard experiences={experiences} />
             <Card className="w-full mx-auto mt-4">
-              <Title>첨부 자료</Title>
+              <ProfileCardTitle>첨부 자료</ProfileCardTitle>
               <Text>
                 첨부한 파일을 클릭하면 다운로드가 가능합니다. 파일을 추가하려면
                 아래의 버튼을 눌러주세요.

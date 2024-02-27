@@ -1,10 +1,12 @@
 'use client';
 
-import { Card, Title, Switch, Text } from '@tremor/react';
+import { RiQuestionLine } from '@remixicon/react';
+import { Card, Icon, Switch } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
+import ProfileCardTitle from '@/components/atoms/ProfileCardTitle';
 import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ActivelyJobSeekingSwitchCardProps {
@@ -42,12 +44,21 @@ const ActivelyJobSeekingSwitchCard = ({
 
   return (
     <Card className="w-full mx-auto mt-4">
-      <div className="w-full flex justify-between">
-        <div>
-          <Title>적극 구직 중</Title>
-          <Text>토글 Off 시, 구직 중이 아님으로 표시됩니다.(Temp)</Text>
+      <div className="w-full flex justify-between items-center">
+        <div className="flex">
+          <ProfileCardTitle>적극 구직 중</ProfileCardTitle>
+          <Icon
+            icon={RiQuestionLine}
+            className="ml-2 p-0"
+            color="gray"
+            tooltip="토글 off 시, 내 프로필이 노출되지 않습니다."
+          />
         </div>
-        <Switch checked={isActive} onChange={handleOnChange} className="ml-2" />
+        <Switch
+          checked={isActive}
+          onChange={handleOnChange}
+          className="ml-2 flex items-center"
+        />
       </div>
     </Card>
   );

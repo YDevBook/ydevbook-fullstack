@@ -1,8 +1,9 @@
 'use client';
 
-import { Badge, Card, Divider, Text, Title } from '@tremor/react';
+import { Badge, Card, Divider, Text } from '@tremor/react';
 
 import EditLinkIcon from '@/components/atoms/EditLinkIcon';
+import ProfileCardTitle from '@/components/atoms/ProfileCardTitle';
 import { Experience, ProfileEditParams } from '@/lib/definitions';
 
 interface ExperiencesCardProps {
@@ -13,7 +14,7 @@ const ExperiencesCard = ({ experiences }: ExperiencesCardProps) => {
   return (
     <div>
       <Card className="w-full mx-auto mt-4">
-        <Title>경력</Title>
+        <ProfileCardTitle>경력</ProfileCardTitle>
         {experiences.length === 0 && <Text>업무 경험을 추가해주세요.</Text>}
         {experiences.map((experience) => (
           <div key={experience.id}>
