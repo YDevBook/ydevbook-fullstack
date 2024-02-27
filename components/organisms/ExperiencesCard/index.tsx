@@ -3,7 +3,7 @@
 import { Badge, Card, Divider, Text, Title, Button } from '@tremor/react';
 import Link from 'next/link';
 
-import { Experience } from '@/lib/definitions';
+import { Experience, ProfileEditParams } from '@/lib/definitions';
 
 interface ExperiencesCardProps {
   experiences: Experience[];
@@ -35,7 +35,7 @@ const ExperiencesCard = ({ experiences }: ExperiencesCardProps) => {
           </div>
         ))}
 
-        <Link href="/my-profile/edit-experiences">
+        <Link href={`/my-profile?edit=${ProfileEditParams.경력}`}>
           <Button className="absolute top-0 right-0 m-4">수정하기</Button>
         </Link>
       </Card>

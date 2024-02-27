@@ -14,6 +14,7 @@ import FileAttachInput from '@/components/molecules/FileAttachInput';
 import ExperiencesCard from '@/components/organisms/ExperiencesCard';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import {
+  ArrayItemQueryRows,
   AttachmentFiles,
   Experience,
   GraduateStatusOptions,
@@ -41,6 +42,12 @@ const ProfileTextUpdateForm = dynamic(
 const ProfileUpdateForm = dynamic(
   () => import('@/components/organisms/ProfileUpdateForm')
 );
+const ExperiencesUpdate = dynamic(
+  () => import('@/components/organisms/ExperiencesUpdate')
+);
+const ProfilePositionAndSkillUpdateForm = dynamic(
+  () => import('@/components/organisms/ProfilePositionAndSkillUpdateForm')
+);
 
 export default async function MyProfilePage({
   searchParams,
@@ -54,6 +61,8 @@ export default async function MyProfilePage({
   let profile = {} as Profile;
   let experiences = [] as Experience[];
   let attachedFiles = [] as AttachmentFiles[];
+  let positionSelectItems = [] as ArrayItemQueryRows[];
+  let skillsSelectItems = [] as ArrayItemQueryRows[];
 
   try {
     const profilePromise = sql.query<Profile>(
@@ -68,19 +77,29 @@ export default async function MyProfilePage({
     );
     const attachedFilesPromise = sql.query<AttachmentFiles>(
       `
-        SELECT id, "fileName", "mediaLink" FROM files WHERE "userId" = $1;
+      SELECT id, "fileName", "mediaLink" FROM files WHERE "userId" = $1;
       `,
       [session?.user.id]
     );
+    const positionsSelectItemsPromise = sql<ArrayItemQueryRows>`
+      SELECT * FROM positions;
+      `;
+    const skillsSelectItemsPromise = sql<ArrayItemQueryRows>`
+      SELECT * FROM skills;
+      `;
 
     const [
       profileQueryResults,
       experiencesQueryResults,
       attachedFilesQueryResults,
+      positionsQueryResults,
+      skillsQueryResults,
     ] = await Promise.all([
       profilePromise,
       experiencesPromise,
       attachedFilesPromise,
+      positionsSelectItemsPromise,
+      skillsSelectItemsPromise,
     ]);
 
     if (profileQueryResults.rows.length === 0) {
@@ -89,6 +108,8 @@ export default async function MyProfilePage({
     profile = profileQueryResults.rows[0];
     experiences = experiencesQueryResults.rows;
     attachedFiles = attachedFilesQueryResults.rows;
+    positionSelectItems = positionsQueryResults.rows;
+    skillsSelectItems = skillsQueryResults.rows;
   } catch (error) {
     console.log(error);
   }
@@ -231,7 +252,7 @@ export default async function MyProfilePage({
               </Text>
             </Card>
             <Card className="w-full mx-auto mt-4">
-              <Link href="/my-profile/edit-position-and-skills">
+              <Link href={`/my-profile?edit=${ProfileEditParams.포지션기술}`}>
                 <Button className="absolute top-0 right-0 m-4">수정하기</Button>
               </Link>
               <Title>구직중인 포지션</Title>
@@ -296,10 +317,20 @@ export default async function MyProfilePage({
               defaultValue={profile.personalStatement}
             />
           )}
-          {/* {edit === ProfileEditParams.포지션기술 && (
-            <ProfilePositionAndSkillUpdateForm profile={profile} />
-          )} */}
-          {/* {edit === ProfileEditParams.경력 && <ProfileUpdateForm profile={profile} />} */}
+          {edit === ProfileEditParams.포지션기술 && (
+            <ProfilePositionAndSkillUpdateForm
+              profile={profile}
+              positionSelectItems={positionSelectItems}
+              skillsSelectItems={skillsSelectItems}
+            />
+          )}
+          {edit === ProfileEditParams.경력 && (
+            <ExperiencesUpdate
+              experiences={experiences}
+              positionSelectItems={positionSelectItems}
+              skillsSelectItems={skillsSelectItems}
+            />
+          )}
         </ModalTemplate>
       )}
     </>

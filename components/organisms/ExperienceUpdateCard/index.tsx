@@ -8,7 +8,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateExperience } from '@/lib/actions';
-import { Experience, ExperienceFormData } from '@/lib/definitions';
+import {
+  Experience,
+  ExperienceFormData,
+  ProfileEditParams,
+} from '@/lib/definitions';
 
 const ExperienceForm = dynamic(
   () => import('@/components/molecules/ExperienceForm')
@@ -40,7 +44,9 @@ const ExperienceUpdateCard = ({
           title: 'Success',
           description: '업무 경험을 추가했습니다.',
           onConfirm: () =>
-            window.location.replace('/my-profile/edit-experiences'),
+            window.location.replace(
+              `/my-profile?edit=${ProfileEditParams.경력}`
+            ),
         });
         setIsOpen?.(true);
         return;
