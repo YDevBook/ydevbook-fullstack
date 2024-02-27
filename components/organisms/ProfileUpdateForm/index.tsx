@@ -28,31 +28,30 @@ interface ProfileUpdateFormProps {
   profile: Profile;
 }
 
-const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
-  .object()
-  .shape({
-    name: yup
-      .string()
-      .required('이름을 입력해주세요.')
-      .max(50, '이름은 50자 이하여야 합니다.'),
-    phoneNumber: yup
-      .string()
-      .required('전화번호를 입력해주세요.')
-      .max(11, '전화번호는 11자 이하여야 합니다.'),
-    email: yup
-      .string()
-      .required('이메일을 입력해주세요.')
-      .max(50, '이메일은 50자 이하여야 합니다.'),
-    dateOfBirth: yup.date(),
-    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
-    school: yup.string().max(50, '50자 이내로 입력해주세요.'),
-    major: yup.string().max(50, '50자 이내로 입력해주세요.'),
-    graduateStatus: yup.string(),
-    githubLink: yup.string(),
-    webLink: yup.string(),
-  });
-
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
+  const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
+    .object()
+    .shape({
+      name: yup
+        .string()
+        .required('이름을 입력해주세요.')
+        .max(50, '이름은 50자 이하여야 합니다.'),
+      phoneNumber: yup
+        .string()
+        .required('전화번호를 입력해주세요.')
+        .max(11, '전화번호는 11자 이하여야 합니다.'),
+      email: yup
+        .string()
+        .required('이메일을 입력해주세요.')
+        .max(50, '이메일은 50자 이하여야 합니다.'),
+      dateOfBirth: yup.date(),
+      address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+      school: yup.string().max(50, '50자 이내로 입력해주세요.'),
+      major: yup.string().max(50, '50자 이내로 입력해주세요.'),
+      graduateStatus: yup.string(),
+      githubLink: yup.string(),
+      webLink: yup.string(),
+    });
   const { data: session, update } = useSession();
   const {
     register,

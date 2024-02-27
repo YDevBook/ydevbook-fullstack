@@ -37,6 +37,14 @@ export enum ProfileFormStage {
   한줄소개 = '한줄소개',
 }
 
+export enum ProfileEditParams {
+  기본정보 = '기본정보',
+  간단소개 = '간단소개',
+  자기소개 = '자기소개',
+  포지션기술 = '포지션기술',
+  경력 = '경력',
+}
+
 export const ProfileFormStages = [
   ProfileFormStage.포지션,
   ProfileFormStage.기술,
