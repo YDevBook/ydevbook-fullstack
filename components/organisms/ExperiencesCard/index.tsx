@@ -1,9 +1,9 @@
 'use client';
 
-import { Badge, Card, Divider, Text, Title, Button } from '@tremor/react';
-import Link from 'next/link';
+import { Badge, Card, Divider, Text, Title } from '@tremor/react';
 
-import { Experience } from '@/lib/definitions';
+import EditLinkIcon from '@/components/atoms/EditLinkIcon';
+import { Experience, ProfileEditParams } from '@/lib/definitions';
 
 interface ExperiencesCardProps {
   experiences: Experience[];
@@ -35,9 +35,7 @@ const ExperiencesCard = ({ experiences }: ExperiencesCardProps) => {
           </div>
         ))}
 
-        <Link href="/my-profile/edit-experiences">
-          <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-        </Link>
+        <EditLinkIcon href={`/my-profile?edit=${ProfileEditParams.경력}`} />
       </Card>
     </div>
   );

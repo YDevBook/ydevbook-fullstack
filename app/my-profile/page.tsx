@@ -7,13 +7,12 @@ import {
   RiMapPinLine,
   RiPhoneLine,
 } from '@remixicon/react';
-import { Badge, Button, Card, Text, Title } from '@tremor/react';
+import { Badge, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 import clsx from 'clsx';
 import { unstable_noStore as noStore } from 'next/cache';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
@@ -267,9 +266,9 @@ export default async function MyProfilePage({
           </div>
           <div className="mt-4 sm:basis-2/3 sm:ml-4 sm:mt-0">
             <Card className="w-full mx-auto">
-              <Link href={`/my-profile?edit=${ProfileEditParams.간단소개}`}>
-                <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-              </Link>
+              <EditLinkIcon
+                href={`/my-profile?edit=${ProfileEditParams.간단소개}`}
+              />
               <Title>한줄 소개</Title>
               <Text className="whitespace-pre-line">
                 {shortBio || '짧은 한 줄로 본인을 표현해보세요.'}
@@ -283,18 +282,18 @@ export default async function MyProfilePage({
               </div>
             </Card>
             <Card className="w-full mx-auto mt-4">
-              <Link href={`/my-profile?edit=${ProfileEditParams.자기소개}`}>
-                <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-              </Link>
+              <EditLinkIcon
+                href={`/my-profile?edit=${ProfileEditParams.자기소개}`}
+              />
               <Title>자기 소개</Title>
               <Text className="whitespace-pre-line">
                 {personalStatement || '자기 소개 글을 등록해주세요.'}
               </Text>
             </Card>
             <Card className="w-full mx-auto mt-4">
-              <Link href={`/my-profile?edit=${ProfileEditParams.포지션기술}`}>
-                <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-              </Link>
+              <EditLinkIcon
+                href={`/my-profile?edit=${ProfileEditParams.포지션기술}`}
+              />
               <Title>구직중인 포지션</Title>
               <div className="my-2">
                 {positions?.map((position) => (
