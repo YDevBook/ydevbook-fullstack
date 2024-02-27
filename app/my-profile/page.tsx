@@ -1,5 +1,15 @@
+import {
+  RiCakeLine,
+  RiGithubLine,
+  RiGraduationCapLine,
+  RiLink,
+  RiMailLine,
+  RiMapPinLine,
+  RiPhoneLine,
+} from '@remixicon/react';
 import { Badge, Button, Card, Text, Title } from '@tremor/react';
 import { sql } from '@vercel/postgres';
+import clsx from 'clsx';
 import { unstable_noStore as noStore } from 'next/cache';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -8,6 +18,7 @@ import { redirect } from 'next/navigation';
 
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { auth } from '@/auth';
+import EditLinkIcon from '@/components/atoms/EditLinkIcon';
 import FileDeleteButton from '@/components/atoms/FileDeleteButton';
 import ActivelyJobSeekingSwitchCard from '@/components/molecules/ActivelyJobSeekingSwitchCard';
 import FileAttachInput from '@/components/molecules/FileAttachInput';
@@ -176,49 +187,78 @@ export default async function MyProfilePage({
         <div className="flex flex-col sm:flex-row">
           <div className="sm:basis-1/3">
             <Card className="relative w-full mx-auto">
-              <div className="relative">
+              <EditLinkIcon
+                href={`/my-profile?edit=${ProfileEditParams.기본정보}`}
+              />
+              <div className="relative flex flex-col items-center justify-center mt-8">
                 <div className="relative inline-block">
                   <Image
                     src={session?.user.profileImageUrl || DefaultProfileImage}
                     alt="프로필 이미지"
                     width={100}
                     height={100}
+                    className="rounded-full w-[120px] h-[120px] object-cover"
                   />
                 </div>
+                <p className="mt-4 text-[26px] font-extrabold">{name}</p>
               </div>
-              <Link href={`/my-profile?edit=${ProfileEditParams.기본정보}`}>
-                <Button className="absolute top-0 right-0 m-4">수정하기</Button>
-              </Link>
-              <Text>이름</Text>
-              <Title>{name}</Title>
-              <Text>전화번호</Text>
-              <Title>{phoneNumber}</Title>
-              <Text>이메일</Text>
-              <Title>{email}</Title>
-              <Text>생년월일</Text>
-              <Title>
-                {dateOfBirth?.toDateString() ||
-                  '생년월일 정보를 업데이트 해주세요.'}
-              </Title>
-              <Text>거주 지역</Text>
-              <Title>{address || '거주 지역 정보를 업데이트 해주세요.'}</Title>
-              <Text>학력</Text>
-              <Title>{school}</Title>
-              <Text>전공</Text>
-              <Title>
-                {major}(
-                {
-                  GraduateStatusOptions.find(
-                    (option) => option.value === graduateStatus
-                  )?.label
-                }
-                )
-              </Title>
-              <Title></Title>
-              <Text>깃헙 링크</Text>
-              <Title>{githubLink || '깃헙 페이지 링크를 등록해주세요.'}</Title>
-              <Text>웹 링크</Text>
-              <Title>{webLink || '웹 페이지 링크를 등록해주세요.'}</Title>
+              <div className="mx-5 mt-10 font-extralight">
+                <div className="flex items-center mt-2">
+                  <RiPhoneLine className="flex-shrink-0" />
+                  <span className="ml-4">{phoneNumber}</span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiMailLine className="flex-shrink-0" />
+                  <span className="ml-4">{email}</span>
+                </div>
+                <div className="mt-2">
+                  <div className="flex items-center">
+                    <RiGraduationCapLine className="flex-shrink-0" />
+                    <span className={clsx('ml-4', !school && 'text-gray-300')}>
+                      {school || '학력 정보를 업데이트 해주세요.'}
+                    </span>
+                  </div>
+                  {!!school && (
+                    <div className="mt-2 ml-10">
+                      {major} /
+                      {
+                        GraduateStatusOptions.find(
+                          (option) => option.value === graduateStatus
+                        )?.label
+                      }
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiCakeLine className="flex-shrink-0" />
+                  <span
+                    className={clsx('ml-4', !dateOfBirth && 'text-gray-300')}
+                  >
+                    {dateOfBirth?.toDateString() ||
+                      '생년월일 정보를 업데이트 해주세요.'}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiMapPinLine className="flex-shrink-0" />
+                  <span className={clsx('ml-4', !address && 'text-gray-300')}>
+                    {address || '거주 지역 정보를 업데이트 해주세요.'}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiGithubLine className="flex-shrink-0" />
+                  <span
+                    className={clsx('ml-4', !githubLink && 'text-gray-300')}
+                  >
+                    {githubLink || '깃헙 페이지 정보를 업데이트 해주세요.'}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiLink className="flex-shrink-0" />
+                  <span className={clsx('ml-4', !webLink && 'text-gray-300')}>
+                    {webLink || '웹 페이지 정보를 업데이트 해주세요.'}
+                  </span>
+                </div>
+              </div>
             </Card>
             <ActivelyJobSeekingSwitchCard
               initialIsActive={isActivelySeeking}
