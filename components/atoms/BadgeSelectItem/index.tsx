@@ -8,6 +8,7 @@ interface BadgeSelectItemProps {
   iconSrc?: string;
   clicked?: boolean;
   onClick?: (value: string, prevSelected?: boolean) => void;
+  readonly?: boolean;
 }
 
 const BadgeSelectItem = ({
@@ -16,18 +17,22 @@ const BadgeSelectItem = ({
   iconSrc,
   clicked,
   onClick,
+  readonly,
 }: BadgeSelectItemProps) => {
   return (
-    <span
+    <div
       className={clsx(
-        'border-2 border-gray-200 m-1 px-4 py-2 rounded-2xl text-[14px] text-gray-400 bg-gray-200 font-extrabold whitespace-pre',
-        clicked && 'bg-white border-ydevbook text-ydevbook'
+        'border-2 m-1 px-3 rounded-2xl text-[14px] font-extrabold whitespace-pre h-8 flex items-center',
+        (readonly || clicked) && 'bg-white border-ydevbook text-ydevbook',
+        !readonly &&
+          'border-gray-200 text-gray-400 bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out  hover:bg-white hover:border-ydevbook hover:text-ydevbook',
+        readonly && 'bg-white border-ydevbook text-ydevbook'
       )}
       onClick={() => onClick?.(value, clicked)}
     >
-      {!!iconSrc && <span className="mr-2">{iconSrc}</span>}
+      {!!iconSrc && <span className="text-xs mr-2">{iconSrc}</span>}
       {label}
-    </span>
+    </div>
   );
 };
 

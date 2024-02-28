@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@tremor/react';
+import { Badge, Button } from '@tremor/react';
 import { useContext, useState } from 'react';
 
 import { NotificationContext } from '@/contexts/NotificationContext';
@@ -26,13 +26,12 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
       setIsOpen?.(true);
       return;
     }
-    setFiles((prev) => [...prev, file]);
+    setFiles([...files, file]);
+    fileAttachInputAction(file);
   };
 
-  const fileAttachInputAction = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const fileAttachInputAction = async (file: File) => {
     try {
-      const file = files[0];
       if (!file) {
         return;
       }
@@ -70,10 +69,11 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
   };
 
   return (
-    <form onSubmit={fileAttachInputAction}>
+    <div>
       {files.map((file) => (
         <div key={file.name}>
           <span>{file.name}</span>
+          <Badge className="ml-2">업로드 중</Badge>
         </div>
       ))}
       <input
@@ -83,26 +83,12 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
         id="file"
         onChange={onInputChange}
       />
-      <label
-        className="bg-tremor-brand-faint border-2 border-tremor-brand-muted rounded-tremor-default p-2 my-2 inline-block cursor-pointer"
-        htmlFor="file"
-        onClick={(e) => {
-          if (files.length > 0) {
-            e.preventDefault();
-            setContent?.({
-              title: 'Alert',
-              description: '한번에 한개의 파일만 업로드 가능합니다.',
-            });
-            setIsOpen?.(true);
-          }
-        }}
-      >
-        추가하기
-      </label>
-      <div>
-        <Button type="submit">업로드</Button>
-      </div>
-    </form>
+      <Button className="p-0 mt-4">
+        <label className="inline-block px-4 py-2 cursor-pointer" htmlFor="file">
+          추가하기
+        </label>
+      </Button>
+    </div>
   );
 };
 

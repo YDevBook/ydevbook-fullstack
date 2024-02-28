@@ -75,25 +75,33 @@ const ProfileShortIntroUpdateForm = ({
 
   return (
     <form action={action}>
-      <label htmlFor="shortBio">한줄 소개</label>
-      <TextInput
-        {...register('shortBio')}
-        placeholder="자신을 드러낼 수 있는 한 문장을 써주세요."
-        maxLength={50}
-      />
-      <div className="h-full m-4 overflow-auto">
-        {IntroductionKeywords?.map((keyword) => (
-          <BadgeSelectItem
-            key={keyword}
-            label={keyword}
-            value={keyword}
-            clicked={
-              !!introductionKeywords &&
-              introductionKeywords?.findIndex((item) => item === keyword) !== -1
-            }
-            onClick={onClickBadge}
-          />
-        ))}
+      <div className="mt-8 overflow-x-scroll">
+        <div className="flex flex-wrap h-full w-[700px]">
+          {IntroductionKeywords?.map((keyword) => (
+            <BadgeSelectItem
+              key={keyword}
+              label={keyword}
+              value={keyword}
+              clicked={
+                !!introductionKeywords &&
+                introductionKeywords?.findIndex((item) => item === keyword) !==
+                  -1
+              }
+              onClick={onClickBadge}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="mt-8">
+        <label className="text-[16px] font-extrabold" htmlFor="shortBio">
+          한줄 소개
+        </label>
+        <TextInput
+          {...register('shortBio')}
+          placeholder="자신을 드러낼 수 있는 한 문장을 써주세요."
+          maxLength={50}
+          className="mt-2"
+        />
       </div>
       <Button className="w-full mt-12" type="submit">
         제출

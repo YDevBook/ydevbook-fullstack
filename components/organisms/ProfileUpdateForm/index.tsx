@@ -1,6 +1,6 @@
 'use client';
 
-import { yupResolver } from '@hookform/resolvers/yup';
+import { RiAddCircleFill } from '@remixicon/react';
 import {
   Button,
   DatePicker,
@@ -14,7 +14,6 @@ import { useSession } from 'next-auth/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-import * as yup from 'yup';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfile } from '@/lib/actions';
@@ -28,29 +27,30 @@ interface ProfileUpdateFormProps {
   profile: Profile;
 }
 
-const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
-  .object()
-  .shape({
-    name: yup
-      .string()
-      .required('이름을 입력해주세요.')
-      .max(50, '이름은 50자 이하여야 합니다.'),
-    phoneNumber: yup
-      .string()
-      .required('전화번호를 입력해주세요.')
-      .max(11, '전화번호는 11자 이하여야 합니다.'),
-    email: yup
-      .string()
-      .required('이메일을 입력해주세요.')
-      .max(50, '이메일은 50자 이하여야 합니다.'),
-    dateOfBirth: yup.date(),
-    address: yup.string().max(100, '100자 이내로 입력해주세요.'),
-    school: yup.string().max(50, '50자 이내로 입력해주세요.'),
-    major: yup.string().max(50, '50자 이내로 입력해주세요.'),
-    graduateStatus: yup.string(),
-    githubLink: yup.string(),
-    webLink: yup.string(),
-  });
+// 원인 모를 오류로 인해 스키마 validation 이 안먹음. 주석 처리하고 밑에 register 에서 직접 validation 처리
+// const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
+//   .object()
+//   .shape({
+//     name: yup
+//       .string()
+//       .required('이름을 입력해주세요.')
+//       .max(50, '이름은 50자 이하여야 합니다.'),
+//     phoneNumber: yup
+//       .string()
+//       .required('전화번호를 입력해주세요.')
+//       .max(11, '전화번호는 11자 이하여야 합니다.'),
+//     email: yup
+//       .string()
+//       .required('이메일을 입력해주세요.')
+//       .max(50, '이메일은 50자 이하여야 합니다.'),
+//     dateOfBirth: yup.date(),
+//     address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+//     school: yup.string().max(50, '50자 이내로 입력해주세요.'),
+//     major: yup.string().max(50, '50자 이내로 입력해주세요.'),
+//     graduateStatus: yup.string(),
+//     githubLink: yup.string(),
+//     webLink: yup.string(),
+//   });
 
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
@@ -61,7 +61,6 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     setValue,
     formState: { errors },
   } = useForm<ProfileUpdateFormData>({
-    resolver: yupResolver(profileUpdateFormSchema),
     defaultValues: { ...profile },
   });
   const { dateOfBirth, graduateStatus } = watch();
@@ -175,92 +174,127 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           accept="image/*"
           onChange={onInputChange}
         />
-        <div className="relative inline-block">
-          <Image
-            src={session?.user.profileImageUrl || DefaultProfileImage}
-            alt="프로필 이미지"
-            width={100}
-            height={100}
-            priority
-          />
-          <label
-            className="absolute bottom-0 right-0 cursor-pointer"
-            htmlFor="profileImageInput"
-          >
-            edit
-          </label>
+        <div className="relative flex flex-col items-center justify-center m-8">
+          <div className="relative inline-block">
+            <Image
+              src={session?.user.profileImageUrl || DefaultProfileImage}
+              alt="프로필 이미지"
+              width={100}
+              height={100}
+              priority
+              className="rounded-full w-[120px] h-[120px] object-cover"
+            />
+            <label
+              className="absolute bottom-0 right-0 cursor-pointer"
+              htmlFor="profileImageInput"
+            >
+              <RiAddCircleFill className="w-8 h-8 text-gray-500" />
+            </label>
+          </div>
         </div>
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="name">이름</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="name">
+          이름
+        </label>
         <TextInput
-          className="border border-gray-300"
-          {...register('name', { required: true })}
+          className="mt-2 border border-gray-300"
+          {...register('name', { required: '이름을 입력해주세요.' })}
+          maxLength={50}
           error={!!errors.name}
           errorMessage={errors.name?.message}
+          placeholder="이름을 입력해주세요."
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="phoneNumber">전화번호</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="phoneNumber">
+          전화번호
+        </label>
         <TextInput
-          className="border border-gray-300"
-          {...register('phoneNumber', { required: true })}
+          className="mt-2 border border-gray-300"
+          {...register('phoneNumber', { required: '전화번호를 입력해주세요.' })}
+          maxLength={11}
           error={!!errors.phoneNumber}
           errorMessage={errors.phoneNumber?.message}
+          placeholder="전화번호를 입력해주세요."
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="email">이메일</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="email">
+          이메일
+        </label>
         <TextInput
-          className="border border-gray-300"
-          {...register('email', { required: true })}
+          className="mt-2 border border-gray-300"
+          {...register('email', { required: '이메일을 입력해주세요.' })}
+          maxLength={50}
           error={!!errors.email}
           errorMessage={errors.email?.message}
+          placeholder="이메일을 입력해주세요."
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="dateOfBirth">생년월일</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="dateOfBirth">
+          생년월일
+        </label>
         <DatePicker
           defaultValue={dateOfBirth}
           onValueChange={onDateChange}
           enableClear
           enableYearNavigation
+          className="mt-2"
+          placeholder="생년월일 선택"
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="address">거주 지역</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="address">
+          거주 지역
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 border border-gray-300"
           {...register('address')}
+          maxLength={100}
           error={!!errors.address}
           errorMessage={errors.address?.message}
+          placeholder="ex) 서울특별시 서대문구"
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="school">최종 학력</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="school">
+          최종 학력
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 border border-gray-300"
           {...register('school')}
+          maxLength={50}
           error={!!errors.school}
           errorMessage={errors.school?.message}
+          placeholder="최종 학력을 입력해주세요."
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="major">전공</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="major">
+          전공
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 border border-gray-300"
           {...register('major')}
+          maxLength={50}
           error={!!errors.major}
           errorMessage={errors.major?.message}
+          placeholder="전공을 입력해주세요."
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="graduateStatus">재학/졸업여부</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="graduateStatus">
+          재학/졸업여부
+        </label>
         <Select
           defaultValue={graduateStatus}
           onValueChange={onGraduateStatusChange}
           value={graduateStatus}
           enableClear
+          className="mt-2"
+          placeholder="재학/졸업여부 선택"
         >
           {GraduateStatusOptions.map((option) => (
             <SelectItem key={option.value} value={option.value}>
@@ -269,24 +303,30 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           ))}
         </Select>
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="githubLink">깃헙 링크</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="githubLink">
+          깃헙 링크
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 border border-gray-300"
           {...register('githubLink')}
           error={!!errors.githubLink}
+          placeholder="ex) https://github.com/***"
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="webLink">웹 링크</label>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="webLink">
+          웹 링크
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 border border-gray-300"
           {...register('webLink')}
           error={!!errors.webLink}
+          placeholder="ex) https://www.***.com"
         />
       </div>
-      <Button className="w-full mt-4" type="submit">
-        제출
+      <Button className="w-full mt-10" type="submit">
+        저장하기
       </Button>
     </form>
   );

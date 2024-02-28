@@ -1,17 +1,25 @@
 'use client';
 
-import { Badge, Card, Title } from '@tremor/react';
-import { Text, Button } from '@tremor/react';
+import { RiDeleteBinLine, RiPencilLine } from '@remixicon/react';
+import { Card } from '@tremor/react';
+import { Button } from '@tremor/react';
 import dynamic from 'next/dynamic';
 import { useContext, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import CardContent from '@/components/molecules/ExperienceCardContent';
+import LoadingCard from '@/components/molecules/LoadingCard';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { updateExperience } from '@/lib/actions';
-import { Experience, ExperienceFormData } from '@/lib/definitions';
+import { deleteExperience, updateExperience } from '@/lib/actions';
+import {
+  Experience,
+  ExperienceFormData,
+  ProfileEditParams,
+} from '@/lib/definitions';
 
 const ExperienceForm = dynamic(
-  () => import('@/components/molecules/ExperienceForm')
+  () => import('@/components/molecules/ExperienceForm'),
+  { loading: () => <LoadingCard /> }
 );
 
 interface ExperienceUpdateCardProps {
@@ -29,8 +37,49 @@ const ExperienceUpdateCard = ({
   const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const methods = useForm<ExperienceFormData>({
-    defaultValues: { ...experience, startDate: undefined, endDate: undefined },
+    defaultValues: { ...experience },
   });
+
+  const handleDeleteClick = () => {
+    setContent?.({
+      title: 'Delete',
+      description: '경력을 삭제하시겠습니까?',
+      onConfirm: onDelete,
+    });
+    setIsOpen?.(true);
+    return;
+  };
+
+  const onDelete = async () => {
+    try {
+      const response = await deleteExperience(experience.id);
+      if (response.status === 200) {
+        setContent?.({
+          title: 'Success',
+          description: '경력이 삭제되었습니다.',
+          onConfirm: () =>
+            window.location.replace(
+              `/my-profile?edit=${ProfileEditParams.경력}`
+            ),
+        });
+        setIsOpen?.(true);
+        return;
+      }
+      setContent?.({
+        title: 'Error',
+        description: '경력 삭제에 실패했습니다.',
+      });
+      setIsOpen?.(true);
+      return;
+    } catch (error) {
+      setContent?.({
+        title: 'Error',
+        description: '경력 삭제에 실패했습니다.',
+      });
+      setIsOpen?.(true);
+      return;
+    }
+  };
 
   const action: () => void = methods.handleSubmit(async (data) => {
     try {
@@ -38,23 +87,25 @@ const ExperienceUpdateCard = ({
       if (response.status === 200) {
         setContent?.({
           title: 'Success',
-          description: '업무 경험을 추가했습니다.',
+          description: '경력이 반영되었습니다.',
           onConfirm: () =>
-            window.location.replace('/my-profile/edit-experiences'),
+            window.location.replace(
+              `/my-profile?edit=${ProfileEditParams.경력}`
+            ),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '업무 경험 추가에 실패했습니다.',
+        description: '경력 추가 및 변경에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '업무 경험 추가에 실패했습니다.',
+        description: '경력 추가 및 변경에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -66,32 +117,21 @@ const ExperienceUpdateCard = ({
       <Card className="w-full mx-auto mt-4">
         {!addClicked && (
           <>
-            <Button
-              className="absolute top-0 right-0 m-4"
-              onClick={() => setAddClicked(true)}
-            >
-              수정하기
-            </Button>
-            <Text>회사명</Text>
-            <Title>{experience.companyName}</Title>
-            <Text>직책</Text>
-            <Title>{experience.position}</Title>
-            <Text>시작일</Text>
-            <Title>{experience.startDate.toDateString()}</Title>
-            <Text>종료일</Text>
-            <Title>{experience.endDate?.toDateString()}</Title>
-            <Text>현재 근무 여부</Text>
-            <Title>{experience.isWorkingNow ? 'O' : 'X'}</Title>
-            <Text>사용 기술</Text>
-            <div className="my-2">
-              {experience.skills?.map((skill) => (
-                <Badge size="xl" color="slate" className="mx-1 " key={skill}>
-                  {skill}
-                </Badge>
-              ))}
+            <div className="absolute top-0 right-0 m-4">
+              <Button
+                className="rounded-md p-2 hover:bg-gray-100"
+                variant="light"
+                icon={RiDeleteBinLine}
+                onClick={handleDeleteClick}
+              />
+              <Button
+                className="rounded-md p-2 hover:bg-gray-100"
+                variant="light"
+                icon={RiPencilLine}
+                onClick={() => setAddClicked(true)}
+              />
             </div>
-            <Text>업무 내용</Text>
-            <Text className="text-xl">{experience.description}</Text>
+            <CardContent experience={experience} />
           </>
         )}
         {addClicked && (
@@ -100,8 +140,6 @@ const ExperienceUpdateCard = ({
             onCancel={() => setAddClicked(false)}
             positionSelectItems={positionSelectItems}
             skillsSelectItems={skillsSelectItems}
-            startDateDefaultValue={experience.startDate}
-            endDateDefaultValue={experience.endDate}
           />
         )}
       </Card>
