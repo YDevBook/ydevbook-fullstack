@@ -1,11 +1,14 @@
 'use client';
 
-import { Badge, Card, Title } from '@tremor/react';
-import { Text, Button } from '@tremor/react';
+import { RiPencilLine } from '@remixicon/react';
+import { Card } from '@tremor/react';
+import { Button } from '@tremor/react';
 import dynamic from 'next/dynamic';
 import { useContext, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import CardContent from '@/components/molecules/ExperienceCardContent';
+import LoadingCard from '@/components/molecules/LoadingCard';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateExperience } from '@/lib/actions';
 import {
@@ -15,7 +18,8 @@ import {
 } from '@/lib/definitions';
 
 const ExperienceForm = dynamic(
-  () => import('@/components/molecules/ExperienceForm')
+  () => import('@/components/molecules/ExperienceForm'),
+  { loading: () => <LoadingCard /> }
 );
 
 interface ExperienceUpdateCardProps {
@@ -73,31 +77,12 @@ const ExperienceUpdateCard = ({
         {!addClicked && (
           <>
             <Button
-              className="absolute top-0 right-0 m-4"
+              className="absolute top-0 right-0 p-2 m-4 rounded-md hover:bg-gray-100"
+              variant="light"
+              icon={RiPencilLine}
               onClick={() => setAddClicked(true)}
-            >
-              수정하기
-            </Button>
-            <Text>회사명</Text>
-            <Title>{experience.companyName}</Title>
-            <Text>직책</Text>
-            <Title>{experience.position}</Title>
-            <Text>시작일</Text>
-            <Title>{experience.startDate.toDateString()}</Title>
-            <Text>종료일</Text>
-            <Title>{experience.endDate?.toDateString()}</Title>
-            <Text>현재 근무 여부</Text>
-            <Title>{experience.isWorkingNow ? 'O' : 'X'}</Title>
-            <Text>사용 기술</Text>
-            <div className="my-2">
-              {experience.skills?.map((skill) => (
-                <Badge size="xl" color="slate" className="mx-1 " key={skill}>
-                  {skill}
-                </Badge>
-              ))}
-            </div>
-            <Text>업무 내용</Text>
-            <Text className="text-xl">{experience.description}</Text>
+            ></Button>
+            <CardContent experience={experience} />
           </>
         )}
         {addClicked && (

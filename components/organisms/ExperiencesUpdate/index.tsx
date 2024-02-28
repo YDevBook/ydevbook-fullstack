@@ -1,4 +1,4 @@
-import { Title } from '@tremor/react';
+import ProfileCardTitle from '@/components/atoms/ProfileCardTitle';
 import ExperienceInsertCard from '@/components/organisms/ExperienceInsertCard';
 import ExperienceUpdateCard from '@/components/organisms/ExperienceUpdateCard';
 import { Experience, ArrayItemQueryRows } from '@/lib/definitions';
@@ -16,7 +16,7 @@ const ExperiencesUpdate = ({
 }: ExperiencesUpdateProps) => {
   return (
     <div>
-      <Title>업무 경험 수정 및 추가</Title>
+      <ProfileCardTitle>경력 수정 및 추가</ProfileCardTitle>
       {!!experiences &&
         experiences.length > 0 &&
         experiences.map((experience) => (
