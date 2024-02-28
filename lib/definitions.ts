@@ -30,19 +30,19 @@ export const GraduateStatusOptions = [
 ];
 
 export enum ProfileFormStage {
-  포지션 = '포지션',
-  기술 = '기술',
-  학력 = '학력',
-  연락처 = '연락처',
-  한줄소개 = '한줄소개',
+  포지션 = 'positions',
+  기술 = 'skills',
+  학력 = 'school',
+  연락처 = 'contact',
+  한줄소개 = 'shortBio',
 }
 
 export enum ProfileEditParams {
-  기본정보 = '기본정보',
-  간단소개 = '간단소개',
-  자기소개 = '자기소개',
-  포지션기술 = '포지션기술',
-  경력 = '경력',
+  기본정보 = 'basic',
+  간단소개 = 'shortBio',
+  자기소개 = 'personalStatement',
+  포지션기술 = 'positions-and-skills',
+  경력 = 'experiences',
 }
 
 export const ProfileFormStages = [

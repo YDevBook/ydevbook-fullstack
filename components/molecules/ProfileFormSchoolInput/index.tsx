@@ -4,7 +4,11 @@ import { Button, Select, SelectItem, TextInput } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
-import { GraduateStatusOptions, ProfileFormData } from '@/lib/definitions';
+import {
+  GraduateStatusOptions,
+  ProfileFormData,
+  ProfileFormStage,
+} from '@/lib/definitions';
 
 interface ProfileFormSchoolInputProps {}
 
@@ -79,7 +83,9 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
         <Button
           className="w-full"
           type="button"
-          onClick={() => router.push('/profile-form?stage=' + '연락처')}
+          onClick={() =>
+            router.push('/profile-form?stage=' + ProfileFormStage.연락처)
+          }
         >
           다음
         </Button>

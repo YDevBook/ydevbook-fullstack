@@ -32,6 +32,7 @@ import {
   GraduateStatusOptions,
   Profile,
   ProfileEditParams,
+  ProfileFormStage,
 } from '@/lib/definitions';
 
 interface MyProfilePageProps {
@@ -127,7 +128,7 @@ export default async function MyProfilePage({
   }
 
   if (!profile.id) {
-    redirect('/profile-form?stage=포지션');
+    redirect('/profile-form?stage=' + ProfileFormStage.포지션);
   }
 
   const {

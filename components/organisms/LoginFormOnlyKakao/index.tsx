@@ -24,7 +24,6 @@ const LoginFormOnlyKakao = () => {
       <Button
         className="w-full bg-yellow-300 border-yellow-300 text-gray-900 hover:bg-yellow-300 hover:border-yellow-300 hover:text-gray-900"
         onClick={() => {
-          console.log(searchParams.get('callbackUrl'));
           signIn('kakao', {
             callbackUrl: searchParams.get('callbackUrl') ?? '/',
           });
