@@ -12,7 +12,7 @@ const ProfileEditModalHeader = () => {
           프로필 수정
         </h3>
         <button
-          onClick={() => router.back()}
+          onClick={() => router.replace('/my-profile')}
           className="absolute top-0 right-0 rounded-md bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-500"
         >
           <RiCloseLine className="h-7 w-7" />

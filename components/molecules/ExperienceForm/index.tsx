@@ -189,7 +189,7 @@ const ExperienceForm = ({
         </label>
         <Textarea
           id="description"
-          placeholder="업무내용을 알려주세요."
+          placeholder="상세한 업무내용을 알려주세요."
           className="h-64 mt-2"
           {...register('description')}
           value={watch('description')}

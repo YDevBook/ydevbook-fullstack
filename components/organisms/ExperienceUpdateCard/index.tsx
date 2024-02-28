@@ -46,7 +46,7 @@ const ExperienceUpdateCard = ({
       if (response.status === 200) {
         setContent?.({
           title: 'Success',
-          description: '업무 경험을 추가했습니다.',
+          description: '경력이 반영되었습니다.',
           onConfirm: () =>
             window.location.replace(
               `/my-profile?edit=${ProfileEditParams.경력}`
@@ -57,14 +57,14 @@ const ExperienceUpdateCard = ({
       }
       setContent?.({
         title: 'Error',
-        description: '업무 경험 추가에 실패했습니다.',
+        description: '경력 추가 및 변경에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '업무 경험 추가에 실패했습니다.',
+        description: '경력 추가 및 변경에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;

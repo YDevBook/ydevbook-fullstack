@@ -203,6 +203,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={50}
           error={!!errors.name}
           errorMessage={errors.name?.message}
+          placeholder="이름을 입력해주세요."
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -215,6 +216,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={11}
           error={!!errors.phoneNumber}
           errorMessage={errors.phoneNumber?.message}
+          placeholder="전화번호를 입력해주세요."
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -227,6 +229,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={50}
           error={!!errors.email}
           errorMessage={errors.email?.message}
+          placeholder="이메일을 입력해주세요."
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -239,6 +242,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           enableClear
           enableYearNavigation
           className="mt-2"
+          placeholder="생년월일 선택"
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -251,6 +255,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={100}
           error={!!errors.address}
           errorMessage={errors.address?.message}
+          placeholder="ex) 서울특별시 서대문구"
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -263,6 +268,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={50}
           error={!!errors.school}
           errorMessage={errors.school?.message}
+          placeholder="최종 학력을 입력해주세요."
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -275,6 +281,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={50}
           error={!!errors.major}
           errorMessage={errors.major?.message}
+          placeholder="전공을 입력해주세요."
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -287,6 +294,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           value={graduateStatus}
           enableClear
           className="mt-2"
+          placeholder="재학/졸업여부 선택"
         >
           {GraduateStatusOptions.map((option) => (
             <SelectItem key={option.value} value={option.value}>
@@ -303,6 +311,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="mt-2 border border-gray-300"
           {...register('githubLink')}
           error={!!errors.githubLink}
+          placeholder="ex) https://github.com/***"
         />
       </div>
       <div className="relative min-h-[100px]">
@@ -313,6 +322,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           className="mt-2 border border-gray-300"
           {...register('webLink')}
           error={!!errors.webLink}
+          placeholder="ex) https://www.***.com"
         />
       </div>
       <Button className="w-full mt-10" type="submit">

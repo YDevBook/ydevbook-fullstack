@@ -12,6 +12,7 @@ const EditLinkIcon = ({ href }: EditLinkIconProps) => {
   return (
     <Link
       href={href}
+      replace
       className="absolute top-0 right-0 m-4 hover:bg-gray-100 rounded-md"
     >
       <Icon icon={RiPencilLine} />

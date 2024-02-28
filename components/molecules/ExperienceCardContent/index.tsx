@@ -15,7 +15,13 @@ const CardContent = ({ experience }: { experience: Experience }) => {
       <span className="ml-2">{experience.position}</span>
       <Text>
         {experience.startDate.toDateString()} ~{' '}
-        {experience.endDate?.toDateString()}
+        {experience.isWorkingNow ? (
+          <Badge size="xs" color="red" className="bg-white">
+            현재 근무 중
+          </Badge>
+        ) : (
+          experience.endDate?.toDateString()
+        )}
       </Text>
       <div className="my-1">
         {experience.skills?.map((skill) => (
@@ -31,7 +37,7 @@ const CardContent = ({ experience }: { experience: Experience }) => {
         )}
       >
         {descriptionShortEnough || moreClicked
-          ? (experience.description ?? '자세한 업무 내용을 추가해주세요.') +
+          ? (experience.description ?? '상세한 업무 내용을 추가해주세요.') +
             '    '
           : experience.description?.substring(0, 200) + '... '}
         {!descriptionShortEnough && (

@@ -281,10 +281,10 @@ export default async function MyProfilePage({
                 <div className="flex flex-wrap my-2">
                   {introductionKeywords?.map((keyword) => (
                     <BadgeSelectItem
-                      clicked
                       label={keyword}
                       value={keyword}
                       key={keyword}
+                      readonly
                     />
                   ))}
                 </div>
@@ -317,11 +317,11 @@ export default async function MyProfilePage({
                 <div className="flex flex-wrap my-2">
                   {positions?.map((position) => (
                     <BadgeSelectItem
-                      clicked
                       label={position}
                       value={position}
                       iconSrc="🧑‍💻"
                       key={position}
+                      readonly
                     />
                   ))}
                 </div>
@@ -332,11 +332,11 @@ export default async function MyProfilePage({
                 <div className="flex flex-wrap my-2">
                   {skills?.map((skill) => (
                     <BadgeSelectItem
-                      clicked
                       label={skill}
                       value={skill}
                       iconSrc="💻"
                       key={skill}
+                      readonly
                     />
                   ))}
                 </div>

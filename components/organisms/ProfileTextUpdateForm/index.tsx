@@ -52,7 +52,7 @@ const ProfileTextUpdateForm = ({
         <Textarea
           id={columnName}
           name={columnName}
-          placeholder="Start typing here..."
+          placeholder="자기소개 글을 입력해주세요."
           className="mt-2 h-96"
           defaultValue={defaultValue}
         />
