@@ -1,6 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
+import { RiAddCircleFill } from '@remixicon/react';
 import {
   Button,
   DatePicker,
@@ -174,92 +175,113 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           accept="image/*"
           onChange={onInputChange}
         />
-        <div className="relative inline-block">
-          <Image
-            src={session?.user.profileImageUrl || DefaultProfileImage}
-            alt="프로필 이미지"
-            width={100}
-            height={100}
-            priority
-          />
-          <label
-            className="absolute bottom-0 right-0 cursor-pointer"
-            htmlFor="profileImageInput"
-          >
-            edit
-          </label>
+        <div className="relative flex flex-col items-center justify-center m-8">
+          <div className="relative inline-block">
+            <Image
+              src={session?.user.profileImageUrl || DefaultProfileImage}
+              alt="프로필 이미지"
+              width={100}
+              height={100}
+              priority
+              className="rounded-full w-[120px] h-[120px] object-cover"
+            />
+            <label
+              className="absolute bottom-0 right-0 cursor-pointer"
+              htmlFor="profileImageInput"
+            >
+              <RiAddCircleFill className="w-8 h-8 text-gray-500" />
+            </label>
+          </div>
         </div>
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="name">이름</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="name">
+          이름
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('name', { required: true })}
           error={!!errors.name}
           errorMessage={errors.name?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="phoneNumber">전화번호</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="phoneNumber">
+          전화번호
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('phoneNumber', { required: true })}
           error={!!errors.phoneNumber}
           errorMessage={errors.phoneNumber?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="email">이메일</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="email">
+          이메일
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('email', { required: true })}
           error={!!errors.email}
           errorMessage={errors.email?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="dateOfBirth">생년월일</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="dateOfBirth">
+          생년월일
+        </label>
         <DatePicker
           defaultValue={dateOfBirth}
           onValueChange={onDateChange}
           enableClear
           enableYearNavigation
+          className="mt-2 mb-6"
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="address">거주 지역</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="address">
+          거주 지역
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('address')}
           error={!!errors.address}
           errorMessage={errors.address?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="school">최종 학력</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="school">
+          최종 학력
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('school')}
           error={!!errors.school}
           errorMessage={errors.school?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="major">전공</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="major">
+          전공
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('major')}
           error={!!errors.major}
           errorMessage={errors.major?.message}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="graduateStatus">재학/졸업여부</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="graduateStatus">
+          재학/졸업여부
+        </label>
         <Select
           defaultValue={graduateStatus}
           onValueChange={onGraduateStatusChange}
           value={graduateStatus}
           enableClear
+          className="mt-2 mb-6"
         >
           {GraduateStatusOptions.map((option) => (
             <SelectItem key={option.value} value={option.value}>
@@ -268,24 +290,28 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           ))}
         </Select>
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="githubLink">깃헙 링크</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="githubLink">
+          깃헙 링크
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('githubLink')}
           error={!!errors.githubLink}
         />
       </div>
-      <div className="relative min-h-[86px]">
-        <label htmlFor="webLink">웹 링크</label>
+      <div className="relative">
+        <label className="text-[16px] font-extrabold" htmlFor="webLink">
+          웹 링크
+        </label>
         <TextInput
-          className="border border-gray-300"
+          className="mt-2 mb-6 border border-gray-300"
           {...register('webLink')}
           error={!!errors.webLink}
         />
       </div>
-      <Button className="w-full mt-4" type="submit">
-        제출
+      <Button className="w-full mt-10" type="submit">
+        저장하기
       </Button>
     </form>
   );
