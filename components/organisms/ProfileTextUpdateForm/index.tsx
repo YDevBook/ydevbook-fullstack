@@ -44,17 +44,20 @@ const ProfileTextUpdateForm = ({
   };
 
   return (
-    <form action={updateAction} className="my-4">
+    <form action={updateAction} className="mt-4">
+      <label className="text-[16px] font-extrabold" htmlFor="shortBio">
+        자기 소개
+      </label>
       <div>
         <Textarea
           id={columnName}
           name={columnName}
           placeholder="Start typing here..."
-          className="h-96"
+          className="mt-2 h-96"
           defaultValue={defaultValue}
         />
       </div>
-      <Button className="mt-4">저장하기</Button>
+      <Button className="w-full mt-12">저장하기</Button>
     </form>
   );
 };

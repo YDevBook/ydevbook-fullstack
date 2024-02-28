@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, MultiSelect, MultiSelectItem } from '@tremor/react';
+import { Button } from '@tremor/react';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -35,8 +35,13 @@ const ProfilePositionAndSkillUpdateForm = ({
   const { positions, skills } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
 
-  const onPositionChange = (values: string[]) => {
-    setValue('positions', values);
+  const onClickPositionBadge = (value: string, prevClicked?: boolean) => {
+    if (prevClicked) {
+      const newList = positions?.filter((position) => position !== value);
+      setValue('positions', newList);
+    } else {
+      setValue('positions', [...(positions ?? []), value]);
+    }
   };
 
   const onClickSkillBadge = (value: string, prevClicked?: boolean) => {
@@ -78,45 +83,56 @@ const ProfilePositionAndSkillUpdateForm = ({
 
   return (
     <form action={action}>
-      <div>
-        <label htmlFor="positions">구직중인 포지션</label>
-        <MultiSelect
-          className=""
-          placeholder="선택해주세요. "
-          defaultValue={[]}
-          value={positions}
-          onValueChange={onPositionChange}
-          error={!!errors.positions}
-          errorMessage={errors.positions && errors.positions.message}
-        >
-          {positionSelectItems.map((item) => (
-            <MultiSelectItem key={item.name} value={item.name}>
-              {item.name}
-            </MultiSelectItem>
-          ))}
-        </MultiSelect>
+      <div className="mt-2 mb-10">
+        <label className="text-[16px] font-extrabold" htmlFor="positions">
+          구직중인 포지션
+        </label>
+        <div className="mt-2 overflow-x-scroll">
+          <div className="w-[500px] flex flex-wrap">
+            {positionSelectItems?.map((position) => (
+              <BadgeSelectItem
+                key={position.name}
+                label={position.name}
+                value={position.name}
+                iconSrc="🧑‍💻"
+                clicked={
+                  !!positions &&
+                  positions?.findIndex((item) => item === position.name) !== -1
+                }
+                onClick={onClickPositionBadge}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="mt-12">
-        <label htmlFor="skills">보유 기술</label>
-        <div className="h-40 m-4 overflow-auto">
-          {skillsSelectItems?.map((skill) => (
-            <BadgeSelectItem
-              key={skill.name}
-              label={skill.name}
-              value={skill.name}
-              clicked={
-                !!skills &&
-                skills?.findIndex((item) => item === skill.name) !== -1
-              }
-              onClick={onClickSkillBadge}
-            />
-          ))}
+      <div className="mt-2">
+        <label className="text-[16px] font-extrabold" htmlFor="skills">
+          보유 기술
+        </label>
+        <div className="mt-2 overflow-x-scroll">
+          <div className="w-[3000px] flex flex-wrap">
+            {skillsSelectItems?.map((skill) => (
+              <BadgeSelectItem
+                key={skill.name}
+                label={skill.name}
+                value={skill.name}
+                iconSrc="💻"
+                clicked={
+                  !!skills &&
+                  skills?.findIndex((item) => item === skill.name) !== -1
+                }
+                onClick={onClickSkillBadge}
+              />
+            ))}
+          </div>
         </div>
         {!!errors.skills && (
           <p className="py-2 text-red-500">{errors.skills.message}</p>
         )}
       </div>
-      <Button type="submit">제출</Button>
+      <Button className="w-full mt-12" type="submit">
+        제출
+      </Button>
     </form>
   );
 };
