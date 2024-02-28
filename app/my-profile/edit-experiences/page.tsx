@@ -18,8 +18,8 @@ export default async function MyProfileEditExperiencesPage() {
 
   try {
     const experiencesPromise = sql<Experience>`
-    SELECT * FROM experiences WHERE "userId" = ${session?.user.id};
-  `;
+      SELECT * FROM experiences WHERE "userId" = ${session?.user.id};
+    `;
     const positionsSelectItemsPromise = sql<ArrayItemQueryRows>`
       SELECT * FROM positions;
     `;

@@ -37,7 +37,7 @@ const ExperienceUpdateCard = ({
   const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const methods = useForm<ExperienceFormData>({
-    defaultValues: { ...experience, startDate: undefined, endDate: undefined },
+    defaultValues: { ...experience },
   });
 
   const action: () => void = methods.handleSubmit(async (data) => {
@@ -91,8 +91,6 @@ const ExperienceUpdateCard = ({
             onCancel={() => setAddClicked(false)}
             positionSelectItems={positionSelectItems}
             skillsSelectItems={skillsSelectItems}
-            startDateDefaultValue={experience.startDate}
-            endDateDefaultValue={experience.endDate}
           />
         )}
       </Card>

@@ -1,4 +1,5 @@
 import { Text, Badge, Button } from '@tremor/react';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { Experience } from '@/lib/definitions';
 
@@ -23,9 +24,15 @@ const CardContent = ({ experience }: { experience: Experience }) => {
           </Badge>
         ))}
       </div>
-      <p className="text-sm whitespace-pre-line">
+      <p
+        className={clsx(
+          'text-sm whitespace-pre-line',
+          !experience.description && 'text-gray-500'
+        )}
+      >
         {descriptionShortEnough || moreClicked
-          ? experience.description + '    '
+          ? (experience.description ?? '자세한 업무 내용을 추가해주세요.') +
+            '    '
           : experience.description?.substring(0, 200) + '... '}
         {!descriptionShortEnough && (
           <Button
