@@ -271,14 +271,14 @@ export default async function MyProfilePage({
                 href={`/my-profile?edit=${ProfileEditParams.간단소개}`}
               />
               <ProfileCardTitle>한줄 소개</ProfileCardTitle>
-              <div className="px-2 sm:px-10 pt-4">
+              <div className="px-2 pt-4 sm:px-10">
                 {!shortBio && (
                   <Text className="whitespace-pre-line">
                     짧은 한 줄로 본인을 표현해보세요.
                   </Text>
                 )}
                 {shortBio && <p className="text-xl">{shortBio}</p>}
-                <div className="my-2 flex flex-wrap">
+                <div className="flex flex-wrap my-2">
                   {introductionKeywords?.map((keyword) => (
                     <BadgeSelectItem
                       clicked
@@ -295,14 +295,14 @@ export default async function MyProfilePage({
                 href={`/my-profile?edit=${ProfileEditParams.자기소개}`}
               />
               <ProfileCardTitle>자기 소개</ProfileCardTitle>
-              <div className="px-2 sm:px-10 pt-4">
+              <div className="px-2 pt-4 sm:px-10">
                 {!personalStatement && (
                   <Text className="whitespace-pre-line">
                     자기 소개 글을 등록해주세요.
                   </Text>
                 )}
                 {!!personalStatement && (
-                  <p className="whitespace-pre-line text-sm">
+                  <p className="text-sm whitespace-pre-line">
                     {personalStatement}
                   </p>
                 )}
@@ -314,7 +314,7 @@ export default async function MyProfilePage({
               />
               <ProfileCardTitle>구직중인 포지션</ProfileCardTitle>
               <div className="px-2 sm:px-10">
-                <div className="my-2 flex flex-wrap">
+                <div className="flex flex-wrap my-2">
                   {positions?.map((position) => (
                     <BadgeSelectItem
                       clicked
@@ -329,7 +329,7 @@ export default async function MyProfilePage({
               <Divider />
               <ProfileCardTitle>보유 기술</ProfileCardTitle>
               <div className="px-2 sm:px-10">
-                <div className="my-2 flex flex-wrap">
+                <div className="flex flex-wrap my-2">
                   {skills?.map((skill) => (
                     <BadgeSelectItem
                       clicked
@@ -353,12 +353,12 @@ export default async function MyProfilePage({
                 {attachedFiles.map((file) => (
                   <div
                     key={file.id}
-                    className="flex justify-start items-center"
+                    className="flex items-center justify-start"
                   >
                     <a href={file.mediaLink} download={file.fileName}>
                       {file.fileName}
                     </a>
-                    <div className="mx-2 flex items-center">
+                    <div className="flex items-center mx-2">
                       <FileDeleteButton
                         onDelete={onClickFileDelete}
                         fileId={file.id}
