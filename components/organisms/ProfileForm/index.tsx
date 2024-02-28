@@ -42,7 +42,8 @@ const ProfileForm = ({
         title: 'Error',
         description:
           '정보가 정확하게 입력되지 않았습니다. 처음부터 다시 입력해주세요.',
-        onConfirm: () => router.replace('/profile-form?stage=포지션'),
+        onConfirm: () =>
+          router.replace('/profile-form?stage=' + ProfileFormStage.포지션),
       });
       setIsOpen?.(true);
       return;
@@ -88,17 +89,17 @@ const ProfileForm = ({
       <FormProvider {...methods}>
         <form action={action} className="">
           {!stage ||
-            (stage === '포지션' && (
+            (stage === ProfileFormStage.포지션 && (
               <ProfileFormPositionInput
                 positionSelectItems={positionSelectItems}
               />
             ))}
-          {stage === '기술' && (
+          {stage === ProfileFormStage.기술 && (
             <ProfileFormSkillInput skillsSelectItems={skillsSelectItems} />
           )}
-          {stage === '학력' && <ProfileFormSchoolInput />}
-          {stage === '연락처' && <ProfileFormContactInput />}
-          {stage === '한줄소개' && <ProfileFormShortBioInput />}
+          {stage === ProfileFormStage.학력 && <ProfileFormSchoolInput />}
+          {stage === ProfileFormStage.연락처 && <ProfileFormContactInput />}
+          {stage === ProfileFormStage.한줄소개 && <ProfileFormShortBioInput />}
         </form>
       </FormProvider>
     </>

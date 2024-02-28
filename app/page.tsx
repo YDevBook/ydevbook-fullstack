@@ -4,6 +4,7 @@ import { sql } from '@vercel/postgres';
 import Link from 'next/link';
 import { auth } from '@/auth';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
+import { ProfileFormStage } from '@/lib/definitions';
 
 export default async function IndexPage() {
   const session = await auth();
@@ -16,7 +17,9 @@ export default async function IndexPage() {
     hasProfile = result.rows[0].count !== '0';
   }
   const mainCTAHref =
-    isLoggedIn && hasProfile ? '/my-profile' : '/profile-form?stage=포지션';
+    isLoggedIn && hasProfile
+      ? '/my-profile'
+      : `/profile-form?stage=${ProfileFormStage.포지션}`;
 
   return (
     <MainPageTemplate>

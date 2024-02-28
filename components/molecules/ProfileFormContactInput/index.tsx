@@ -4,7 +4,7 @@ import { Button, TextInput } from '@tremor/react';
 import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
-import { ProfileFormData } from '@/lib/definitions';
+import { ProfileFormData, ProfileFormStage } from '@/lib/definitions';
 
 interface ProfileFormContactlInputProps {}
 
@@ -21,7 +21,7 @@ const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
     trigger(['name', 'phoneNumber', 'email']).then((result) => {
       if (result) {
         clearErrors();
-        router.push('/profile-form?stage=' + '한줄소개');
+        router.push('/profile-form?stage=' + ProfileFormStage.한줄소개);
       } else {
         return;
       }

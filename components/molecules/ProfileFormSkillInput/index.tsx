@@ -5,7 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 
 import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
-import { ArrayItemQueryRows, ProfileFormData } from '@/lib/definitions';
+import {
+  ArrayItemQueryRows,
+  ProfileFormData,
+  ProfileFormStage,
+} from '@/lib/definitions';
 
 interface ProfileFormSkillInputProps {
   skillsSelectItems: ArrayItemQueryRows[];
@@ -42,7 +46,7 @@ const ProfileFormSkillInput = ({
       return;
     } else {
       clearErrors('skills');
-      router.push('/profile-form?stage=' + '학력');
+      router.push('/profile-form?stage=' + ProfileFormStage.학력);
     }
   };
 

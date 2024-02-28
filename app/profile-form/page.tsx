@@ -19,7 +19,7 @@ export default async function ProfileFormPage({
   let skillsSelectItems = [] as ArrayItemQueryRows[];
   const stage = searchParams?.stage as ProfileFormStage;
   if (!stage) {
-    redirect('/profile-form?stage=%ED%8F%AC%EC%A7%80%EC%85%98');
+    redirect('/profile-form?stage=' + ProfileFormStage.포지션);
   }
 
   try {
