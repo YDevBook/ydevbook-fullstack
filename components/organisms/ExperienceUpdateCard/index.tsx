@@ -1,6 +1,6 @@
 'use client';
 
-import { RiPencilLine } from '@remixicon/react';
+import { RiDeleteBinLine, RiPencilLine } from '@remixicon/react';
 import { Card } from '@tremor/react';
 import { Button } from '@tremor/react';
 import dynamic from 'next/dynamic';
@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import CardContent from '@/components/molecules/ExperienceCardContent';
 import LoadingCard from '@/components/molecules/LoadingCard';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { updateExperience } from '@/lib/actions';
+import { deleteExperience, updateExperience } from '@/lib/actions';
 import {
   Experience,
   ExperienceFormData,
@@ -39,6 +39,47 @@ const ExperienceUpdateCard = ({
   const methods = useForm<ExperienceFormData>({
     defaultValues: { ...experience },
   });
+
+  const handleDeleteClick = () => {
+    setContent?.({
+      title: 'Delete',
+      description: '경력을 삭제하시겠습니까?',
+      onConfirm: onDelete,
+    });
+    setIsOpen?.(true);
+    return;
+  };
+
+  const onDelete = async () => {
+    try {
+      const response = await deleteExperience(experience.id);
+      if (response.status === 200) {
+        setContent?.({
+          title: 'Success',
+          description: '경력이 삭제되었습니다.',
+          onConfirm: () =>
+            window.location.replace(
+              `/my-profile?edit=${ProfileEditParams.경력}`
+            ),
+        });
+        setIsOpen?.(true);
+        return;
+      }
+      setContent?.({
+        title: 'Error',
+        description: '경력 삭제에 실패했습니다.',
+      });
+      setIsOpen?.(true);
+      return;
+    } catch (error) {
+      setContent?.({
+        title: 'Error',
+        description: '경력 삭제에 실패했습니다.',
+      });
+      setIsOpen?.(true);
+      return;
+    }
+  };
 
   const action: () => void = methods.handleSubmit(async (data) => {
     try {
@@ -76,12 +117,20 @@ const ExperienceUpdateCard = ({
       <Card className="w-full mx-auto mt-4">
         {!addClicked && (
           <>
-            <Button
-              className="absolute top-0 right-0 p-2 m-4 rounded-md hover:bg-gray-100"
-              variant="light"
-              icon={RiPencilLine}
-              onClick={() => setAddClicked(true)}
-            ></Button>
+            <div className="absolute top-0 right-0 m-4">
+              <Button
+                className="rounded-md p-2 hover:bg-gray-100"
+                variant="light"
+                icon={RiDeleteBinLine}
+                onClick={handleDeleteClick}
+              />
+              <Button
+                className="rounded-md p-2 hover:bg-gray-100"
+                variant="light"
+                icon={RiPencilLine}
+                onClick={() => setAddClicked(true)}
+              />
+            </div>
             <CardContent experience={experience} />
           </>
         )}

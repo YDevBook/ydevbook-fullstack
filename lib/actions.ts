@@ -371,6 +371,23 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
   }
 }
 
+export async function deleteExperience(id: number) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { status: 401 };
+    }
+    const { id: userId } = session?.user;
+    const query = `DELETE FROM experiences WHERE "userId" = $1 AND "id" = $2`;
+    await sql.query(query, [userId, id]);
+    return { status: 200 };
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Something went wrong.');
+  }
+}
+
 export async function deleteAttachmentFile(id: number) {
   try {
     const session = await auth();
