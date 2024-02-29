@@ -41,7 +41,7 @@ export default async function ProfileFormPage({
   }
 
   return (
-    <MobileOnlyTemplate className="!h-[calc(100vh-112px)] overflow-scroll">
+    <MobileOnlyTemplate className="">
       <ProfileFormStageHeader stage={stage} />
       <ProfileForm
         positionSelectItems={positionSelectItems}

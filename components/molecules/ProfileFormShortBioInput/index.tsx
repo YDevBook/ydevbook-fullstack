@@ -69,7 +69,7 @@ const ProfileFormShortBioInput = ({}: ProfileFormShortBioInputProps) => {
           />
         </div>
       </div>
-      <div className="w-full absolute left-0 bottom-0 p-4">
+      <div className="w-full fixed left-0 bottom-0 p-4">
         <Button className="w-full" type="submit">
           제출
         </Button>
