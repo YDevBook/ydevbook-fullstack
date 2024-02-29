@@ -64,7 +64,7 @@ const ProfileFormContactlInput = ({}: ProfileFormContactlInputProps) => {
                 required: '전화번호를 입력해주세요.',
               })}
               placeholder="전화번호를 입력해주세요."
-              maxLength={20}
+              maxLength={11}
               errorMessage={errors.phoneNumber && errors.phoneNumber.message}
               error={!!errors.phoneNumber}
               className="mt-2"
