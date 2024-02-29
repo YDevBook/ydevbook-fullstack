@@ -5,8 +5,8 @@ import YDevBookLogoFooter from '@/assets/images/ydevbook-logo-footer.png';
 const Footer = () => {
   return (
     <footer className="w-full bg-white border-t">
-      <div className="mx-auto max-w-[640px] px-4 sm:max-w-7xl sm:p-10">
-        <div>
+      <div className="mx-auto max-w-[640px] p-4 sm:max-w-7xl sm:p-10">
+        <div className="w-[80px] sm:w-full">
           <Image
             src={YDevBookLogoFooter}
             alt="ydevbook footer logo"

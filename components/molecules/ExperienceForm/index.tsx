@@ -156,6 +156,7 @@ const ExperienceForm = ({
           className="border border-gray-300 mr-2 my-3 rounded-md"
           {...register('isWorkingNow', { onChange: onIsWorkingNowChange })}
           type="checkbox"
+          id="isWorkingNow"
         />
         <label className="text-sm text-gray-500" htmlFor="isWorkingNow">
           현재 근무 중이에요.

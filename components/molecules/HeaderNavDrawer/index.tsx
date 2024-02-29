@@ -29,7 +29,7 @@ const HeaderNavDrawer = ({ navigation }: HeaderNavDrawerProps) => {
           isOpen
             ? 'transition-[background-color] translate-x-[0%] bg-black/70 delay-0'
             : 'transition-transform translate-x-[-100%] bg-black/0 delay-200',
-          'absolute top-0 left-0 w-screen h-screen z-10',
+          'absolute top-0 left-0 w-screen h-screen z-20',
           ' duration-200 ease-in-out'
         )}
       >
