@@ -219,14 +219,14 @@ export default async function MyProfilePage({
                       {school || '학력 정보를 업데이트 해주세요.'}
                     </span>
                   </div>
-                  {!!school && (
+                  {(!!major || !!graduateStatus) && (
                     <div className="mt-2 ml-10">
-                      {major} /
-                      {
-                        GraduateStatusOptions.find(
-                          (option) => option.value === graduateStatus
-                        )?.label
-                      }
+                      {major ?? '(학과 정보 없음)'}
+                      {!!graduateStatus &&
+                        ' / ' +
+                          GraduateStatusOptions.find(
+                            (option) => option.value === graduateStatus
+                          )?.label}
                     </div>
                   )}
                 </div>
