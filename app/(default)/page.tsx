@@ -23,19 +23,21 @@ export default async function IndexPage() {
 
   return (
     <MainPageTemplate>
-      <div className="flex flex-col justify-center items-center my-24">
-        <h1 className="text-2xl font-bold  text-center whitespace-pre-line sm:text-4xl sm:leading-normal">
-          간편한 프로필 등록으로 <br />
-          유망한 스타트업의 연락을{'\n'}
-          받을 수 있는 기회!
-        </h1>
-        <p className="mt-8 text-lg text-gray-700 sm:text-xl">
-          대학생 개발자로서 스타트업에 합류해보세요.
+      <div className="flex flex-col justify-center items-center py-24 w-screen -ml-4 sm:-ml-10">
+        <p className="my-4 text-xs sm:text-xl">
+          대학생 개발자에서 스타트업 팀 합류까지 YDevBook과 함께
         </p>
+        <h1 className="text-[28px] leading-[39px] font-bold text-center whitespace-pre-line sm:text-6xl sm:leading-normal">
+          간편한 프로필 등록만으로 <br />
+          스타트업 개발직 제안 받기
+        </h1>
         <Link href={mainCTAHref}>
-          <Button className="mt-8" size="lg">
-            {isLoggedIn && hasProfile ? '내 프로필 보기' : '프로필 등록하기'}
+          <Button className="mt-8 !rounded-full" size="lg">
+            프로필 등록하고 제의 받기!
           </Button>
+        </Link>
+        <Link href="/startup" className="mt-4 underline text-sm">
+          스타트업이신가요?
         </Link>
       </div>
       <div className="flex flex-col justify-center items-center my-24">
