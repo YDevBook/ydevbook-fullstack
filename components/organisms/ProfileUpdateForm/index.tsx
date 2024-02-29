@@ -1,30 +1,83 @@
 'use client';
 
+import { RiAddCircleFill } from '@remixicon/react';
+import {
+  Button,
+  DatePicker,
+  DatePickerValue,
+  Select,
+  SelectItem,
+  TextInput,
+} from '@tremor/react';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useContext } from 'react';
+import { useForm } from 'react-hook-form';
+
+import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
+import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfile } from '@/lib/actions';
 import {
-  ArrayItemQueryRows,
   GraduateStatusOptions,
   Profile,
-  ProfileUpdateFormData
+  ProfileUpdateFormData,
 } from '@/lib/definitions';
-import { useForm } from 'react-hook-form';
-import Image from 'next/image';
-import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
-import { useSession } from 'next-auth/react';
-import { Button } from '@tremor/react';
-import { useContext } from 'react';
-import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface ProfileUpdateFormProps {
   profile: Profile;
 }
 
+// 원인 모를 오류로 인해 스키마 validation 이 안먹음. 주석 처리하고 밑에 register 에서 직접 validation 처리
+// const profileUpdateFormSchema: yup.ObjectSchema<ProfileUpdateFormData> = yup
+//   .object()
+//   .shape({
+//     name: yup
+//       .string()
+//       .required('이름을 입력해주세요.')
+//       .max(50, '이름은 50자 이하여야 합니다.'),
+//     phoneNumber: yup
+//       .string()
+//       .required('전화번호를 입력해주세요.')
+//       .max(11, '전화번호는 11자 이하여야 합니다.'),
+//     email: yup
+//       .string()
+//       .required('이메일을 입력해주세요.')
+//       .max(50, '이메일은 50자 이하여야 합니다.'),
+//     dateOfBirth: yup.date(),
+//     address: yup.string().max(100, '100자 이내로 입력해주세요.'),
+//     school: yup.string().max(50, '50자 이내로 입력해주세요.'),
+//     major: yup.string().max(50, '50자 이내로 입력해주세요.'),
+//     graduateStatus: yup.string(),
+//     githubLink: yup.string(),
+//     webLink: yup.string(),
+//   });
+
 const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   const { data: session, update } = useSession();
-  const { register, handleSubmit } = useForm<ProfileUpdateFormData>({
-    defaultValues: { ...profile, dateOfBirth: undefined }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<ProfileUpdateFormData>({
+    defaultValues: { ...profile },
   });
+  const { dateOfBirth, graduateStatus } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
+
+  const onDateChange = (date: DatePickerValue) => {
+    if (date) {
+      const newDateofBirth = new Date(date);
+      setValue('dateOfBirth', newDateofBirth);
+    } else {
+      setValue('dateOfBirth', undefined);
+    }
+  };
+
+  const onGraduateStatusChange = (value: string) => {
+    setValue('graduateStatus', value);
+  };
 
   const action: () => void = handleSubmit(async (data) => {
     try {
@@ -33,21 +86,21 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
         setContent?.({
           title: 'Success',
           description: '프로필을 수정했습니다.',
-          onConfirm: () => window.location.replace('/my-profile')
+          onConfirm: () => window.location.replace('/my-profile'),
         });
         setIsOpen?.(true);
         return;
       }
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 수정에 실패했습니다.'
+        description: '프로필 수정에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -63,7 +116,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (file.size > 1024 * 1024 * 4) {
       setContent?.({
         title: 'Error',
-        description: '4MB 이하의 이미지만 업로드 가능합니다.'
+        description: '4MB 이하의 이미지만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
@@ -71,7 +124,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     if (!file.type.includes('image')) {
       setContent?.({
         title: 'Error',
-        description: '이미지 파일만 업로드 가능합니다.'
+        description: '이미지 파일만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
@@ -82,20 +135,20 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
 
       const response = await fetch('/api/file?upload-type=profile-image', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
       if (response.ok) {
         const { profileImageUrl } = await response.json();
         update({ profileImageUrl });
         setContent?.({
           title: 'Success',
-          description: '프로필 이미지를 변경했습니다.'
+          description: '프로필 이미지를 변경했습니다.',
         });
         setIsOpen?.(true);
       } else {
         setContent?.({
           title: 'Error',
-          description: '프로필 이미지 업로드에 실패했습니다.'
+          description: '프로필 이미지 업로드에 실패했습니다.',
         });
         setIsOpen?.(true);
         return;
@@ -103,7 +156,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '프로필 이미지 업로드에 실패했습니다.'
+        description: '프로필 이미지 업로드에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -121,88 +174,160 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           accept="image/*"
           onChange={onInputChange}
         />
-        <div className="relative inline-block">
-          <Image
-            src={session?.user.profileImageUrl || DefaultProfileImage}
-            alt="프로필 이미지"
-            width={100}
-            height={100}
-          />
-          <label
-            className="absolute bottom-0 right-0 cursor-pointer"
-            htmlFor="profileImageInput"
-          >
-            edit
-          </label>
+        <div className="relative flex flex-col items-center justify-center m-8">
+          <div className="relative inline-block">
+            <Image
+              src={session?.user.profileImageUrl || DefaultProfileImage}
+              alt="프로필 이미지"
+              width={100}
+              height={100}
+              priority
+              className="rounded-full w-[120px] h-[120px] object-cover"
+            />
+            <label
+              className="absolute bottom-0 right-0 cursor-pointer"
+              htmlFor="profileImageInput"
+            >
+              <RiAddCircleFill className="w-8 h-8 text-gray-500" />
+            </label>
+          </div>
         </div>
       </div>
-      <div>
-        <label htmlFor="name">이름</label>
-        <input
-          className="border border-gray-300"
-          {...register('name', { required: true })}
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="name">
+          이름
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('name', { required: '이름을 입력해주세요.' })}
+          maxLength={50}
+          error={!!errors.name}
+          errorMessage={errors.name?.message}
+          placeholder="이름을 입력해주세요."
         />
       </div>
-      <div>
-        <label htmlFor="phoneNumber">전화번호</label>
-        <input
-          className="border border-gray-300"
-          {...register('phoneNumber', { required: true, maxLength: 11 })}
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="phoneNumber">
+          전화번호
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('phoneNumber', { required: '전화번호를 입력해주세요.' })}
+          maxLength={11}
+          error={!!errors.phoneNumber}
+          errorMessage={errors.phoneNumber?.message}
+          placeholder="전화번호를 입력해주세요."
         />
       </div>
-      <div>
-        <label htmlFor="email">이메일</label>
-        <input className="border border-gray-300" {...register('email')} />
-      </div>
-      <div>
-        <label htmlFor="dateOfBirth">생년월일</label>
-        <input
-          className="border border-gray-300"
-          type="date"
-          {...register('dateOfBirth', { valueAsDate: false })}
-          defaultValue={profile.dateOfBirth?.toISOString().substring(0, 10)}
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="email">
+          이메일
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('email', { required: '이메일을 입력해주세요.' })}
+          maxLength={50}
+          error={!!errors.email}
+          errorMessage={errors.email?.message}
+          placeholder="이메일을 입력해주세요."
         />
       </div>
-      <div>
-        <label htmlFor="sex">성별</label>
-        <select {...register('sex')}>
-          <option disabled>선택해주세요</option>
-          <option value={'M'}>남</option>
-          <option value={'F'}>여</option>
-        </select>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="dateOfBirth">
+          생년월일
+        </label>
+        <DatePicker
+          defaultValue={dateOfBirth}
+          onValueChange={onDateChange}
+          enableClear
+          enableYearNavigation
+          className="mt-2"
+          placeholder="생년월일 선택"
+        />
       </div>
-      <div>
-        <label htmlFor="address">거주 지역</label>
-        <input className="border border-gray-300" {...register('address')} />
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="address">
+          거주 지역
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('address')}
+          maxLength={100}
+          error={!!errors.address}
+          errorMessage={errors.address?.message}
+          placeholder="ex) 서울특별시 서대문구"
+        />
       </div>
-      <div>
-        <label htmlFor="school">최종 학력</label>
-        <input className="border border-gray-300" {...register('school')} />
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="school">
+          최종 학력
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('school')}
+          maxLength={50}
+          error={!!errors.school}
+          errorMessage={errors.school?.message}
+          placeholder="최종 학력을 입력해주세요."
+        />
       </div>
-      <div>
-        <label htmlFor="major">전공</label>
-        <input className="border border-gray-300" {...register('major')} />
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="major">
+          전공
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('major')}
+          maxLength={50}
+          error={!!errors.major}
+          errorMessage={errors.major?.message}
+          placeholder="전공을 입력해주세요."
+        />
       </div>
-      <div>
-        <label htmlFor="graduateStatus">재학/졸업여부</label>
-        <select {...register('graduateStatus')}>
-          <option disabled>선택해주세요</option>
-          {GraduateStatusOptions.map((item) => (
-            <option value={item.value} key={item.value}>
-              {item.label}
-            </option>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="graduateStatus">
+          재학/졸업여부
+        </label>
+        <Select
+          defaultValue={graduateStatus}
+          onValueChange={onGraduateStatusChange}
+          value={graduateStatus}
+          enableClear
+          className="mt-2"
+          placeholder="재학/졸업여부 선택"
+        >
+          {GraduateStatusOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
           ))}
-        </select>
+        </Select>
       </div>
-      <div>
-        <label htmlFor="githubLink">깃헙 링크</label>
-        <input className="border border-gray-300" {...register('githubLink')} />
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="githubLink">
+          깃헙 링크
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('githubLink')}
+          error={!!errors.githubLink}
+          placeholder="ex) https://github.com/***"
+        />
       </div>
-      <div>
-        <label htmlFor="webLink">웹 링크</label>
-        <input className="border border-gray-300" {...register('webLink')} />
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="webLink">
+          웹 링크
+        </label>
+        <TextInput
+          className="mt-2 border border-gray-300"
+          {...register('webLink')}
+          error={!!errors.webLink}
+          placeholder="ex) https://www.***.com"
+        />
       </div>
-      <Button type="submit">제출</Button>
+      <Button className="w-full mt-10" type="submit">
+        저장하기
+      </Button>
     </form>
   );
 };

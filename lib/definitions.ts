@@ -1,7 +1,7 @@
 export interface User {
   id: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
   name: string;
   profileImageUrl?: string;
   isStartup?: boolean;
@@ -17,7 +17,7 @@ export enum GraduateStatus {
   졸업 = 'GR',
   졸업예정 = 'GS',
   중퇴 = 'DO',
-  수료 = 'CC'
+  수료 = 'CC',
 }
 
 export const GraduateStatusOptions = [
@@ -26,13 +26,50 @@ export const GraduateStatusOptions = [
   { value: GraduateStatus.졸업, label: '졸업' },
   { value: GraduateStatus.졸업예정, label: '졸업예정' },
   { value: GraduateStatus.중퇴, label: '중퇴' },
-  { value: GraduateStatus.수료, label: '수료' }
+  { value: GraduateStatus.수료, label: '수료' },
+];
+
+export enum ProfileFormStage {
+  포지션 = 'positions',
+  기술 = 'skills',
+  학력 = 'school',
+  연락처 = 'contact',
+  한줄소개 = 'shortBio',
+}
+
+export enum ProfileEditParams {
+  기본정보 = 'basic',
+  간단소개 = 'shortBio',
+  자기소개 = 'personalStatement',
+  포지션기술 = 'positions-and-skills',
+  경력 = 'experiences',
+}
+
+export const ProfileFormStages = [
+  ProfileFormStage.포지션,
+  ProfileFormStage.기술,
+  ProfileFormStage.학력,
+  ProfileFormStage.연락처,
+  ProfileFormStage.한줄소개,
+];
+
+export const IntroductionKeywords = [
+  '🧑‍💼 책임감을 갖고 일해요.',
+  '💬 원활한 소통이 가능해요.',
+  '👑 주도적으로 일할 수 있어요.',
+  '🦑 유연한 업무가 가능해요.',
+  '📈 성장을 추구하는 사람이에요.',
+  '🧑‍🤝‍🧑 팀워크를 중요하게 생각해요.',
+  '🕵️ 새로운 것을 배우는 것을 좋아해요.',
+  '🧚‍♀️ 문제 해결 능력이 뛰어나요.',
+  '🙋 자율적으로 일할 수 있어요.',
+  '😊 신뢰할 수 있는 사람이에요.',
 ];
 
 export interface ProfileTextData extends Record<string, string | undefined> {
   personalStatement?: string;
   mainStrength?: string;
-  expectationText?: string;
+  shortBio?: string;
 }
 
 export interface Profile {
@@ -42,9 +79,8 @@ export interface Profile {
   phoneNumber: string;
   email: string;
   dateOfBirth?: Date;
-  sex?: string;
   address?: string;
-  profileImage?: string;
+  profileImageUrl?: string;
   positions?: string[];
   skills?: string[];
   school?: string;
@@ -52,36 +88,50 @@ export interface Profile {
   graduateStatus?: string;
   personalStatement?: string;
   mainStrength?: string;
-  expectationText?: string;
+  shortBio?: string;
   githubLink?: string;
   webLink?: string;
   attachedFiles?: string[];
+  isActivelySeeking: boolean;
+  introductionKeywords?: string[];
 }
 
 export interface ProfileFormData {
+  name: string;
   phoneNumber: string;
-  dateOfBirth?: string;
-  address?: string;
+  email: string;
   positions?: string[];
   skills?: string[];
   school?: string;
   major?: string;
   graduateStatus?: string;
-  githubLink?: string;
+  shortBio?: string;
+  introductionKeywords?: string[];
 }
 
 export type ProfileUpdateFormData = Omit<
   Profile,
+  | 'id'
+  | 'userId'
+  | 'profileImageUrl'
+  | 'attachedFiles'
   | 'personalStatement'
   | 'mainStrength'
-  | 'expectationText'
+  | 'shortBio'
   | 'positions'
   | 'skills'
+  | 'isActivelySeeking'
+  | 'introductionKeywords'
 >;
 
 export type ProfilePositionAndSkillsUpdateFormData = Pick<
   Profile,
   'positions' | 'skills'
+>;
+
+export type ProfileShortIntroUpdateFormData = Pick<
+  Profile,
+  'shortBio' | 'introductionKeywords'
 >;
 
 export interface Experience {

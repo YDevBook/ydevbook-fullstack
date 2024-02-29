@@ -1,6 +1,6 @@
-import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import { Stream } from 'stream';
+import { Storage } from '@google-cloud/storage';
 
 const credentials = {
   type: 'service_account',
@@ -13,17 +13,13 @@ const credentials = {
   token_uri: 'https://oauth2.googleapis.com/token',
   auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
   client_x509_cert_url: process.env.GCS_CLIENT_CERT_URL,
-  universe_domain: 'googleapis.com'
+  universe_domain: 'googleapis.com',
 };
 
 const storage = new Storage({ credentials });
 const bucket = storage.bucket(process.env.GCS_BUCKET_NAME || '');
 
-export const streamFileUpload = async (
-  file: File,
-  directory: string,
-  publicAccess = true
-) => {
+export const streamFileUpload = async (file: File, directory: string) => {
   try {
     const bucketFile = bucket.file(path.join(directory, file.name));
     const passthroughStream = new Stream.PassThrough();

@@ -1,3 +1,4 @@
+import { createUser, getUserByOauth } from '@/lib/userDB';
 import type { NextAuthConfig } from 'next-auth';
 
 const AuthRequiredStartsWith = ['/profile-form', '/my-profile', '/startup/'];
@@ -6,7 +7,7 @@ const AuthWhiteList = ['/startup', '/startup/signup', '/startup/login'];
 
 export const authConfig = {
   pages: {
-    signIn: '/login'
+    signIn: '/login',
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
@@ -45,7 +46,32 @@ export const authConfig = {
       }
       return true;
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session, account }) {
+      if (trigger === 'signIn' && account?.provider === 'kakao') {
+        // 카카오 로그인 시 유저 id 를 DB users 테이블에서 조회 후 있으면 그걸로 로그인, 없으면 회원가입 로직 태움.
+        const dbUser = await getUserByOauth(account.providerAccountId);
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.name = dbUser.name;
+          token.email = dbUser.email;
+          token.picture = dbUser.profileImageUrl;
+          token.isStartup = dbUser.isStartup;
+          return token;
+        } else {
+          // signUp
+          const insertedUser = await createUser(
+            account.providerAccountId,
+            user.name || 'No Name',
+            user.email || undefined
+          );
+          token.id = insertedUser.id;
+          token.name = insertedUser.name;
+          token.email = insertedUser.email;
+          token.picture = insertedUser.profileImageUrl;
+          token.isStartup = insertedUser.isStartup;
+          return token;
+        }
+      }
       if (trigger === 'update' && session.profileImageUrl) {
         token.picture = session.profileImageUrl;
         return token;
@@ -63,10 +89,10 @@ export const authConfig = {
         name: token.name as string,
         email: token.email as string,
         profileImageUrl: (token.picture as string) || undefined,
-        isStartup: (token.isStartup as boolean) || undefined
+        isStartup: (token.isStartup as boolean) || undefined,
       };
       return session;
-    }
+    },
   },
-  providers: [] // Add providers with an empty array for now
+  providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;

@@ -1,15 +1,17 @@
 'use server';
-import { auth, signIn } from '@/auth';
-import { AuthError } from 'next-auth';
 import { sql } from '@vercel/postgres';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
+import { AuthError } from 'next-auth';
+
+import { auth, signIn } from '@/auth';
 import {
   ExperienceFormData,
   ExperienceUpdateFormData,
   ProfileFormData,
   ProfilePositionAndSkillsUpdateFormData,
-  ProfileUpdateFormData
+  ProfileShortIntroUpdateFormData,
+  ProfileUpdateFormData,
 } from '@/lib/definitions';
 
 // ...
@@ -95,6 +97,7 @@ export async function signUp(
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const removeEmptyString = <T extends Record<string, any>>(obj: T): T => {
   const returnObj = {} as T;
   for (const [key, value] of Object.entries(obj)) {
@@ -111,35 +114,35 @@ export async function insertProfile(data: ProfileFormData) {
     if (!session?.user) {
       return { status: 401 };
     }
-    const { id: userId, email, name } = session?.user;
+    const { id: userId } = session?.user;
     const {
+      name,
       phoneNumber,
-      dateOfBirth,
-      address,
+      email,
       positions,
       skills,
       school,
       major,
       graduateStatus,
-      githubLink
+      shortBio,
+      introductionKeywords,
     } = removeEmptyString(data);
     const query = `
-  INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "dateOfBirth", "address", "positions", "skills", "school", "major", "graduateStatus", "githubLink")
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+  INSERT INTO profiles ("userId", "name", "email", "phoneNumber", "positions", "skills", "school", "major", "graduateStatus", "shortBio", "introductionKeywords")
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
   `;
     await sql.query(query, [
       userId,
       name,
       email,
       phoneNumber,
-      dateOfBirth,
-      address,
       positions,
       skills,
       school,
       major,
       graduateStatus,
-      githubLink
+      shortBio,
+      introductionKeywords,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -165,13 +168,12 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       email,
       phoneNumber,
       dateOfBirth,
-      sex,
       address,
       school,
       major,
       graduateStatus,
       githubLink,
-      webLink
+      webLink,
     } = removeEmptyString(data);
     const query = `
       UPDATE profiles
@@ -179,28 +181,26 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       "email" = $2,
       "phoneNumber" = $3,
       "dateOfBirth" = $4,
-      "sex" = $5,
-      "address" = $6,
-      "school" = $7,
-      "major" = $8,
-      "graduateStatus" = $9,
-      "githubLink" = $10,
-      "webLink" = $11
-      WHERE "userId" = $12
+      "address" = $5,
+      "school" = $6,
+      "major" = $7,
+      "graduateStatus" = $8,
+      "githubLink" = $9,
+      "webLink" = $10
+      WHERE "userId" = $11
     `;
     await sql.query(query, [
       name,
       email,
       phoneNumber,
       dateOfBirth,
-      sex,
       address,
       school,
       major,
       graduateStatus,
       githubLink,
       webLink,
-      userId
+      userId,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -266,6 +266,30 @@ export async function updateProfilePositionAndSkills(
   }
 }
 
+export async function updateProfileShortIntro(
+  data: ProfileShortIntroUpdateFormData
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { status: 401 };
+    }
+    const { id: userId } = session?.user;
+    const { shortBio, introductionKeywords } = data;
+    const query = `
+      UPDATE profiles
+      SET "shortBio" = $1, "introductionKeywords" = $2
+      WHERE "userId" = $3
+    `;
+    await sql.query(query, [shortBio, introductionKeywords, userId]);
+    return { status: 200 };
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Something went wrong.');
+  }
+}
+
 export async function insertExperience(data: ExperienceFormData) {
   try {
     const session = await auth();
@@ -280,7 +304,7 @@ export async function insertExperience(data: ExperienceFormData) {
       endDate,
       isWorkingNow,
       skills,
-      description
+      description,
     } = removeEmptyString(data);
     const query = `INSERT INTO experiences ("userId", "companyName", "position", "startDate", "endDate", "isWorkingNow", "skills", "description")
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
@@ -292,7 +316,7 @@ export async function insertExperience(data: ExperienceFormData) {
       !isWorkingNow ? endDate || undefined : undefined,
       isWorkingNow,
       skills,
-      description
+      description,
     ]);
     return { status: 200 };
   } catch (error) {
@@ -317,7 +341,7 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       endDate,
       isWorkingNow,
       skills,
-      description
+      description,
     } = removeEmptyString(data);
     const query = `UPDATE experiences
       SET "companyName" = $1,
@@ -337,8 +361,25 @@ export async function updateExperience(data: ExperienceUpdateFormData) {
       skills,
       description,
       userId,
-      id
+      id,
     ]);
+    return { status: 200 };
+  } catch (error) {
+    console.error(error);
+
+    throw new Error('Something went wrong.');
+  }
+}
+
+export async function deleteExperience(id: number) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { status: 401 };
+    }
+    const { id: userId } = session?.user;
+    const query = `DELETE FROM experiences WHERE "userId" = $1 AND "id" = $2`;
+    await sql.query(query, [userId, id]);
     return { status: 200 };
   } catch (error) {
     console.error(error);

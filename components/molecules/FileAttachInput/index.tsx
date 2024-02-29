@@ -1,8 +1,9 @@
 'use client';
 
-import { NotificationContext } from '@/contexts/NotificationContext';
-import { Button } from '@tremor/react';
+import { Badge, Button } from '@tremor/react';
 import { useContext, useState } from 'react';
+
+import { NotificationContext } from '@/contexts/NotificationContext';
 
 interface FileAttachInputProps {
   attachmentFiles?: string[];
@@ -20,18 +21,17 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
     if (file.size > 1024 * 1024 * 4) {
       setContent?.({
         title: 'Error',
-        description: '4MB 이하의 파일만 업로드 가능합니다.'
+        description: '4MB 이하의 파일만 업로드 가능합니다.',
       });
       setIsOpen?.(true);
       return;
     }
-    setFiles((prev) => [...prev, file]);
+    setFiles([...files, file]);
+    fileAttachInputAction(file);
   };
 
-  const fileAttachInputAction = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const fileAttachInputAction = async (file: File) => {
     try {
-      const file = files[0];
       if (!file) {
         return;
       }
@@ -40,20 +40,20 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
 
       const response = await fetch('/api/file?upload-type=attachment-file', {
         method: 'POST',
-        body: formData
+        body: formData,
       });
       if (response.ok) {
         setContent?.({
           title: 'Success',
           description: '파일을 업로드 했습니다.',
-          onConfirm: () => window.location.reload()
+          onConfirm: () => window.location.reload(),
         });
         setIsOpen?.(true);
         return;
       } else {
         setContent?.({
           title: 'Error',
-          description: '파일 업로드에 실패했습니다.'
+          description: '파일 업로드에 실패했습니다.',
         });
         setIsOpen?.(true);
         return;
@@ -61,7 +61,7 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
     } catch (error) {
       setContent?.({
         title: 'Error',
-        description: '파일 업로드에 실패했습니다.'
+        description: '파일 업로드에 실패했습니다.',
       });
       setIsOpen?.(true);
       return;
@@ -69,10 +69,11 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
   };
 
   return (
-    <form onSubmit={fileAttachInputAction}>
+    <div>
       {files.map((file) => (
         <div key={file.name}>
           <span>{file.name}</span>
+          <Badge className="ml-2">업로드 중</Badge>
         </div>
       ))}
       <input
@@ -82,9 +83,12 @@ const FileAttachInput = ({}: FileAttachInputProps) => {
         id="file"
         onChange={onInputChange}
       />
-      <label htmlFor="file">추가하기</label>
-      <Button type="submit">업로드</Button>
-    </form>
+      <Button className="p-0 mt-4">
+        <label className="inline-block px-4 py-2 cursor-pointer" htmlFor="file">
+          추가하기
+        </label>
+      </Button>
+    </div>
   );
 };
 

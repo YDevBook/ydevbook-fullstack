@@ -1,17 +1,41 @@
 'use server';
 
-import { auth } from '@/auth';
-import { Profile } from '@/lib/definitions';
 import { sql } from '@vercel/postgres';
+
+import { auth } from '@/auth';
+import { apiCommonAdapter } from '@/lib/adapter';
+import { Profile } from '@/lib/definitions';
+
+export async function fetchMyProfile() {
+  try {
+    const session = await auth();
+    if (!session?.user || session.user.isStartup) {
+      return { status: 401 };
+    }
+
+    const profile = await sql.query<Profile>(
+      `SELECT * FROM profiles WHERE "userId" = '${session.user.id}'`
+    );
+
+    if (!profile || profile.rowCount === 0 || profile.rows.length === 0) {
+      return { status: 404 };
+    }
+
+    return { data: apiCommonAdapter(profile.rows[0]), status: 200 };
+  } catch (error) {
+    console.error(error);
+    throw new Error('Something went wrong.');
+  }
+}
 
 const ITEMS_PER_PAGE = 6;
 
 enum FilterName {
   Query = 'query',
-  Position = 'position'
+  Position = 'position',
 }
 
-export async function fetchFilteredProfile(
+export async function fetchFilteredProfiles(
   filter?: Record<FilterName, string | undefined>,
   currentPage = 1
 ) {
@@ -85,7 +109,7 @@ export async function fetchFilteredProfilesPages(
 
     return {
       data: Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE),
-      status: 200
+      status: 200,
     };
   } catch (error) {
     console.error(error);
