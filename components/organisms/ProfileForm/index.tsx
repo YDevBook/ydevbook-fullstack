@@ -87,7 +87,7 @@ const ProfileForm = ({
   return (
     <>
       <FormProvider {...methods}>
-        <form action={action} className="">
+        <form action={action} className="mb-24">
           {!stage ||
             (stage === ProfileFormStage.포지션 && (
               <ProfileFormPositionInput

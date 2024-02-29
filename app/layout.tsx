@@ -1,4 +1,5 @@
 import '@/app/globals.css';
+import { Viewport } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
 
@@ -11,6 +12,16 @@ export const metadata = {
   description: '연뎁북.',
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  // Also supported by less commonly used
+  // interactiveWidget: 'resizes-visual',
+};
+
 export default async function RootLayout({
   children,
 }: {
@@ -19,7 +30,7 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" className="h-full bg-gray-50">
-      <body className="font-Pretendard">
+      <body className="font-Pretendard select-none outline-none">
         <SessionProvider session={session}>
           <NotificationContextProvider>
             <Header />

@@ -7,7 +7,7 @@ const AuthWhiteList = ['/startup', '/startup/signup', '/startup/login'];
 
 export const authConfig = {
   pages: {
-    signIn: '/login'
+    signIn: '/login',
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
@@ -61,7 +61,7 @@ export const authConfig = {
           // signUp
           const insertedUser = await createUser(
             account.providerAccountId,
-            user.name || undefined,
+            user.name || 'No Name',
             user.email || undefined
           );
           token.id = insertedUser.id;
@@ -89,10 +89,10 @@ export const authConfig = {
         name: token.name as string,
         email: token.email as string,
         profileImageUrl: (token.picture as string) || undefined,
-        isStartup: (token.isStartup as boolean) || undefined
+        isStartup: (token.isStartup as boolean) || undefined,
       };
       return session;
-    }
+    },
   },
-  providers: [] // Add providers with an empty array for now
+  providers: [], // Add providers with an empty array for now
 } satisfies NextAuthConfig;
