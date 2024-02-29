@@ -55,7 +55,7 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
               maxLength={50}
             />
           </div>
-          <div className="mt-8">
+          <div className="mt-8 mb-[300px]">
             <label
               className="text-[18px] font-extrabold"
               htmlFor="graduateStatus"
@@ -79,7 +79,7 @@ const ProfileFormSchoolInput = ({}: ProfileFormSchoolInputProps) => {
           </div>
         </div>
       </div>
-      <div className="w-full absolute left-0 bottom-0 p-4">
+      <div className="w-full fixed left-0 bottom-0 p-4">
         <Button
           className="w-full"
           type="button"

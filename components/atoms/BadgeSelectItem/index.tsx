@@ -25,7 +25,7 @@ const BadgeSelectItem = ({
         'border-2 m-1 px-3 rounded-2xl text-[14px] font-extrabold whitespace-pre h-8 flex items-center',
         (readonly || clicked) && 'bg-white border-ydevbook text-ydevbook',
         !readonly &&
-          'border-gray-200 text-gray-400 bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out  hover:bg-white hover:border-ydevbook hover:text-ydevbook',
+          'border-gray-200 text-gray-400 bg-gray-200 cursor-pointer transition-all duration-300 ease-in-out',
         readonly && 'bg-white border-ydevbook text-ydevbook'
       )}
       onClick={() => onClick?.(value, clicked)}
