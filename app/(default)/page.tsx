@@ -23,7 +23,12 @@ export default async function IndexPage() {
 
   return (
     <MainPageTemplate>
-      <div className="flex flex-col justify-center items-center py-24 w-screen -ml-4 sm:-ml-10">
+      <div className="relative flex flex-col justify-center items-center py-24">
+        <div className="z-[-1]">
+          <div className="absolute top-0 left-1/3 w-[316px] h-[316px] rounded-full bg-[linear-gradient(145deg,rgba(67,40,235,0.27)8.28%,rgba(128,148,254,0.35)94.84%)] [filter:blur(75px)] sm:w-[716px] sm:h-[716px] sm:top-[-40%]"></div>
+          <div className="absolute top-1/2 left-0 w-[267px] h-[267px] rounded-full bg-[linear-gradient(180deg,rgba(54,200,230,0.70)0%,rgba(0,133,255,0.13)0.01%,rgba(0,133,255,0.29)100%)] [filter:blur(75px)] sm:w-[606px] sm:h-[606px] sm:top-1/3"></div>
+          <div className="absolute top-1/2 left-1/3 w-[231px] h-[231px] rounded-full bg-[linear-gradient(151deg,rgba(165,209,246,0.39)7.98%,rgba(128,148,254,0.35)92.02%)] [filter:blur(75px)] sm:w-[521px] sm:h-[521px] sm:left-1/2 "></div>
+        </div>
         <p className="my-4 text-xs sm:text-xl">
           대학생 개발자에서 스타트업 팀 합류까지 YDevBook과 함께
         </p>
