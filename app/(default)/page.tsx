@@ -59,8 +59,8 @@ export default async function IndexPage() {
       <div className="my-24 mx-4 flex flex-col md:flex-row md:items-center md:justify-evenly">
         <div className="flex-shrink-0">
           <div className="flex items-center">
-            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
-            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+            <RiShieldUserFill color="#4328EB" className="w-5 mr-1 sm:w-6" />
+            <span className="text-[14px] text-ydevbook sm:text-[21px]">
               프로필 등록
             </span>
           </div>
@@ -69,7 +69,7 @@ export default async function IndexPage() {
             <br /> 필요한건 오직
             <br /> 다섯단계.
           </p>
-          <p className="my-4 w-2/3 font-extralight text-[10px] sm:text-[18px]">
+          <p className="my-4 w-2/3 font-extralight text-[14px] sm:text-[18px]">
             포트폴리오 작성 등 기존의 복잡했던 과정이 간단하게 줄어듭니다.
             <br />
             <br />
@@ -87,8 +87,8 @@ export default async function IndexPage() {
       <div className="my-24 mx-4 flex flex-col md:flex-row-reverse md:items-center md:justify-evenly">
         <div className="flex flex-col items-end flex-shrink-0">
           <div className="flex items-center">
-            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
-            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+            <RiShieldUserFill color="#4328EB" className="w-5 mr-1 sm:w-6" />
+            <span className="text-[14px] text-ydevbook sm:text-[21px]">
               스타트업 제의
             </span>
           </div>
@@ -96,7 +96,7 @@ export default async function IndexPage() {
             당신의 강점이
             <br /> 한눈에
           </p>
-          <p className="my-4 font-extralight text-right w-2/3 text-[10px] sm:text-[18px]">
+          <p className="my-4 font-extralight text-right w-2/3 text-[14px] sm:text-[18px]">
             개발자의 프로필을 보고 스타트업 측에서 컨택을 보내게 됩니다.
             <br />
             나의 강점을 스타트업에 알리고, 제의를 받아보세요!
