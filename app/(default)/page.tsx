@@ -1,7 +1,11 @@
-import { Button, Card, Title } from '@tremor/react';
+import { RiShieldUserFill } from '@remixicon/react';
+import { Button } from '@tremor/react';
 import { sql } from '@vercel/postgres';
 
+import Image from 'next/image';
 import Link from 'next/link';
+import LandingIPhoneMockupImage2 from '@/assets/images/main-landing-iphone-mockup-2.png';
+import LandingIPhoneMockupImage from '@/assets/images/main-landing-iphone-mockup.png';
 import { auth } from '@/auth';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ProfileFormStage } from '@/lib/definitions';
@@ -45,27 +49,65 @@ export default async function IndexPage() {
           스타트업이신가요?
         </Link>
       </div>
-      <div className="flex flex-col justify-center items-center my-24">
-        <div className="w-full px-10">
-          <p className="text-xl font-medium my-4">
-            스타트업에 나의 강점을 노출 시켜보세요.
+      <div className="w-full py-24">
+        <p className="w-full text-center font-semibold text-[18px] leading-normal sm:text-[35px]">
+          스타트업과 함께하고 싶은 대학생 개발자, <br />
+          유망한 대학생이 필요한 스타트업. <br />
+          YDevBook이 그 사이를 연결합니다.
+        </p>
+      </div>
+      <div className="my-24 mx-4 flex flex-col md:flex-row md:items-center md:justify-evenly">
+        <div className="flex-shrink-0">
+          <div className="flex items-center">
+            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
+            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+              프로필 등록
+            </span>
+          </div>
+          <p className="text-[28px] leading-[39px] font-bold sm:text-6xl sm:leading-normal">
+            스타트업 합류까지
+            <br /> 필요한건 오직
+            <br /> 다섯단계.
+          </p>
+          <p className="my-4 w-2/3 font-extralight text-[10px] sm:text-[18px]">
+            포트폴리오 작성 등 기존의 복잡했던 과정이 간단하게 줄어듭니다.
+            <br />
+            <br />
+            5가지 질문에 대해 답하고 나의 프로필을 등록해보세요!
           </p>
         </div>
-        <div className="px-10 w-full">
-          <Card>
-            <Title>나의 프로필 카드 예시</Title>
-            학력: 연세대학교 컴퓨터과학과 <br /> 키워드 1 | 키워드 2 | 키워드 3
-            <br />한 줄 소개 -----------
-          </Card>
+        <div className="mx-8 my-10">
+          <Image
+            src={LandingIPhoneMockupImage}
+            alt="landing-image-1"
+            className="w-[240px] sm:w-[332px] mx-auto"
+          />
         </div>
       </div>
-      <div className="flex flex-col items-center my-24">
-        <div className="w-[calc(100%-5rem)] h-[200px] bg-slate-600 rounded-md">
-          {/* <Image src={StartupImage} alt="startup image" layout="fill" /> */}
-          WIP 일러
+      <div className="my-24 mx-4 flex flex-col md:flex-row-reverse md:items-center md:justify-evenly">
+        <div className="flex flex-col items-end flex-shrink-0">
+          <div className="flex items-center">
+            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
+            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+              스타트업 제의
+            </span>
+          </div>
+          <p className="text-[28px] leading-[39px] font-bold sm:text-6xl sm:leading-normal text-right">
+            당신의 강점이
+            <br /> 한눈에
+          </p>
+          <p className="my-4 font-extralight text-right w-2/3 text-[10px] sm:text-[18px]">
+            개발자의 프로필을 보고 스타트업 측에서 컨택을 보내게 됩니다.
+            <br />
+            나의 강점을 스타트업에 알리고, 제의를 받아보세요!
+          </p>
         </div>
-        <div className="mt-4">
-          <p>연뎁북은 한창 개발 중인 프로덕트입니다.</p>
+        <div className="mx-8 my-10">
+          <Image
+            src={LandingIPhoneMockupImage2}
+            alt="landing-image-1"
+            className="w-[240px] sm:w-[332px] mx-auto"
+          />
         </div>
       </div>
     </MainPageTemplate>
