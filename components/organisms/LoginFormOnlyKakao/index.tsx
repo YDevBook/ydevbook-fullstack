@@ -13,7 +13,7 @@ const LoginFormOnlyKakao = () => {
         스타트업 멤버로 진출해보세요.
       </Title>
       <Subtitle>대학생 개발자로서 스타트업에게 컨택을 받고 싶다면,</Subtitle>
-      <div className="pt-32">
+      <div className="pt-32 pb-4">
         <Text className="text-center">
           <a href="/" className="underline" target="__blank">
             개인정보 처리방침, 이용약관
