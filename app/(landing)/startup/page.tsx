@@ -24,7 +24,7 @@ export default function StartupLandingPage() {
           검증된 학력의 개발자에게 컨택해보세요.
         </h1>
         <Link href={mainCTAHref}>
-          <Button className="mt-8 !rounded-full" size="lg">
+          <Button className="mt-8 !rounded-full" size="lg" variant="secondary">
             개발자 풀 보러가기!
           </Button>
         </Link>

@@ -29,7 +29,7 @@ export default async function RootLayout({
 }) {
   const session = await auth();
   return (
-    <html lang="en" className="h-full bg-gray-50">
+    <html lang="en" className="h-full">
       <body className="font-Pretendard select-none outline-none break-keep">
         <SessionProvider session={session}>
           <NotificationContextProvider>
