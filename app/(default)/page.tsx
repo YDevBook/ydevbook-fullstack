@@ -4,8 +4,8 @@ import { sql } from '@vercel/postgres';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import LandingIPhoneMockupImage2 from '@/assets/images/main-landing-iphone-mockup-2.png';
-import LandingIPhoneMockupImage from '@/assets/images/main-landing-iphone-mockup.png';
+import LandingMockupImage from '@/assets/images/main-landing-mockup.png';
+import LandingProfileCardMockupImage from '@/assets/images/main-landing-profile-card-mockup.png';
 import { auth } from '@/auth';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ProfileFormStage } from '@/lib/definitions';
@@ -26,7 +26,7 @@ export default async function IndexPage() {
       : `/profile-form?stage=${ProfileFormStage.포지션}`;
 
   return (
-    <MainPageTemplate>
+    <MainPageTemplate className="overflow-hidden">
       <div className="relative flex flex-col justify-center items-center py-24">
         <div className="z-[-1]">
           <div className="absolute top-0 left-1/3 w-[316px] h-[316px] rounded-full bg-[linear-gradient(145deg,rgba(67,40,235,0.27)8.28%,rgba(128,148,254,0.35)94.84%)] [filter:blur(75px)] sm:w-[716px] sm:h-[716px] sm:top-[-40%]"></div>
@@ -59,8 +59,8 @@ export default async function IndexPage() {
       <div className="my-24 mx-4 flex flex-col md:flex-row md:items-center md:justify-evenly">
         <div className="flex-shrink-0">
           <div className="flex items-center">
-            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
-            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+            <RiShieldUserFill color="#4328EB" className="w-5 mr-1 sm:w-6" />
+            <span className="text-[14px] text-ydevbook sm:text-[21px]">
               프로필 등록
             </span>
           </div>
@@ -69,7 +69,7 @@ export default async function IndexPage() {
             <br /> 필요한건 오직
             <br /> 다섯단계.
           </p>
-          <p className="my-4 w-2/3 font-extralight text-[10px] sm:text-[18px]">
+          <p className="my-4 w-2/3 font-extralight text-[14px] sm:text-[18px]">
             포트폴리오 작성 등 기존의 복잡했던 과정이 간단하게 줄어듭니다.
             <br />
             <br />
@@ -78,7 +78,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-8 my-10">
           <Image
-            src={LandingIPhoneMockupImage}
+            src={LandingMockupImage}
             alt="landing-image-1"
             className="w-[240px] sm:w-[332px] mx-auto"
           />
@@ -87,8 +87,8 @@ export default async function IndexPage() {
       <div className="my-24 mx-4 flex flex-col md:flex-row-reverse md:items-center md:justify-evenly">
         <div className="flex flex-col items-end flex-shrink-0">
           <div className="flex items-center">
-            <RiShieldUserFill color="#4328EB" className="w-4 mr-1 sm:w-6" />
-            <span className="text-[11px] text-ydevbook sm:text-[21px]">
+            <RiShieldUserFill color="#4328EB" className="w-5 mr-1 sm:w-6" />
+            <span className="text-[14px] text-ydevbook sm:text-[21px]">
               스타트업 제의
             </span>
           </div>
@@ -96,7 +96,7 @@ export default async function IndexPage() {
             당신의 강점이
             <br /> 한눈에
           </p>
-          <p className="my-4 font-extralight text-right w-2/3 text-[10px] sm:text-[18px]">
+          <p className="my-4 font-extralight text-right w-2/3 text-[14px] sm:text-[18px]">
             개발자의 프로필을 보고 스타트업 측에서 컨택을 보내게 됩니다.
             <br />
             나의 강점을 스타트업에 알리고, 제의를 받아보세요!
@@ -104,7 +104,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-8 my-10">
           <Image
-            src={LandingIPhoneMockupImage2}
+            src={LandingProfileCardMockupImage}
             alt="landing-image-1"
             className="w-[240px] sm:w-[332px] mx-auto"
           />
