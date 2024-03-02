@@ -41,17 +41,17 @@ export default function StartupLandingPage() {
           <div className="flex items-center">
             <RiShieldUserFill color="#4328EB" className="w-5 mr-1 sm:w-6" />
             <span className="text-[14px] text-ydevbook sm:text-[21px]">
-              스타트업 제의
+              스카우트 제의
             </span>
           </div>
           <p className="text-[28px] leading-[39px] font-bold sm:text-6xl sm:leading-normal text-right">
-            당신의 강점이
+            원하는 조건을
             <br /> 한눈에
           </p>
           <p className="my-4 font-extralight text-right w-2/3 text-[14px] sm:text-[18px]">
-            개발자의 프로필을 보고 스타트업 측에서 컨택을 보내게 됩니다.
+            카드를 보고 전체 프로필을 조회해보세요.
             <br />
-            나의 강점을 스타트업에 알리고, 제의를 받아보세요!
+            연락처 조회를 통해 스카우트 제안을 보낼 수 있습니다.
           </p>
         </div>
         <div className="mx-8 my-10">
