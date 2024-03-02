@@ -9,7 +9,7 @@ export default function StartupLandingPage() {
   const mainCTAHref = '/startup/developer-list';
 
   return (
-    <MainPageTemplate className="overflow-hidden">
+    <MainPageTemplate className="overflow-hidden xl:overflow-visible">
       <div className="relative flex flex-col justify-center items-center py-24">
         <div className="z-[-1]">
           <div className="absolute top-0 left-1/3 w-[316px] h-[316px] rounded-full bg-[linear-gradient(145deg,rgba(67,40,235,0.27)8.28%,rgba(128,148,254,0.35)94.84%)] [filter:blur(75px)] sm:w-[716px] sm:h-[716px] sm:top-[-40%]"></div>
