@@ -45,6 +45,7 @@ const ExperienceUpdateCard = ({
       title: 'Delete',
       description: '경력을 삭제하시겠습니까?',
       onConfirm: onDelete,
+      onCancel: () => setIsOpen?.(false),
     });
     setIsOpen?.(true);
     return;
