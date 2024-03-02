@@ -16,9 +16,24 @@ const Footer = () => {
         </div>
         <div className="sm:ml-12 sm:flex-grow">
           <div className="flex justify-center text-sm space-x-6 sm:text-[16px] sm:justify-start">
-            <a href="/">이용약관</a>
-            <a href="/">개인정보 처리방침</a>
-            <a href="/">문의하기</a>
+            <a
+              href="https://ydevbook.notion.site"
+              target="_blank noopener noreferrer"
+            >
+              이용약관
+            </a>
+            <a
+              href="https://ydevbook.notion.site"
+              target="_blank noopener noreferrer"
+            >
+              개인정보 처리방침
+            </a>
+            <a
+              href="https://open.kakao.com/o/sZAjuvdg"
+              target="_blank noopener noreferrer"
+            >
+              문의하기
+            </a>
           </div>
           <div className="mt-8 text-sm text-center sm:text-left">
             <p className=" text-gray-500">
@@ -39,7 +54,8 @@ const Footer = () => {
           </a>
           <a
             // className="text-2xl font-semibold"
-            href="mailto:contact@developool.com"
+            href="https://open.kakao.com/o/sZAjuvdg"
+            target="_blank noopener noreferrer"
           >
             <RiKakaoTalkFill className="inline-block w-8" />
           </a>
