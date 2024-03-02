@@ -4,8 +4,8 @@ import { sql } from '@vercel/postgres';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import LandingIPhoneMockupImage2 from '@/assets/images/main-landing-iphone-mockup-2.png';
-import LandingIPhoneMockupImage from '@/assets/images/main-landing-iphone-mockup.png';
+import LandingMockupImage from '@/assets/images/main-landing-mockup.png';
+import LandingProfileCardMockupImage from '@/assets/images/main-landing-profile-card-mockup.png';
 import { auth } from '@/auth';
 import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import { ProfileFormStage } from '@/lib/definitions';
@@ -78,7 +78,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-8 my-10">
           <Image
-            src={LandingIPhoneMockupImage}
+            src={LandingMockupImage}
             alt="landing-image-1"
             className="w-[240px] sm:w-[332px] mx-auto"
           />
@@ -104,7 +104,7 @@ export default async function IndexPage() {
         </div>
         <div className="mx-8 my-10">
           <Image
-            src={LandingIPhoneMockupImage2}
+            src={LandingProfileCardMockupImage}
             alt="landing-image-1"
             className="w-[240px] sm:w-[332px] mx-auto"
           />
