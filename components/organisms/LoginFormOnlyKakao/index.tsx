@@ -15,8 +15,12 @@ const LoginFormOnlyKakao = () => {
       <Subtitle>대학생 개발자로서 스타트업에게 컨택을 받고 싶다면,</Subtitle>
       <div className="pt-32 pb-4">
         <Text className="text-center">
-          <a href="/" className="underline" target="__blank">
-            개인정보 처리방침, 이용약관
+          <a href="/privacy" className="underline" target="__blank">
+            개인정보 처리방침
+          </a>
+          ,{' '}
+          <a href="/agreements" className="underline" target="__blank">
+            이용약관
           </a>
           을 확인하였으며, 회원가입에 동의합니다.
         </Text>
