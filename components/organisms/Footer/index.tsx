@@ -16,16 +16,10 @@ const Footer = () => {
         </div>
         <div className="sm:ml-12 sm:flex-grow">
           <div className="flex justify-center text-sm space-x-6 sm:text-[16px] sm:justify-start">
-            <a
-              href="https://ydevbook.notion.site"
-              target="_blank noopener noreferrer"
-            >
+            <a href="/agreements" target="_blank">
               이용약관
             </a>
-            <a
-              href="https://ydevbook.notion.site"
-              target="_blank noopener noreferrer"
-            >
+            <a href="/privacy" target="_blank">
               개인정보 처리방침
             </a>
             <a
