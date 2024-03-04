@@ -84,7 +84,7 @@ export default async function IndexPage() {
           />
         </div>
       </div>
-      <div className="w-screen bg-gray-50 py-24 xl:-ml-[calc(calc(100vw-1280px)/2+40px)]">
+      <div className="w-screen bg-gray-50 py-24 -ml-4 sm:-ml-[40px] xl:-ml-[calc(calc(100vw-1280px)/2+40px)]">
         <div className="flex flex-col md:flex-row-reverse md:items-center md:justify-evenly max-w-7xl mx-4 xl:mx-auto">
           <div className="flex flex-col items-end flex-shrink-0">
             <div className="flex items-center">
