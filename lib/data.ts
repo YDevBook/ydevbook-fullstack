@@ -14,7 +14,8 @@ export async function fetchMyProfile() {
     }
 
     const profile = await sql.query<Profile>(
-      `SELECT * FROM profiles WHERE "userId" = '${session.user.id}'`
+      `SELECT * FROM profiles WHERE "userId" = $1`,
+      [session.user.id]
     );
 
     if (!profile || profile.rowCount === 0 || profile.rows.length === 0) {

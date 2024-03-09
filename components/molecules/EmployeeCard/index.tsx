@@ -14,11 +14,19 @@ interface EmployeeCardProps {
 const EmployeeCard = ({ profile }: EmployeeCardProps) => {
   const { setContent, setIsOpen } = useContext(NotificationContext);
   const onClick = () => {
-    setContent?.({
-      title: '프로필 확인하기',
-      description:
-        '프로필 조회 기능은 준비 중에 있습니다. 연락처 조회 및 인터뷰 요청이 필요하시면 contact@developool.com 으로 연락 부탁드립니다. 신속히 처리해드리겠습니다.',
-    });
+    if (!profile.isActivelySeeking) {
+      setContent?.({
+        title: '프로필 확인하기',
+        description:
+          '적극 구직 중이 아닌 개발자의 개인 정보는 비공개 처리됩니다. \n 적극 구직 중인 개발자에게 컨택해보세요.',
+      });
+    } else {
+      setContent?.({
+        title: '프로필 확인하기',
+        description:
+          '프로필 조회 기능은 준비 중에 있습니다. \n연락처 조회 및 인터뷰 요청이 필요하시면 \ncontact@developool.com 으로 연락 부탁드립니다. 신속히 처리해드리겠습니다.',
+      });
+    }
     setIsOpen?.(true);
   };
 
@@ -43,7 +51,8 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
         </div>
         <div className="flex-1 ml-4">
           <div className="space-x-1">
-            {profile.name}{' '}
+            {profile.name.trim()[0]}
+            {'OO '}
             {profile.positions?.map((position) => (
               <Badge className="bg-white" key={position}>
                 {position}

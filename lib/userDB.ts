@@ -7,11 +7,15 @@ export async function getUserByCredentials(
 ): Promise<User | undefined> {
   try {
     if (isStartup) {
-      const user =
-        await sql<User>`SELECT * FROM users WHERE email=${email} AND "isStartup" = true`;
+      const user = await sql.query<User>(
+        `SELECT * FROM users WHERE email=$1 AND "isStartup" = true`,
+        [email]
+      );
       return user.rows[0];
     }
-    const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
+    const user = await sql.query<User>(`SELECT * FROM users WHERE email=$1`, [
+      email,
+    ]);
     return user.rows[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);
@@ -23,8 +27,10 @@ export async function getUserByOauth(
   oauthId: string
 ): Promise<User | undefined> {
   try {
-    const user =
-      await sql<User>`SELECT * FROM users WHERE "oauthId"=${oauthId}`;
+    const user = await sql.query<User>(
+      `SELECT * FROM users WHERE "oauthId"=$1`,
+      [oauthId]
+    );
     return user.rows[0];
   } catch (error) {
     console.error('Failed to fetch user:', error);
