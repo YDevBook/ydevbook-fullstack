@@ -51,7 +51,7 @@ const ActivelyJobSeekingSwitchCard = ({
             icon={RiQuestionLine}
             className="ml-2 p-0"
             color="gray"
-            tooltip="토글 off 시, 내 프로필이 노출되지 않습니다."
+            tooltip="토글 off 시, 내 개인정보가 노출되지 않습니다."
           />
         </div>
         <Switch

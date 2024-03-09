@@ -23,13 +23,13 @@ interface NotificationContextProps {
 export const NotificationContext = createContext<NotificationContextProps>({});
 
 export const NotificationContextProvider = ({
-  children
+  children,
 }: {
   children: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState<NotificationContent>({
-    description: ''
+    description: '',
   });
   const [type, setType] = useState<'error' | 'alert'>('alert');
 
@@ -41,7 +41,7 @@ export const NotificationContextProvider = ({
         type,
         setIsOpen,
         setContent,
-        setType
+        setType,
       }}
     >
       {children}
@@ -50,7 +50,9 @@ export const NotificationContextProvider = ({
           <Title>
             {content.title || (type === 'alert' ? 'Alert' : 'Error')}
           </Title>
-          <Text className="mt-4">{content.description}</Text>
+          <Text className="mt-4 whitespace-pre-line">
+            {content.description}
+          </Text>
           <div className="mt-4">
             <Button
               onClick={() => {

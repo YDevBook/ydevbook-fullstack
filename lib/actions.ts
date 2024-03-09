@@ -56,6 +56,8 @@ export async function startupAccountAuthenticate(
   }
 }
 
+// Deprecated
+// SQL Injection Vulnerable
 export async function signUp(
   prevState: string | undefined,
   formData: FormData
@@ -218,6 +220,10 @@ export async function updateProfileText(
     const session = await auth();
     if (!session?.user) {
       return { status: 401 };
+    }
+    // Now only personalStatement is used. (20240309)
+    if (columnName !== 'personalStatement') {
+      return { status: 400 };
     }
     const { id: userId } = session?.user;
     const data = Object.fromEntries(formData);
