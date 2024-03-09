@@ -51,7 +51,8 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
         </div>
         <div className="flex-1 ml-4">
           <div className="space-x-1">
-            {profile.name}{' '}
+            {profile.name.trim()[0]}
+            {'OO '}
             {profile.positions?.map((position) => (
               <Badge className="bg-white" key={position}>
                 {position}
