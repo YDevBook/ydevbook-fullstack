@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { Profile } from '@/lib/definitions';
+import { GraduateStatusOptions, Profile } from '@/lib/definitions';
 
 interface EmployeeCardProps {
   profile: Profile;
@@ -41,13 +41,21 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
       </Button>
       <div className="flex ">
         <div>
-          <Image
-            className="h-24 w-24 rounded-lg"
-            src={profile.profileImageUrl || DefaultProfileImage}
-            height={96}
-            width={96}
-            alt={`${profile.name || 'placeholder'} avatar`}
-          />
+          <div>
+            <Image
+              className="h-24 w-24 rounded-lg"
+              src={profile.profileImageUrl || DefaultProfileImage}
+              height={96}
+              width={96}
+              alt={`${profile.name || 'placeholder'} avatar`}
+            />
+          </div>
+          {profile.isActivelySeeking && (
+            <div className="flex justify-center items-center mt-1">
+              <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+              <span className="text-sm ml-1">적극 구직 중</span>
+            </div>
+          )}
         </div>
         <div className="flex-1 ml-4">
           <div className="space-x-1">
@@ -60,7 +68,12 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
             ))}
           </div>
           <div className="mt-1">
-            {profile.school} {profile.major}
+            {profile.school} {profile.major}{' '}
+            {!!profile.graduateStatus &&
+              ' / ' +
+                GraduateStatusOptions.find(
+                  (option) => option.value === profile.graduateStatus
+                )?.label}
           </div>
           <div className="mt-1 space-x-1">
             {profile.skills?.map((skill) => (
