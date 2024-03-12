@@ -176,6 +176,7 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       graduateStatus,
       githubLink,
       webLink,
+      contractPreference,
     } = removeEmptyString(data);
     const query = `
       UPDATE profiles
@@ -188,8 +189,9 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       "major" = $7,
       "graduateStatus" = $8,
       "githubLink" = $9,
-      "webLink" = $10
-      WHERE "userId" = $11
+      "webLink" = $10,
+      "contractPreference" = $11
+      WHERE "userId" = $12
     `;
     await sql.query(query, [
       name,
@@ -202,6 +204,7 @@ export async function updateProfile(data: ProfileUpdateFormData) {
       graduateStatus,
       githubLink,
       webLink,
+      contractPreference,
       userId,
     ]);
     return { status: 200 };

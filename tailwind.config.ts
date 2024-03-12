@@ -15,6 +15,9 @@ export default {
         'ydevbook': {
           DEFAULT: '#4328EB',
           faint: '#D2D9FF',
+          muted: '#D2D9FF',
+          subtle: '#644BFF',
+          emphasis: '#321AC6',
         },
         // light mode
         'tremor': {

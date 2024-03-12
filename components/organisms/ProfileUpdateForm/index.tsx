@@ -5,6 +5,7 @@ import {
   Button,
   DatePicker,
   DatePickerValue,
+  MultiSelect,
   Select,
   SelectItem,
   TextInput,
@@ -18,6 +19,8 @@ import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
 import { updateProfile } from '@/lib/actions';
 import {
+  ContractPreference,
+  ContractPreferenceOptions,
   GraduateStatusOptions,
   Profile,
   ProfileUpdateFormData,
@@ -63,7 +66,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
   } = useForm<ProfileUpdateFormData>({
     defaultValues: { ...profile },
   });
-  const { dateOfBirth, graduateStatus } = watch();
+  const { dateOfBirth, graduateStatus, contractPreference } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
 
   const onDateChange = (date: DatePickerValue) => {
@@ -77,6 +80,10 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
 
   const onGraduateStatusChange = (value: string) => {
     setValue('graduateStatus', value);
+  };
+
+  const onContractPreferenceChange = (value: string[]) => {
+    setValue('contractPreference', value as ContractPreference[]);
   };
 
   const action: () => void = handleSubmit(async (data) => {
@@ -302,6 +309,24 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
             </SelectItem>
           ))}
         </Select>
+      </div>
+      <div className="relative min-h-[100px]">
+        <label className="text-[16px] font-extrabold" htmlFor="graduateStatus">
+          선호 계약 형태
+        </label>
+        <MultiSelect
+          defaultValue={contractPreference || []}
+          onValueChange={onContractPreferenceChange}
+          value={contractPreference || []}
+          className="mt-2"
+          placeholder="선호 계약 형태 선택"
+        >
+          {ContractPreferenceOptions.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </MultiSelect>
       </div>
       <div className="relative min-h-[100px]">
         <label className="text-[16px] font-extrabold" htmlFor="githubLink">
