@@ -78,6 +78,57 @@ export async function fetchFilteredProfiles(
   }
 }
 
+export async function fetchFilteredProfilesV2(
+  filter?: Record<FilterName, string | undefined>,
+  currentPage = 1
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const session = await auth();
+    if (!session?.user?.isStartup) {
+      return { status: 401 };
+    }
+
+    let query = '';
+    const queryValues = [];
+    if (!!filter) {
+      query = `SELECT * FROM profiles `;
+      const queryConditions = [];
+      if (!!filter.query) {
+        queryConditions.push(
+          `(name ILIKE $${queryValues.length + 1} OR email ILIKE $${queryValues.length + 1}) `
+        );
+        queryValues.push(`%${filter.query}%`);
+      }
+      if (!!filter.position) {
+        queryConditions.push(`$${queryValues.length + 1} = ANY (positions)`);
+        queryValues.push(filter.position);
+      }
+
+      for (const condition of queryConditions) {
+        if (queryConditions.indexOf(condition) === 0) {
+          query += `WHERE ${condition} `;
+        } else {
+          query += `AND ${condition} `;
+        }
+      }
+
+      query += `LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
+    } else {
+      query = `SELECT * FROM profiles LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
+    }
+    console.log('QUERY: ', query);
+    console.log(queryValues);
+    const profiles = await sql.query<Profile>(query, queryValues);
+
+    return { data: profiles.rows, status: 200 };
+  } catch (error) {
+    console.error(error);
+    throw new Error('Something went wrong.');
+  }
+}
+
 export async function fetchFilteredProfilesPages(
   filter?: Record<FilterName, string | undefined>
 ) {

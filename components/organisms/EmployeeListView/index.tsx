@@ -1,7 +1,10 @@
 import { Button } from '@tremor/react';
 import Link from 'next/link';
 import EmployeeCard from '@/components/molecules/EmployeeCard';
-import { fetchFilteredProfiles, fetchFilteredProfilesPages } from '@/lib/data';
+import {
+  fetchFilteredProfilesPages,
+  fetchFilteredProfilesV2,
+} from '@/lib/data';
 
 interface EmployeeListViewProps {
   query?: string;
@@ -14,7 +17,7 @@ const EmployeeListView = async ({
   position,
   currentPageNum,
 }: EmployeeListViewProps) => {
-  const { data: profiles } = await fetchFilteredProfiles(
+  const { data: profiles } = await fetchFilteredProfilesV2(
     { query, position },
     currentPageNum
   );
