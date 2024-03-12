@@ -1,7 +1,7 @@
 import { Button } from '@tremor/react';
 import Link from 'next/link';
 import EmployeeCard from '@/components/molecules/EmployeeCard';
-import { fetchFilteredProfiles, fetchFilteredProfilesPages } from '@/lib/data';
+import { fetchFilteredProfilesAndPages } from '@/lib/data';
 
 interface EmployeeListViewProps {
   query?: string;
@@ -14,25 +14,21 @@ const EmployeeListView = async ({
   position,
   currentPageNum,
 }: EmployeeListViewProps) => {
-  const { data: profiles } = await fetchFilteredProfiles(
+  const { data } = await fetchFilteredProfilesAndPages(
     { query, position },
     currentPageNum
   );
-  const { data: totalPageNum } = await fetchFilteredProfilesPages({
-    query,
-    position,
-  });
 
   return (
     <div>
       <div className="mt-4">
-        {profiles?.map((profile) => (
+        {data?.profiles?.map((profile) => (
           <EmployeeCard key={profile.id} profile={profile} />
         ))}
       </div>
       <div className="my-4">
         <div className="flex max-w-md bg-red m-auto justify-center space-x-2">
-          {Array.from({ length: totalPageNum ?? 1 }, (_, i) => (
+          {Array.from({ length: data?.pages ?? 1 }, (_, i) => (
             <Link
               href={`/startup/developer-list?page=${i + 1}${
                 !!query ? `&query=${query}` : ''

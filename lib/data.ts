@@ -36,7 +36,7 @@ enum FilterName {
   Position = 'position',
 }
 
-export async function fetchFilteredProfiles(
+export async function fetchFilteredProfilesAndPages(
   filter?: Record<FilterName, string | undefined>,
   currentPage = 1
 ) {
@@ -48,68 +48,41 @@ export async function fetchFilteredProfiles(
       return { status: 401 };
     }
 
-    let query = '';
-    if (!!filter) {
-      query = `SELECT * FROM profiles `;
-      const whereCondition = !!filter.query
-        ? `WHERE (name ILIKE '%${filter.query}%' OR email ILIKE '%${filter.query}%') `
-        : '';
-      let conditionAnd = '';
-      if (!!filter.query && !!filter.position) {
-        conditionAnd = 'AND ';
-      } else if (!!filter.position) {
-        conditionAnd = 'WHERE ';
+    let fetchingQuery = `SELECT * FROM profiles `;
+    let pageQuery = `SELECT COUNT(*) FROM profiles `;
+    const queryConditions = [];
+    const queryValues = [];
+    if (!!filter?.query) {
+      queryConditions.push(
+        `(name ILIKE $${queryValues.length + 1} OR email ILIKE $${queryValues.length + 1}) `
+      );
+      queryValues.push(`%${filter.query}%`);
+    }
+    if (!!filter?.position) {
+      queryConditions.push(`$${queryValues.length + 1} = ANY (positions)`);
+      queryValues.push(filter.position);
+    }
+
+    for (const condition of queryConditions) {
+      if (queryConditions.indexOf(condition) === 0) {
+        fetchingQuery += `WHERE ${condition} `;
+        pageQuery += `WHERE ${condition} `;
+      } else {
+        fetchingQuery += `AND ${condition} `;
+        pageQuery += `AND ${condition} `;
       }
-      const positionCondition = !!filter.position
-        ? `'${filter.position}' = ANY (positions) `
-        : '';
-      const pageCondition = `LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
-      query +=
-        whereCondition + conditionAnd + positionCondition + pageCondition;
-    } else {
-      query = `SELECT * FROM profiles LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
     }
-    const profiles = await sql.query<Profile>(query);
-
-    return { data: profiles.rows, status: 200 };
-  } catch (error) {
-    console.error(error);
-    throw new Error('Something went wrong.');
-  }
-}
-
-export async function fetchFilteredProfilesPages(
-  filter?: Record<FilterName, string | undefined>
-) {
-  try {
-    const session = await auth();
-    if (!session?.user?.isStartup) {
-      return { status: 401 };
-    }
-
-    let query = '';
-    if (!!filter) {
-      query = `SELECT COUNT(*) FROM profiles `;
-      const whereCondition = !!filter.query
-        ? `WHERE (name ILIKE '%${filter.query}%' OR email ILIKE '%${filter.query}%') `
-        : '';
-      let conditionAnd = '';
-      if (!!filter.query && !!filter.position) {
-        conditionAnd = 'AND ';
-      } else if (!!filter.position) {
-        conditionAnd = 'WHERE ';
-      }
-      const positionCondition = !!filter.position
-        ? `'${filter.position}' = ANY (positions) `
-        : '';
-      query += whereCondition + conditionAnd + positionCondition;
-    } else {
-      query = `SELECT COUNT(*) FROM profiles`;
-    }
-    const count = await sql.query<{ count: string }>(query);
+    fetchingQuery += `LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
+    const [profiles, count] = await Promise.all([
+      sql.query<Profile>(fetchingQuery, queryValues),
+      sql.query<{ count: string }>(pageQuery, queryValues),
+    ]);
 
     return {
-      data: Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE),
+      data: {
+        profiles: profiles.rows,
+        pages: Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE),
+      },
       status: 200,
     };
   } catch (error) {
