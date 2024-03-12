@@ -5,7 +5,11 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import DefaultProfileImage from '@/assets/images/default-profile-image.jpg';
 import { NotificationContext } from '@/contexts/NotificationContext';
-import { GraduateStatusOptions, Profile } from '@/lib/definitions';
+import {
+  ContractPreferenceLabels,
+  GraduateStatusOptions,
+  Profile,
+} from '@/lib/definitions';
 
 interface EmployeeCardProps {
   profile: Profile;
@@ -89,6 +93,13 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
                 {keyword}
               </Badge>
             ))}
+          </div>
+          <div className="mt-1 space-x-1 text-ydevbook-subtle">
+            {!!profile.contractPreference
+              ? profile.contractPreference
+                  ?.map((value) => ContractPreferenceLabels[value])
+                  .join(', ') + ' 선호'
+              : undefined}
           </div>
           <div className="mt-1">{profile.shortBio}</div>
         </div>
