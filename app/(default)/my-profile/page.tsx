@@ -270,10 +270,11 @@ export default async function MyProfilePage({
                       !contractPreference && 'text-gray-300'
                     )}
                   >
-                    {contractPreference
-                      ?.map((value) => ContractPreferenceLabels[value])
-                      .join(', ') + ' 선호' ||
-                      '선호 계약 형태 정보를 업데이트 해주세요.'}
+                    {!!contractPreference
+                      ? contractPreference
+                          ?.map((value) => ContractPreferenceLabels[value])
+                          .join(', ') + ' 선호'
+                      : '선호 계약 형태 정보를 업데이트 해주세요.'}
                   </span>
                 </div>
               </div>
