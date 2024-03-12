@@ -29,6 +29,27 @@ export const GraduateStatusOptions = [
   { value: GraduateStatus.수료, label: '수료' },
 ];
 
+export enum ContractPreference {
+  풀타임 = 'FULL_TIME',
+  파트타임 = 'PART_TIME',
+  외주 = 'FREELANCE',
+  인턴 = 'INTERNSHIP',
+}
+
+export const ContractPreferenceOptions = [
+  { value: ContractPreference.풀타임, label: '풀타임' },
+  { value: ContractPreference.파트타임, label: '파트타임' },
+  { value: ContractPreference.외주, label: '외주' },
+  { value: ContractPreference.인턴, label: '인턴' },
+];
+
+export const ContractPreferenceLabels = {
+  [ContractPreference.풀타임]: '풀타임',
+  [ContractPreference.파트타임]: '파트타임',
+  [ContractPreference.외주]: '외주',
+  [ContractPreference.인턴]: '인턴',
+};
+
 export enum ProfileFormStage {
   포지션 = 'positions',
   기술 = 'skills',
@@ -94,6 +115,7 @@ export interface Profile {
   attachedFiles?: string[];
   isActivelySeeking: boolean;
   introductionKeywords?: string[];
+  contractPreference?: ContractPreference[];
 }
 
 export interface ProfileFormData {
