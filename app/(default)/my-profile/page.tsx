@@ -1,4 +1,5 @@
 import {
+  RiBriefcaseLine,
   RiCakeLine,
   RiGithubLine,
   RiGraduationCapLine,
@@ -28,6 +29,7 @@ import MainPageTemplate from '@/components/templates/MainPageTemplate';
 import {
   ArrayItemQueryRows,
   AttachmentFiles,
+  ContractPreferenceLabels,
   Experience,
   GraduateStatusOptions,
   Profile,
@@ -148,6 +150,7 @@ export default async function MyProfilePage({
     webLink,
     isActivelySeeking,
     introductionKeywords,
+    contractPreference,
   } = profile;
 
   const onClickJobSeekingSwitch = async (isActive: boolean) => {
@@ -257,6 +260,21 @@ export default async function MyProfilePage({
                   <RiLink className="flex-shrink-0" />
                   <span className={clsx('ml-4', !webLink && 'text-gray-300')}>
                     {webLink || '웹 페이지 정보를 업데이트 해주세요.'}
+                  </span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <RiBriefcaseLine className="flex-shrink-0" />
+                  <span
+                    className={clsx(
+                      'ml-4',
+                      !contractPreference && 'text-gray-300'
+                    )}
+                  >
+                    {!!contractPreference
+                      ? contractPreference
+                          ?.map((value) => ContractPreferenceLabels[value])
+                          .join(', ') + ' 선호'
+                      : '선호 계약 형태 정보를 업데이트 해주세요.'}
                   </span>
                 </div>
               </div>
