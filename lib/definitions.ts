@@ -11,6 +11,24 @@ export interface ArrayItemQueryRows {
   name: string;
 }
 
+export enum Position {
+  프론트엔드 = '프론트엔드',
+  백엔드 = '백엔드',
+  풀스택 = '풀스택',
+  DevOps = 'DevOps',
+  iOS = 'iOS',
+  Android = 'Android',
+  인공지능머신러닝 = '인공지능 • 머신러닝',
+  데이터엔지니어 = '데이터 엔지니어',
+  게임서버 = '게임 서버',
+  게임클라이언트 = '게임 클라이언트',
+  VRAR = 'VR/AR/MR/XR',
+  소프트웨어엔지니어 = '소프트웨어 엔지니어',
+  크로스플랫폼앱 = '크로스플랫폼 앱',
+}
+
+export const PositionList = Object.values(Position);
+
 export enum GraduateStatus {
   재학 = 'AT',
   휴학 = 'AB',

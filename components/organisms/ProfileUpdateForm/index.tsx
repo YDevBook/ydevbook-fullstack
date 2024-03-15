@@ -223,7 +223,7 @@ const ProfileUpdateForm = ({ profile }: ProfileUpdateFormProps) => {
           maxLength={11}
           error={!!errors.phoneNumber}
           errorMessage={errors.phoneNumber?.message}
-          placeholder="전화번호를 입력해주세요."
+          placeholder="전화번호를 입력해주세요.(숫자만 입력)"
         />
       </div>
       <div className="relative min-h-[100px]">
