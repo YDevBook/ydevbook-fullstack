@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@tremor/react';
-import { useContext } from 'react';
+import { Button, TextInput } from '@tremor/react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import BadgeSelectItem from '@/components/atoms/BadgeSelectItem';
@@ -34,6 +34,7 @@ const ProfilePositionAndSkillUpdateForm = ({
   });
   const { positions, skills } = watch();
   const { setContent, setIsOpen } = useContext(NotificationContext);
+  const [skillSearchValue, setSkillSearchValue] = useState('');
 
   const onClickPositionBadge = (value: string, prevClicked?: boolean) => {
     if (prevClicked) {
@@ -109,22 +110,37 @@ const ProfilePositionAndSkillUpdateForm = ({
         <label className="text-[16px] font-extrabold" htmlFor="skills">
           보유 기술
         </label>
-        <div className="mt-2 overflow-x-scroll">
-          <div className="w-[3000px] flex flex-wrap">
-            {skillsSelectItems?.map((skill) => (
-              <BadgeSelectItem
-                key={skill.name}
-                label={skill.name}
-                value={skill.name}
-                iconSrc="💻"
-                clicked={
-                  !!skills &&
-                  skills?.findIndex((item) => item === skill.name) !== -1
-                }
-                onClick={onClickSkillBadge}
-              />
-            ))}
+        <TextInput
+          className="mt-4"
+          placeholder="기술 스택을 검색해보세요."
+          onChange={(e) => setSkillSearchValue(e.target.value)}
+          value={skillSearchValue}
+        />
+        <div className="mt-2 overflow-y-scroll h-60">
+          <div className="flex flex-wrap">
+            {skillsSelectItems
+              ?.filter(
+                (skill) =>
+                  skillSearchValue === '' ||
+                  skill.name
+                    .toLowerCase()
+                    .includes(skillSearchValue.trim().toLowerCase())
+              )
+              .map((skill) => (
+                <BadgeSelectItem
+                  key={skill.name}
+                  label={skill.name}
+                  value={skill.name}
+                  iconSrc="💻"
+                  clicked={
+                    !!skills &&
+                    skills?.findIndex((item) => item === skill.name) !== -1
+                  }
+                  onClick={onClickSkillBadge}
+                />
+              ))}
           </div>
+          <div className="w-full h-10 sticky bottom-0 bg-gradient-to-b from-transparent to-gray-50 pointer-events-none" />
         </div>
         {!!errors.skills && (
           <p className="py-2 text-red-500">{errors.skills.message}</p>
