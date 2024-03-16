@@ -140,7 +140,7 @@ const ProfilePositionAndSkillUpdateForm = ({
                 />
               ))}
           </div>
-          <div className="w-full h-10 sticky bottom-0 bg-gradient-to-b from-transparent to-gray-50 pointer-events-none" />
+          <div className="w-full h-10 sticky bottom-0 bg-gradient-to-b from-transparent to-white pointer-events-none" />
         </div>
         {!!errors.skills && (
           <p className="py-2 text-red-500">{errors.skills.message}</p>
