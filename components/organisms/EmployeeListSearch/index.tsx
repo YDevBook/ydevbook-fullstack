@@ -3,15 +3,7 @@
 import { Select, SelectItem, TextInput } from '@tremor/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-
-const positionList = [
-  '프론트엔드',
-  '백엔드',
-  '풀스택',
-  '데이터사이언티스트',
-  'DevOps',
-  '게임 서버',
-];
+import { PositionList } from '@/lib/definitions';
 
 const EmployeeListSearch = () => {
   const searchParams = useSearchParams();
@@ -57,7 +49,7 @@ const EmployeeListSearch = () => {
           placeholder="포지션으로 검색"
           className="w-14"
         >
-          {positionList.map((position) => (
+          {PositionList.map((position) => (
             <SelectItem key={position} value={position}>
               {position}
             </SelectItem>
