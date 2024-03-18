@@ -9,7 +9,7 @@ import { NotificationContextProvider } from '@/contexts/NotificationContext';
 
 export const metadata = {
   title: 'YDevBook',
-  description: '연뎁북.',
+  description: '대학생 개발자와 스타트업을 잇다.',
 };
 
 export const viewport: Viewport = {
