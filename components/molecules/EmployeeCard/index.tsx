@@ -27,8 +27,7 @@ const EmployeeCard = ({ profile }: EmployeeCardProps) => {
     } else {
       setContent?.({
         title: '프로필 확인하기',
-        description:
-          '프로필 조회 기능은 준비 중에 있습니다. \n연락처 조회 및 인터뷰 요청이 필요하시면 \ncontact@developool.com 으로 연락 부탁드립니다. 신속히 처리해드리겠습니다.',
+        description: `프로필 조회 기능은 준비 중에 있습니다. \n연락처 조회 및 인터뷰 요청이 필요하시면 \ncontact@developool.com 으로 연락 부탁드립니다. 신속히 처리해드리겠습니다.\n(User ID: ${profile.userId})`,
       });
     }
     setIsOpen?.(true);
